@@ -1,0 +1,1 @@
+To open and edit the schema, download Violet from http://violet.sf.net
