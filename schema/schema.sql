@@ -25,12 +25,10 @@ create table Contact
 create table Member
 (
   memberid int primary key,
-  lastname varchar(40),
-  firstname varchar(40),
   contactid int,
-  ownerid int,
+  clubid int,
   interests varchar(255),
-  foreign key(ownerid) references User(userid),
+  foreign key(clubid) references Club(clubid),
   foreign key(contactid) references Contact(contactid)
 );
 
