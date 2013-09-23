@@ -1,3 +1,5 @@
+--This was manually created. Correct?? Dunno
+
 create table User
 (
   userid int primary key,
