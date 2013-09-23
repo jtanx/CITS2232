@@ -12,6 +12,7 @@ create table User
 create table Contact
 (
   contactid int primary key,
+  --Consider moving lastname/firstname into the User/Member fields - doesn't make sense for Club
   lastname varchar(40) not null,
   firstname varchar(40) not null,
   email varchar(40) not null,
