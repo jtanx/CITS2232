@@ -29,8 +29,10 @@ create table Member
 (
   memberid int primary key,
   contactid int,
+  ownerid int, --User that created this member
   clubid int,
   interests varchar(255),
+  foreign key(ownerid) references User(userid),
   foreign key(clubid) references Club(clubid),
   foreign key(contactid) references Contact(contactid)
 );
