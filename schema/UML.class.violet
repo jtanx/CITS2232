@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.7.0_25" class="java.beans.XMLDecoder">
+<java version="1.7.0_17" class="java.beans.XMLDecoder">
  <object class="com.horstmann.violet.ClassDiagramGraph">
   <void method="addNode">
    <object class="com.horstmann.violet.ClassNode" id="ClassNode0">
     <void property="attributes">
      <void property="text">
-      <string>Username *pk* (varchar(50))
-Password (binary(20) - SHA1 hash is fixed size?)
-Name (varchar(50))
-Email (varchar(50))
-Date Registered (date)
-User Type (enumerated type/integer)</string>
+      <string>User ID *pk* (int, not null)
+Username (string, unique, not null)
+Password (string, not null)
+Last Name (string)
+First Name (string)
+Contact ID (int, not null)
+Date Registered (date, not null)
+User Type (int, not null)
+foreign key(contactid) references Contact(contactid)</string>
      </void>
     </void>
     <void property="name">
@@ -24,19 +27,19 @@ User Type (enumerated type/integer)</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>359.17157287525384</double>
+      <double>362.73919422026205</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>211.45079348883235</double>
+      <double>166.260923118729</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>359.17157287525384</double>
-     <double>211.45079348883235</double>
+     <double>362.73919422026205</double>
+     <double>166.260923118729</double>
     </void>
    </object>
   </void>
@@ -44,15 +47,18 @@ User Type (enumerated type/integer)</string>
    <object class="com.horstmann.violet.ClassNode" id="ClassNode1">
     <void property="attributes">
      <void property="text">
-      <string>Name *pk* (unique, string)
+      <string>Club ID *pk* (int, not null)
+Name (string, unique, not null)
 Type (string)
-Location (co-ordinates)
+Location (string)
 Number of Members (integer)
 Creation Date (date)
 Recruiting Members (boolean)
-Description (string / maybe text field?)
-Contact (ForeignKey to Contact)
-Owner (ForeignKey to User)</string>
+Description (text field)
+Contact ID (int)
+Owner ID (int, not null)
+foreign key(contactid) references Contact(contactid)
+foreign key(userid) references User(ownerid)</string>
      </void>
     </void>
     <void property="name">
@@ -86,12 +92,14 @@ Owner (ForeignKey to User)</string>
    <object class="com.horstmann.violet.ClassNode" id="ClassNode2">
     <void property="attributes">
      <void property="text">
-      <string>ID *pk* (integer)
-Name (string)
-Contact (ForeignKey to Contact)
-Interests (string / maybe text field)
-?? Member of (ForeignKey to Club, 0..*)
-?? Owner (ForeignKey to User, REQUIRED)</string>
+      <string>Member ID *pk* (int, not null)
+Last Name (string)
+First Name (string)
+Contact ID (int)
+Owner ID (int)
+Interests (text field)
+foreign key(ownerid) references User(ownerid)
+foreign key(contactid) referecnes Contact(contactid)</string>
      </void>
     </void>
     <void property="name">
@@ -105,19 +113,19 @@ Interests (string / maybe text field)
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double2"/>
-      <double>625.585786437627</double>
+      <double>732.3979058328256</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double2"/>
-      <double>419.4974746830583</double>
+      <double>442.8492383281209</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>625.585786437627</double>
-     <double>419.4974746830583</double>
+     <double>732.3979058328256</double>
+     <double>442.8492383281209</double>
     </void>
    </object>
   </void>
@@ -125,9 +133,11 @@ Interests (string / maybe text field)
    <object class="com.horstmann.violet.ClassNode" id="ClassNode3">
     <void property="attributes">
      <void property="text">
-      <string>Club (ForeignKey to Club)
-Member (ForeignKey to Member)
-Date Joined (date)
+      <string>Member ID (int, not null)
+Contact ID (int, not null)
+foreign key(clubid) references Club(clubid)
+foreign key(memberid) references Member(memberid)
+Date Joined (date, not null)
 Last Paid (date)</string>
      </void>
     </void>
@@ -142,19 +152,19 @@ Last Paid (date)</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>391.4142135623731</double>
+      <double>490.442853912618</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>619.6812408671319</double>
+      <double>653.005690672151</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>391.4142135623731</double>
-     <double>619.6812408671319</double>
+     <double>490.442853912618</double>
+     <double>653.005690672151</double>
     </void>
    </object>
   </void>
@@ -177,19 +187,19 @@ Last Paid (date)</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double4"/>
-      <double>659.6425375291933</double>
+      <double>713.3454015642178</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double4"/>
-      <double>281.5475907357251</double>
+      <double>263.5475907357251</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>659.6425375291933</double>
-     <double>281.5475907357251</double>
+     <double>713.3454015642178</double>
+     <double>263.5475907357251</double>
     </void>
    </object>
   </void>
@@ -233,6 +243,7 @@ Last Paid (date)</string>
       <string>Questions:
 - Can we have multiple contacts in the club?
 --- ie, a Secretary, President, Recruiter etc..
+--- at the moment, we can&apos;t. Probably easier to keep it this way.
 - Do we not allow new members when 
   RecruitingMembers==FALSE?
 </string>
@@ -264,15 +275,13 @@ Last Paid (date)</string>
    <object class="com.horstmann.violet.ClassNode" id="ClassNode4">
     <void property="attributes">
      <void property="text">
-      <string>Name (string, REQUIRED)
-Email (string, REQUIRED)
-Role in club (string)
-Facebook Page (URL?)
-Twitter Account (URL?)
-Phone (integer)
-Fax (integer)
-PO Box (string)
-</string>
+      <string>Contact ID *pk* (int, not null)
+Email (string, not null)
+Address (text field)
+Facebook (string)
+Twitter (string)
+Phone (string)
+Fax (string)</string>
      </void>
     </void>
     <void property="name">
@@ -286,51 +295,19 @@ PO Box (string)
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double7"/>
-      <double>396.0</double>
+      <double>456.6495628651387</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double7"/>
-      <double>389.02438661763944</double>
+      <double>417.5653573777047</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>396.0</double>
-     <double>389.02438661763944</double>
-    </void>
-   </object>
-  </void>
-  <void method="addNode">
-   <object class="com.horstmann.violet.NoteNode">
-    <void property="text">
-     <void property="text">
-      <string>Contact:
-- Not all fields are applicable to everyone.
---- All are optional apart from REQUIRED fields.
-- Some may be totally unnecessary in which case we can forget about them.</string>
-     </void>
-    </void>
-   </object>
-   <object class="java.awt.geom.Point2D$Double" id="Point2D$Double8">
-    <void class="java.awt.geom.Point2D$Double" method="getField">
-     <string>x</string>
-     <void method="set">
-      <object idref="Point2D$Double8"/>
-      <double>636.3883630565156</double>
-     </void>
-    </void>
-    <void class="java.awt.geom.Point2D$Double" method="getField">
-     <string>y</string>
-     <void method="set">
-      <object idref="Point2D$Double8"/>
-      <double>637.3337353764285</double>
-     </void>
-    </void>
-    <void method="setLocation">
-     <double>636.3883630565156</double>
-     <double>637.3337353764285</double>
+     <double>456.6495628651387</double>
+     <double>417.5653573777047</double>
     </void>
    </object>
   </void>
@@ -349,47 +326,24 @@ PO Box (string)
      </void>
     </void>
    </object>
-   <object class="java.awt.geom.Point2D$Double" id="Point2D$Double9">
+   <object class="java.awt.geom.Point2D$Double" id="Point2D$Double8">
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>x</string>
      <void method="set">
-      <object idref="Point2D$Double9"/>
-      <double>246.10050506338825</double>
+      <object idref="Point2D$Double8"/>
+      <double>255.85733352339912</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
-      <object idref="Point2D$Double9"/>
-      <double>43.22539674441616</double>
+      <object idref="Point2D$Double8"/>
+      <double>26.981561949326377</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>246.10050506338825</double>
-     <double>43.22539674441616</double>
-    </void>
-   </object>
-  </void>
-  <void method="addNode">
-   <object class="com.horstmann.violet.NoteNode"/>
-   <object class="java.awt.geom.Point2D$Double" id="Point2D$Double10">
-    <void class="java.awt.geom.Point2D$Double" method="getField">
-     <string>x</string>
-     <void method="set">
-      <object idref="Point2D$Double10"/>
-      <double>710.0</double>
-     </void>
-    </void>
-    <void class="java.awt.geom.Point2D$Double" method="getField">
-     <string>y</string>
-     <void method="set">
-      <object idref="Point2D$Double10"/>
-      <double>803.0</double>
-     </void>
-    </void>
-    <void method="setLocation">
-     <double>710.0</double>
-     <double>803.0</double>
+     <double>255.85733352339912</double>
+     <double>26.981561949326377</double>
     </void>
    </object>
   </void>
