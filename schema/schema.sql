@@ -40,13 +40,14 @@ create table Club
 (
   clubid int primary key,
   name varchar(100) unique not null,
-  type varchar(40),
+  type varchar(40), --Why is type in a different colour? Is type a keyword that we shouldn't be using?
   location varchar(100),
   membercount int,
+  created date not null,
   recruiting boolean,
   description varchar(255),
-  contactid int,
-  ownerid int,
+  contactid int, --Should this be able to be null?
+  ownerid int not null,
   foreign key(ownerid) references User(userid),
   foreign key(contactid) references Contact(contactid)
 );
