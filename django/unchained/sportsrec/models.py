@@ -7,7 +7,7 @@ class User(models.Model):
     firstname = models.CharField(max_length=40, blank=True, null=True)
     contact_id = models.IntegerField()
     registered = models.DateField()
-    usertype = models.IntegerType()
+    usertype = models.IntegerField()
     contact = models.ForeignKey('Contact')
     
     def __unicode__(self):
@@ -24,7 +24,7 @@ class Contact(models.Model):
 	def __unicode__(self):
 		return '%s' % (self.id) #is this allowed? id is not defined above but it will be...
 		
-class Member(models.Model)
+class Member(models.Model):
 	lastname = models.CharField(max_length=40)
 	firstname = models.CharField(max_length=40)
 	contact_id = models.IntegerField()
@@ -36,13 +36,13 @@ class Member(models.Model)
 	def __unicode__(self):
 		return '%s %s' % (self.firstname, self.lastname)
 		
-class Club(models.Model)
+class Club(models.Model):
 	name = models.CharField(max_length=40, unique=True)
 	type = models.CharField(max_length=40, blank=True, null=True)
 	location = models.CharField(max_length=40, blank=True, null=True)
 	membercount = models.IntegerField()
 	created = models.DateField()
-	recruiting = models.BoolenField(default=True)
+	recruiting = models.BooleanField(default=True)
 	description = models.CharField(max_length=255, blank=True, null=True)
 	contact_id = models.IntegerField(blank=True, null=True) #should this be allowed to be null?
 	owner_id = models.IntegerField()
@@ -52,7 +52,7 @@ class Club(models.Model)
 	def __unicode__(self):
 		return '%s %s' % (self.name)
 		
-class Membership(models.Model)
+class Membership(models.Model):
 	member_id = models.IntegerField()
 	club_id = models.IntegerField()
 	joined = models.DateField()
