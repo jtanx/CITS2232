@@ -5,10 +5,9 @@ class User(models.Model):
     password = models.CharField(max_length=40)
     lastname = models.CharField(max_length=40, blank=True, null=True)
     firstname = models.CharField(max_length=40, blank=True, null=True)
-    contact_id = models.IntegerField()
+    contact = models.ForeignKey('Contact')
     registered = models.DateField()
     usertype = models.IntegerField()
-    contact = models.ForeignKey('Contact')
     
     def __unicode__(self):
     	return '%s' % (self.username)
@@ -27,8 +26,6 @@ class Contact(models.Model):
 class Member(models.Model):
 	lastname = models.CharField(max_length=40)
 	firstname = models.CharField(max_length=40)
-	contact_id = models.IntegerField()
-	owner_id = models.IntegerField()
 	interests = models.CharField(max_length=255, blank=True, null=True)
 	owner = models.ForeignKey('User')
 	contact = models.ForeignKey('Contact')
@@ -44,8 +41,6 @@ class Club(models.Model):
 	created = models.DateField()
 	recruiting = models.BooleanField(default=True)
 	description = models.CharField(max_length=255, blank=True, null=True)
-	contact_id = models.IntegerField(blank=True, null=True) #should this be allowed to be null?
-	owner_id = models.IntegerField()
 	owner = models.ForeignKey('User')
 	contact = models.ForeignKey('Contact')
 	
@@ -53,8 +48,6 @@ class Club(models.Model):
 		return '%s %s' % (self.name)
 		
 class Membership(models.Model):
-	member_id = models.IntegerField()
-	club_id = models.IntegerField()
 	joined = models.DateField()
 	lastpaid = models.DateField(blank=True, null=True)
 	member = models.ForeignKey('Member')
