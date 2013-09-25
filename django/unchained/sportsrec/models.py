@@ -1,17 +1,6 @@
 from django.db import models
 
-class User(models.Model):
-    username = models.CharField(max_length=40, unique=True)
-    password = models.CharField(max_length=40)
-    lastname = models.CharField(max_length=40, blank=True, null=True)
-    firstname = models.CharField(max_length=40, blank=True, null=True)
-    contact = models.ForeignKey('Contact')
-    registered = models.DateField()
-    usertype = models.IntegerField()
-    
-    def __unicode__(self):
-    	return '%s' % (self.username)
-    	
+#Contact must be before User so the foreign key constraint is generated
 class Contact(models.Model):
 	email = models.CharField(max_length=40)
 	address = models.CharField(max_length=255, blank=True, null=True)
@@ -22,7 +11,19 @@ class Contact(models.Model):
 	
 	def __unicode__(self):
 		return '%s' % (self.id) #is this allowed? id is not defined above but it will be...
-		
+	
+class User(models.Model):
+    username = models.CharField(max_length=40, unique=True)
+    password = models.CharField(max_length=40)
+    lastname = models.CharField(max_length=40, blank=True, null=True)
+    firstname = models.CharField(max_length=40, blank=True, null=True)
+    registered = models.DateField()
+    usertype = models.IntegerField()
+    contact = models.ForeignKey('Contact')
+    
+    def __unicode__(self):
+    	return '%s' % (self.username)
+    	
 class Member(models.Model):
 	lastname = models.CharField(max_length=40)
 	firstname = models.CharField(max_length=40)
