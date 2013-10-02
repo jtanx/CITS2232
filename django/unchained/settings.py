@@ -67,8 +67,11 @@ STATIC_ROOT = ''
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
+from os.path import normpath, join, dirname, realpath
 # Additional locations of static files
 STATICFILES_DIRS = (
+    # Hack to softcode the static file path
+    normpath(join(dirname(realpath(__file__)), "..\static")),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
