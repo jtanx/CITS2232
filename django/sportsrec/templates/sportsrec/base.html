@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>Sports and Recreation Clubs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}sportsrec.gui.js"></script>
+
+    <link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}favicon.ico" >
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}nav-menu.css">
+    <script type="text/javascript">
+      $(document).ready(function () {
+        //$("#menu-container").populateNavbar();
+      });
+    </script>
+  </head>
+  
+  <body>
+    <div id="header">
+      <div id="leftnav">
+        <a href="{% url 'sportsrec:index' %}">
+          <img alt = "S&amp;R" src="{{ STATIC_URL }}logo.png">
+        </a>
+        <span id="title">Sports & Recreation</span>
+      </div>
+      <div id="rightnav">
+        <div id="menu-container" class="nav-menu">
+        </div>
+        {% if user.is_authenticated %}
+        <span id="welcome-container">
+          Welcome, {{ user.username }}
+        </span>
+        {% endif %}
+        <span id="date">
+          <script type="text/javascript">getDate();</script>
+        </span>
+        <div id="inout-container">
+          {% if user.is_authenticated %}
+          <form action="{% url 'sportsrec:logout' %}">
+            <div>
+              <input type="submit" name="logout" value="Logout">
+            </div>
+          </form>
+          {% else %}
+          <form action="{% url 'sportsrec:login' %}">
+            <div>
+              <input type="submit" name="login" value="Login">
+            </div>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <!-- End header -->
+    
+    <div id="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

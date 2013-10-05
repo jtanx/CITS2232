@@ -5,4 +5,6 @@ from sportsrec import views
 
 urlpatterns = patterns('',
     url(r'^$', views.Index.as_view(), name='index'),
+    url(r'^login$', views.login_user, name='login'),
+    url(r'^logout$', views.logout_user, name='logout')
 )

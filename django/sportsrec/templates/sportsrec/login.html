@@ -1,0 +1,38 @@
+{% extends "sportsrec/base.html" %}
+{% block content %}
+
+<div id="login-container">
+ <div class="widget">
+     <form id="login" action="" method="post">
+       <div>
+        {% csrf_token %}
+        {% if next %}
+         <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
+       </div>
+       <p>
+         <label>
+           Username<br>
+           <input name="username" type="text">
+         </label>
+       </p>
+       <p>
+         <label>
+           Password<br>
+           <input name="password" type="password">
+         </label>             
+       </p>
+       <p style="float:left; margin:0;">
+         <a href="#" onclick="alert(':(')">Forgotten password?</a>
+       </p>
+       <p style="float:right; margin:0;">
+         <input type="submit" value="Log In">
+       </p>
+       <p id="result">
+         &nbsp;
+       </p>
+      </form>
+ </div>
+</div>
+
+{% endblock %}
