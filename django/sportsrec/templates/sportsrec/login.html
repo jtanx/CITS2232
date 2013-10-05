@@ -14,6 +14,9 @@
          <label>
            Username<br>
            <input name="username" type="text">
+           <script type="text/javascript">
+              $("#login input[name='username']").focus();
+           </script>
          </label>
        </p>
        <p>
@@ -28,9 +31,15 @@
        <p style="float:right; margin:0;">
          <input type="submit" value="Log In">
        </p>
+       {% if login_failed %}
+       <p id="result" class="fail">
+         Login failed!
+       </p>
+       {% else %}
        <p id="result">
          &nbsp;
        </p>
+       {% endif %}
       </form>
  </div>
 </div>

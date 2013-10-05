@@ -10,11 +10,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import *
 
 
-def current_datetime(request):
-    now = datetime.datetime.now()
-    html = "<html><body>It is now %s.</body></html>" % now
-    return HttpResponse(html)
-
 def login_user(request):
     logout(request)
     username = password = ''
@@ -26,7 +21,12 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 return HttpResponseRedirect('/')
-    return render_to_response('sportsrec/login.html', context_instance=RequestContext(request))
+        else:
+            return render_to_response('sportsrec/login.html', \
+                                      {'login_failed': True}, \
+                                      context_instance=RequestContext(request))
+    return render_to_response('sportsrec/login.html', \
+                              context_instance=RequestContext(request))
 
 def logout_user(request):
     logout(request)
@@ -35,7 +35,3 @@ def logout_user(request):
 class Index(generic.TemplateView):
     template_name='sportsrec/index.html'
     context_object_name='index'
-
-class Login(generic.TemplateView):
-    template_name='sportsrec/login.html'
-    context_object_name='login'

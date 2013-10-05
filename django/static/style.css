@@ -38,6 +38,16 @@ form.controls {
   margin: 1em auto;
 }
 
+.pass {
+  color: #7AE309;
+  font-weight: bold;
+}
+
+.fail {
+  color: #E30909;
+  font-weight: bold
+}
+
 div.centre {
   text-align: center;
 }
