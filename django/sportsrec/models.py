@@ -1,7 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 #Contact must be before User so the foreign key constraint is generated
 class Contact(models.Model):
+    '''Public contact details'''
     email = models.CharField(max_length=40)
     address = models.CharField(max_length=255, blank=True, null=True)
     facebook = models.CharField(max_length=40, blank=True, null=True)
@@ -20,24 +22,19 @@ class Contact(models.Model):
         return '%s' % (self.email)
 
 
-class User(models.Model):
-    username = models.CharField(max_length=40, unique=True)
-    password = models.CharField(max_length=40)
-    lastname = models.CharField(max_length=40, blank=True, null=True)
-    firstname = models.CharField(max_length=40, blank=True, null=True)
-    registered = models.DateField()
-    usertype = models.IntegerField()
-    contact = models.ForeignKey('Contact')
+class SiteUser(models.Model):
+    user = models.OneToOneField(User)
+    contact = models.ForeignKey('Contact', unique=True, null=True)
     
     def __unicode__(self):
-        return '%s <%s>' % (self.username, self.contact.email)
+        return '%s <%s>' % (self.user.username, self.contact.email)
     	
 class Member(models.Model):
     lastname = models.CharField(max_length=40)
     firstname = models.CharField(max_length=40)
     interests = models.CharField(max_length=255, blank=True, null=True)
-    owner = models.ForeignKey('User')
-    contact = models.ForeignKey('Contact')
+    owner = models.ForeignKey('SiteUser')
+    contact = models.ForeignKey('Contact', unique=True)
     
     def __unicode__(self):
         return '%s %s' % (self.firstname, self.lastname)
@@ -50,8 +47,8 @@ class Club(models.Model):
     created = models.DateField()
     recruiting = models.BooleanField(default=True)
     description = models.CharField(max_length=255, blank=True, null=True)
-    owner = models.ForeignKey('User')
-    contact = models.ForeignKey('Contact')
+    owner = models.ForeignKey('SiteUser')
+    contact = models.ForeignKey('Contact', unique=True)
     
     def __unicode__(self):
         return '%s' % (self.name)

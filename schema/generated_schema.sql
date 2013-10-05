@@ -9,15 +9,10 @@ CREATE TABLE "sportsrec_contact" (
     "fax" varchar(40)
 )
 ;
-CREATE TABLE "sportsrec_user" (
+CREATE TABLE "sportsrec_siteuser" (
     "id" integer NOT NULL PRIMARY KEY,
-    "username" varchar(40) NOT NULL UNIQUE,
-    "password" varchar(40) NOT NULL,
-    "lastname" varchar(40),
-    "firstname" varchar(40),
-    "registered" date NOT NULL,
-    "usertype" integer NOT NULL,
-    "contact_id" integer NOT NULL REFERENCES "sportsrec_contact" ("id")
+    "user_id" integer NOT NULL UNIQUE REFERENCES "auth_user" ("id"),
+    "contact_id" integer UNIQUE REFERENCES "sportsrec_contact" ("id")
 )
 ;
 CREATE TABLE "sportsrec_member" (
@@ -25,8 +20,8 @@ CREATE TABLE "sportsrec_member" (
     "lastname" varchar(40) NOT NULL,
     "firstname" varchar(40) NOT NULL,
     "interests" varchar(255),
-    "owner_id" integer NOT NULL REFERENCES "sportsrec_user" ("id"),
-    "contact_id" integer NOT NULL REFERENCES "sportsrec_contact" ("id")
+    "owner_id" integer NOT NULL REFERENCES "sportsrec_siteuser" ("id"),
+    "contact_id" integer NOT NULL UNIQUE REFERENCES "sportsrec_contact" ("id")
 )
 ;
 CREATE TABLE "sportsrec_club" (
@@ -38,8 +33,8 @@ CREATE TABLE "sportsrec_club" (
     "created" date NOT NULL,
     "recruiting" bool NOT NULL,
     "description" varchar(255),
-    "owner_id" integer NOT NULL REFERENCES "sportsrec_user" ("id"),
-    "contact_id" integer NOT NULL REFERENCES "sportsrec_contact" ("id")
+    "owner_id" integer NOT NULL REFERENCES "sportsrec_siteuser" ("id"),
+    "contact_id" integer NOT NULL UNIQUE REFERENCES "sportsrec_contact" ("id")
 )
 ;
 CREATE TABLE "sportsrec_membership" (
@@ -50,11 +45,8 @@ CREATE TABLE "sportsrec_membership" (
     "club_id" integer NOT NULL REFERENCES "sportsrec_club" ("id")
 )
 ;
-CREATE INDEX "sportsrec_user_816533ed" ON "sportsrec_user" ("contact_id");
 CREATE INDEX "sportsrec_member_cb902d83" ON "sportsrec_member" ("owner_id");
-CREATE INDEX "sportsrec_member_816533ed" ON "sportsrec_member" ("contact_id");
 CREATE INDEX "sportsrec_club_cb902d83" ON "sportsrec_club" ("owner_id");
-CREATE INDEX "sportsrec_club_816533ed" ON "sportsrec_club" ("contact_id");
 CREATE INDEX "sportsrec_membership_b3c09425" ON "sportsrec_membership" ("member_id");
 CREATE INDEX "sportsrec_membership_887dd7e4" ON "sportsrec_membership" ("club_id");
 

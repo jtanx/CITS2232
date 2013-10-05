@@ -29,7 +29,12 @@
         </div>
         {% if user.is_authenticated %}
         <span id="welcome-container">
-          Welcome, {{ user.username }}
+          Welcome,
+          {% if not user.first_name and not user.last_name %}
+            {{user.username}}
+          {% else %}
+            {{user.first_name}} {{user.last_name}}
+          {% endif %}
         </span>
         {% endif %}
         <span id="date">
