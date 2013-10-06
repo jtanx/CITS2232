@@ -48,6 +48,11 @@
             </div>
           </form>
           {% else %}
+          <form action="{% url 'sportsrec:register' %}">
+            <div>
+              <input type="submit" name="register" value="Register">
+            </div>
+          </form>
           <form action="{% url 'sportsrec:login' %}">
             <div>
               <input type="submit" name="login" value="Login">

@@ -50,6 +50,7 @@ form.controls {
 
 div.centre {
   text-align: center;
+  margin: auto;
 }
 
 .bold {
@@ -158,6 +159,10 @@ input[type="text"]:focus, input[type="password"]:focus {
   margin-left: 1em;
 }
 
+#header #rightnav form, #header #rightnav form div {
+  display: inline;
+}
+
 #header #menu-container {
   margin-right: 1.5em;
   font-size: 15px;
@@ -180,7 +185,6 @@ input[type="text"]:focus, input[type="password"]:focus {
 
 #sidebar .title {
   font-size: 20px;
-  font-weight: bold;
 }
 
 #sidebar .item {
@@ -194,16 +198,15 @@ input[type="text"]:focus, input[type="password"]:focus {
   min-width: 400px;
 }
 
-#main .title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-
 #main .sub-title {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0.25em;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .graph {
