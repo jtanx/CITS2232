@@ -42,22 +42,10 @@
         </span>
         <div id="inout-container">
           {% if user.is_authenticated %}
-          <form action="{% url 'sportsrec:logout' %}">
-            <div>
-              <input type="submit" name="logout" value="Logout">
-            </div>
-          </form>
+          <a href="{% url 'sportsrec:logout' %}">Logout</a>
           {% else %}
-          <form action="{% url 'sportsrec:register' %}">
-            <div>
-              <input type="submit" name="register" value="Register">
-            </div>
-          </form>
-          <form action="{% url 'sportsrec:login' %}">
-            <div>
-              <input type="submit" name="login" value="Login">
-            </div>
-          </form>
+          <a href="{% url 'sportsrec:register' %}">Register</a>
+          <a href="{% url 'sportsrec:login' %}">Login</a>
           {% endif %}
         </div>
       </div>

@@ -119,19 +119,6 @@ input[type="text"]:focus, input[type="password"]:focus {
   transition: all 0.2s ease 0s;
 }
 
-#header input[type="button"], #header input[type="submit"] {
-  background-color: #808080;
-  border: 1px solid #808080;
-  box-shadow: none;
-  color: #f2f2f2;
-  cursor: pointer;
-}
-
-#header input[type="button"]:hover, #header input[type="submit"]:hover {
-  background-color: #606060;
-  border: 1px solid #606060;
-}
-
 #header #leftnav {
   float: left;
   display: table;
@@ -159,8 +146,25 @@ input[type="text"]:focus, input[type="password"]:focus {
   margin-left: 1em;
 }
 
-#header #rightnav form, #header #rightnav form div {
-  display: inline;
+#header #rightnav #inout-container {
+  margin-top: 0.2em;
+}
+
+#header #rightnav a {
+  font-size: 13px;
+  text-decoration: none;
+  background-color: #808080;
+  border: 1px solid #777;
+  border-radius: 3px;
+  box-shadow: none;
+  color: #f2f2f2;
+  cursor: pointer;
+  padding: 0.12em 0.5em;
+}
+
+#header #rightnav a:hover {
+  background-color: #606060;
+  border: 1px solid #606060;
 }
 
 #header #menu-container {
@@ -241,7 +245,7 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 /** For login.html **/
-#login-container {
+.form-container {
   margin: 0 auto;
   width: 400px;
   padding: 1.8em 0 0;
@@ -249,23 +253,23 @@ input[type="text"]:focus, input[type="password"]:focus {
   line-height: 1.8em;
 }
 
-#login-container form {
+.form-container form {
   padding: 1em 2em;
 }
 
-#login-container input {
+.form-container input {
   font-size: 24px;
 }
 
-#login-container label {
+.form-container label {
   font-size: 14px;
 }
 
-#login-container input[type=submit] {
+.form-container input[type=submit] {
   font-size: inherit;
   padding: 0.4em 0.8em;
 }
 
-#login-container #result {
+.form-container #result {
   clear: both;
 }

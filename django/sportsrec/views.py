@@ -3,12 +3,12 @@ from django.views.generic import TemplateView
 from django.db.models import Min
 from sportsrec.models import *
 import datetime
-from django.http import HttpResponse
-from django.shortcuts import render_to_response,redirect
+from django.shortcuts import render_to_response,redirect,render
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.http import *
-from sportsrec.forms import UserForm, SiteUserForm
+from sportsrec.forms import RegistrationForm, LoginForm
+from django.contrib.auth.models import User, Group
 
 '''
 For validators
@@ -16,47 +16,77 @@ https://docs.djangoproject.com/en/dev/ref/validators/
 '''
 
 def login_user(request):
+    if request.user.is_authenticated():
+        return redirect('/')
+    
     logout(request)
-    username = password = ''
+
+    msg = None
     if request.POST:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/')
-        else:
-            return render_to_response('sportsrec/login.html', \
-                                      {'login_failed': True}, \
-                                      context_instance=RequestContext(request))
-    return render_to_response('sportsrec/login.html', \
-                              context_instance=RequestContext(request))
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('sportsrec:index')
+            else:
+                form = LoginForm() #Clear the form
+                msg = "Invalid login details."
+    else:
+        form = LoginForm()
+
+    return render(request, 'sportsrec/login.html',
+                  {'form' : form, 'result' : msg})
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect('/')
-
-def register_user(request):
-    return render_to_response('sportsrec/register.html',
-                              context_instance=RequestContext(request))
+    return redirect('sportsrec:index')
 
 def register(request):
+    if request.user.is_authenticated():
+        return redirect('sportsrec:index')
+    
     if request.method == 'POST':
-        uf = UserForm(request.POST, prefix='user')
-        upf = SiteUserForm(request.POST, prefix='userprofile')
-        if uf.is_valid() and upf.is_valid():
-            user = uf.save()
-            userprofile = upf.save(commit=False)
-            userprofile.user = user
-            userprofile.save()
-            return django.http.HttpResponseRedirect('/')
+        form = RegistrationForm(request.POST)
+        #do shit with it
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            email = form.cleaned_data['email']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            
+            user = User.objects.create_user(username, email, password)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.groups = [Group.objects.get(name="End User")]
+
+            #need try catch????
+            user.save()
+            user.full_clean()
+
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                login(request, user)
+            
+            return redirect('sportsrec:register_thanks')
     else:
-        uf = UserForm(prefix='user')
-        upf = SiteUserForm(prefix='userprofile')
-    return render_to_response('sportsrec/register.html', 
-                                dict(userform=uf,userprofileform=upf),
-                                context_instance=RequestContext(request))
+        form = RegistrationForm()
+        
+    return render(request, 'sportsrec/register.html', {'form' : form})
+
+def register_thanks(request):
+    if request.user.is_authenticated():
+        if not request.user.first_name and not request.user.last_name:
+            name = request.user.username
+        else:
+            name = request.user.first_name + " " + request.user.last_name
+        return render(request, 'sportsrec/thanks.html', {'name' : name})
+    return redirect('sportsrec:register')
+
 
 class Index(generic.TemplateView):
     template_name='sportsrec/index.html'
