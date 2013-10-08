@@ -24,7 +24,7 @@ class Contact(models.Model):
 
 class SiteUser(models.Model):
     user = models.OneToOneField(User)
-    contact = models.ForeignKey('Contact', unique=True, null=True)
+    contact = models.OneToOneField('Contact', null=True)
     
     def __unicode__(self):
         return '%s <%s>' % (self.user.username, self.contact.email)
@@ -34,7 +34,7 @@ class Member(models.Model):
     firstname = models.CharField(max_length=40)
     interests = models.CharField(max_length=255, blank=True, null=True)
     owner = models.ForeignKey('SiteUser')
-    contact = models.ForeignKey('Contact', unique=True)
+    contact = models.OneToOneField('Contact', null=False)
     
     def __unicode__(self):
         return '%s %s' % (self.firstname, self.lastname)
@@ -48,7 +48,7 @@ class Club(models.Model):
     recruiting = models.BooleanField(default=True)
     description = models.CharField(max_length=255, blank=True, null=True)
     owner = models.ForeignKey('SiteUser')
-    contact = models.ForeignKey('Contact', unique=True)
+    contact = models.OneToOneField('Contact')
     
     def __unicode__(self):
         return '%s' % (self.name)

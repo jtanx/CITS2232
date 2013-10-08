@@ -219,7 +219,7 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 .form-container {
-  margin: 0 auto;
+  margin: 0 auto !important;
   width: 400px;
   padding: 1.8em 0 0;
   color: #606060;
@@ -249,7 +249,7 @@ input[type="text"]:focus, input[type="password"]:focus {
 
 .widget {
   background-color: #ffffff;
-  margin: 0.25em 0.25em 1.5em !important;
+  margin: 0.25em 0.25em 1.5em;
   padding: 1em 1.25em;
   border: 1px solid #CCCCCC;
   box-shadow: 0 0 3px #CCCCCC;
