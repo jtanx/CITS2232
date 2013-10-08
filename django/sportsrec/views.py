@@ -2,9 +2,7 @@ from django.views import generic
 from django.views.generic import TemplateView
 from django.db.models import Min
 from sportsrec.models import *
-import datetime
-from django.shortcuts import render_to_response,redirect,render
-from django.template import RequestContext
+from django.shortcuts import redirect,render
 from django.contrib.auth import authenticate, login, logout
 from django.http import *
 from sportsrec.forms import RegistrationForm, LoginForm
@@ -17,7 +15,7 @@ https://docs.djangoproject.com/en/dev/ref/validators/
 
 def login_user(request):
     if request.user.is_authenticated():
-        return redirect('/')
+        return redirect('sportsrec:index')
     
     logout(request)
 
