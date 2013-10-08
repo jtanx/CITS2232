@@ -25,8 +25,6 @@
         <span id="title">Sports & Recreation</span>
       </div>
       <div id="rightnav">
-        <div id="menu-container" class="nav-menu">
-        </div>
         {% if user.is_authenticated %}
         <span id="welcome-container">
           Welcome,
@@ -54,6 +52,25 @@
     <!-- End header -->
     
     <div id="content">
+      {% block sidebar %}
+      <div id="sidebar">
+        <div class="widget nav-menu">
+          <ul>
+            <li><a href="{% url 'sportsrec:index' %}">Home</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="#">User profile</a></li>
+            {% endif %}
+            <li><a href="#">Club list</a></li>
+            <li><a href="#">Club search</a></li>
+            {% block sidebar-user-menu %}
+            {% endblock %}
+            <li><a href="#">Statistics</a></li>
+          </ul>
+        </div>
+        {% block sidebar-content %}
+        {% endblock %}
+      </div>
+      {% endblock %}
       {% block content %}
       {% endblock %}
     </div>

@@ -1,39 +1,47 @@
 {% extends "sportsrec/base.html" %}
+
+{% block sidebar %}
+{# Hide the sidebar #}
+{% endblock %}
+
 {% block content %}
 
-<div class="form-container">
+<div id="login-container" class="form-container">
   <div class="widget">
-  <form method="post" action="{% url 'sportsrec:login' %}">
-      {% csrf_token %}
-      {# Include the hidden fields #}
-      {% for hidden in form.hidden_fields %}
-      {{ hidden }}
-      {% endfor %}
-      {# Include the visible fields #}
-      {% for field in form.visible_fields %}
-          <p>
-              {{ field.label_tag }} {{ field }}
-              {% for error in field.errors %}
-              <div class="fail">{{ error|escape }}</div>
-              {% endfor %}
-          </p>
-      {% endfor %}
-      
-      <p style="float:left; margin:0;">
-        <a href="#" onclick="alert(':(')">Forgotten password?</a>
-      </p>
-      <p style="float:right; margin:0;">
-         <input type="submit" value="Login">
-      </p>
-      
-      <p id="result" class="fail">
-        &nbsp;
-        {{ form.non_field_errors }}
-        {% if result %}
-        {{ result }}
-        {% endif %}
-      </p>
-  </form>
+    <form method="post" action="{% url 'sportsrec:login' %}">
+        {% csrf_token %}
+        {# Include the hidden fields #}
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+        {# Include the visible fields #}
+        {% for field in form.visible_fields %}
+            <p>
+                {{ field.label_tag }} {{ field }}
+                {% for error in field.errors %}
+                <div class="fail">{{ error|escape }}</div>
+                {% endfor %}
+            </p>
+        {% endfor %}
+
+        <p style="float:left; margin:0;">
+          <a href="#" onclick="alert(':(')">Forgotten password?</a>
+        </p>
+        <p style="float:right; margin:0;">
+           <input type="submit" value="Login">
+        </p>
+
+        <p id="result" class="fail">
+          &nbsp;
+          {{ form.non_field_errors }}
+          {% if result %}
+          {{ result }}
+          {% endif %}
+        </p>
+    </form>
+    <script type="text/javascript">
+      $("#login-container input[name='username']").focus();
+    </script>
   </div>
 </div>
 {% endblock %}
