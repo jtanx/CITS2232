@@ -5,8 +5,9 @@ from sportsrec.models import *
 from django.shortcuts import redirect,render
 from django.contrib.auth import authenticate, login, logout
 from django.http import *
-from sportsrec.forms import RegistrationForm, LoginForm
+from sportsrec.forms import *
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import login_required
 
 '''
 For validators
@@ -29,12 +30,17 @@ def login_user(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    next_location = form.cleaned_data['next_location']
+                    if next_location and next_location.startswith("/"):
+                        return redirect(next_location)
                     return redirect('sportsrec:index')
             else:
                 form = LoginForm() #Clear the form
                 msg = "Invalid login details."
     else:
         form = LoginForm()
+        if 'next' in request.GET:
+            form.fields["next_location"].initial = request.GET['next']
 
     return render(request, 'sportsrec/login.html',
                   {'form' : form, 'result' : msg})
@@ -63,8 +69,8 @@ def register(request):
             user.groups = [Group.objects.get(name="End User")]
 
             #need try catch????
-            user.save()
             user.full_clean()
+            user.save()
 
             user = authenticate(username=username, password=password)
             if user is not None and user.is_active:
@@ -76,14 +82,34 @@ def register(request):
         
     return render(request, 'sportsrec/register.html', {'form' : form})
 
+@login_required
 def register_thanks(request):
-    if request.user.is_authenticated():
-        if not request.user.first_name and not request.user.last_name:
-            name = request.user.username
-        else:
-            name = request.user.first_name + " " + request.user.last_name
-        return render(request, 'sportsrec/thanks.html', {'name' : name})
-    return redirect('sportsrec:register')
+    if not request.user.first_name and not request.user.last_name:
+        name = request.user.username
+    else:
+        name = request.user.first_name + " " + request.user.last_name
+    return render(request, 'sportsrec/thanks.html', {'name' : name})
+
+@login_required
+def user_profile(request):
+    siteuser = SiteUser.objects.get(user=request.user)
+    profile = Contact.objects.get(siteuser=siteuser)
+    context = {
+        'created' : False, 'name' : 'user profile',
+        'view' : 'sportsrec:user_profile',
+        'submit' : 'Submit'
+    }
+
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, instance = profile)
+        if form.is_valid():
+            form.save()
+            context['pass'] = "Updated successfully!"
+    else:
+        form = UserProfileForm(instance = profile)
+
+    context['form'] = form
+    return render(request, 'sportsrec/edit.html', context)
 
 
 class Index(generic.TemplateView):

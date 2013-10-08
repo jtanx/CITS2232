@@ -1,13 +1,15 @@
-from django.forms import Form
+from django.forms import Form, ModelForm
 from django import forms
 from django.contrib.auth.models import User
+from sportsrec.models import *
 import re
 
 class LoginForm(Form):
     '''A login form'''
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
-        
+    next_location = forms.CharField(required=False, widget=forms.HiddenInput)
+    
 
 class RegistrationForm(Form):
     '''A registration form'''
@@ -58,4 +60,16 @@ class RegistrationForm(Form):
                 del cleaned_data["password"]
                 del cleaned_data["confirm_password"]
         return cleaned_data
+
+
+class UserProfileForm(ModelForm):
+    class Meta:
+        model = Contact
+
+
+
+
+
+
+
 

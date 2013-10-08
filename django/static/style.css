@@ -218,6 +218,26 @@ input[type="text"]:focus, input[type="password"]:focus {
   height: 200px;
 }
 
+.form-small {
+  margin: 0 auto !important;
+  width: 80%;
+  color: #606060;
+  line-height: 1.5em;
+}
+
+.form-small input {
+  font-size: 16px;
+}
+
+.form-small label {
+  font-size: 14px;
+}
+
+.form-small input[type=submit] {
+  font-size: inherit;
+  padding: 0.3em 0.5em;
+}
+
 .form-container {
   margin: 0 auto !important;
   width: 400px;

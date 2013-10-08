@@ -67,6 +67,8 @@ STATIC_ROOT = ''
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
+LOGIN_URL = '/login'
+
 from os.path import normpath, join, dirname, realpath
 # Additional locations of static files
 STATICFILES_DIRS = (

@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+
 
 #Contact must be before User so the foreign key constraint is generated
 class Contact(models.Model):
     '''Public contact details'''
-    email = models.CharField(max_length=40)
+    public_email = models.EmailField(blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     facebook = models.CharField(max_length=40, blank=True, null=True)
     twitter = models.CharField(max_length=40, blank=True, null=True)
@@ -24,10 +26,18 @@ class Contact(models.Model):
 
 class SiteUser(models.Model):
     user = models.OneToOneField(User)
-    contact = models.OneToOneField('Contact', null=True)
+    contact = models.OneToOneField('Contact')
     
     def __unicode__(self):
         return '%s <%s>' % (self.user.username, self.contact.email)
+
+def create_site_user(sender, instance, created, **kwargs):
+    '''Each time a Django user is made, make the corresponding site user.'''
+    if created:
+        contact = Contact.objects.create()
+        profile = SiteUser.objects.create(user=instance, contact=contact)
+
+post_save.connect(create_site_user, sender=User) 
     	
 class Member(models.Model):
     lastname = models.CharField(max_length=40)
