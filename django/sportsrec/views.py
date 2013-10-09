@@ -8,6 +8,7 @@ from django.http import *
 from sportsrec.forms import *
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
 '''
 For validators
@@ -20,7 +21,7 @@ def login_user(request):
     
     logout(request)
 
-    msg = None
+    context = {}
     if request.POST:
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -32,18 +33,19 @@ def login_user(request):
                     login(request, user)
                     next_location = form.cleaned_data['next_location']
                     if next_location and next_location.startswith("/"):
+                        #Redirect to specified location, if given
                         return redirect(next_location)
                     return redirect('sportsrec:index')
             else:
                 form = LoginForm() #Clear the form
-                msg = "Invalid login details."
+                context['result'] = "Invalid login details."
     else:
         form = LoginForm()
         if 'next' in request.GET:
             form.fields["next_location"].initial = request.GET['next']
 
-    return render(request, 'sportsrec/login.html',
-                  {'form' : form, 'result' : msg})
+    context['form'] = form
+    return render(request, 'sportsrec/login.html', context)
 
 def logout_user(request):
     logout(request)
@@ -55,7 +57,6 @@ def register(request):
     
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        #do shit with it
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -68,15 +69,13 @@ def register(request):
             user.last_name = last_name
             user.groups = [Group.objects.get(name="End User")]
 
-            #need try catch????
             user.full_clean()
             user.save()
-
             user = authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 login(request, user)
-            
             return redirect('sportsrec:register_thanks')
+
     else:
         form = RegistrationForm()
         
@@ -92,21 +91,27 @@ def register_thanks(request):
 
 @login_required
 def user_profile(request):
-    siteuser = SiteUser.objects.get(user=request.user)
-    profile = Contact.objects.get(siteuser=siteuser)
     context = {
         'created' : False, 'name' : 'user profile',
         'view' : 'sportsrec:user_profile',
         'submit' : 'Submit'
     }
 
+    user = request.user
     if request.method == "POST":
-        form = UserProfileForm(request.POST, instance = profile)
+        form = UserProfileForm(user, request.POST)
         if form.is_valid():
-            form.save()
+            user = request.user
+            user.first_name = form.cleaned_data["first_name"]
+            user.last_name = form.cleaned_data["last_name"]
+            user.email = form.cleaned_data["email"]
+            password = form.cleaned_data.get("new_password", None)
+            if password:
+                user.set_password(password)
+            user.save()
             context['pass'] = "Updated successfully!"
     else:
-        form = UserProfileForm(instance = profile)
+        form = UserProfileForm(user)
 
     context['form'] = form
     return render(request, 'sportsrec/edit.html', context)
