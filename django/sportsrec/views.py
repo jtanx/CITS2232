@@ -120,7 +120,7 @@ class TotalStats(generic.TemplateView):
     usercount = User.objects.filter(groups__name="End User").count()
     membercount = Member.objects.all().count()
     clubcount = Club.objects.all().count()
-    membercountavg = Club.objects.all().aggregate(Avg('membercount'))
+    membercountavg = Club.objects.all().aggregate(Avg('member_count'))
     membercountperclub = Club.objects.values('type').\
                          annotate(count=Count('type'))
 

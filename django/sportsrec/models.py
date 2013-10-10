@@ -4,8 +4,8 @@ from django.db.models.signals import pre_save, post_save, post_delete
 from datetime import datetime
 
 class Member(models.Model):
-    lastname = models.CharField(max_length=40)
-    firstname = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=40)
+    first_name = models.CharField(max_length=40)
     email = models.EmailField()
     address = models.CharField(max_length=255, blank=True, null=True)
     facebook = models.CharField(max_length=40, blank=True, null=True)
@@ -15,7 +15,7 @@ class Member(models.Model):
     owner = models.ForeignKey(User)
     
     def __unicode__(self):
-        return '%s %s' % (self.firstname, self.lastname)
+        return '%s %s' % (self.first_name, self.last_name)
 
 class ClubGroup(models.Model):
     name = models.CharField(max_length=40)
@@ -27,7 +27,7 @@ class ClubType(models.Model):
     group = models.ForeignKey(ClubGroup)
     sub_type = models.CharField(max_length=40)
     description = models.CharField(max_length=255)
-    clubcount = models.IntegerField(default=0)
+    club_count = models.IntegerField(default=0)
 
     def __unicode__(self):
         return '%s (%s)' % (self.sub_type, self.group.name)
@@ -38,7 +38,7 @@ class Club(models.Model):
     location = models.CharField(max_length=40, blank=True, null=True)
 
     type = models.ForeignKey(ClubType)
-    membercount = models.IntegerField(default=1)
+    member_count = models.IntegerField(default=1)
     created = models.DateField(default=datetime.now)
     recruiting = models.BooleanField(default=False)
     contact = models.ForeignKey(Member)
@@ -53,7 +53,7 @@ class Club(models.Model):
 def initClubCount(sender, instance, created, **kwargs):
     '''Auto increments the club count for a club type when a club is created'''
     if created and instance.type:
-        instance.type.clubcount += 1
+        instance.type.club_count += 1
         instance.type.save()
 
 def updateClubCount(sender, instance,  **kwargs):
@@ -62,16 +62,16 @@ def updateClubCount(sender, instance,  **kwargs):
         old_info = Club.objects.get(pk=instance.pk)
         if old_info.type != instance.type:
             if old_info.type:
-                old_info.type.clubcount -= 1
+                old_info.type.club_count -= 1
                 old_info.type.save()
             if instance.type:
-                instance.type.clubcount += 1
+                instance.type.club_count += 1
                 instance.type.save()
 
 def decClubCount(sender, instance, **kwargs):
     '''Auto updates club count when clubs are deleted'''
     if instance.type:
-        instance.type.clubcount -= 1
+        instance.type.club_count -= 1
         instance.type.save()
 
 post_save.connect(initClubCount, sender=Club)
@@ -80,7 +80,7 @@ post_delete.connect(decClubCount, sender=Club)
 
 class Membership(models.Model):
     joined = models.DateField(default=datetime.now)
-    lastpaid = models.DateField(blank=True, null=True)
+    last_paid = models.DateField(blank=True, null=True)
     member = models.ForeignKey('Member')
     club = models.ForeignKey('Club')
 

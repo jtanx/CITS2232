@@ -3,7 +3,7 @@
     "pk": 1, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 1, 
         "sub_type": "Soccer", 
         "description": "A soccer club, or a club about soccer"
@@ -13,7 +13,7 @@
     "pk": 2, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 1, 
         "sub_type": "Hockey", 
         "description": "A hockey club, or a club about hockey"
@@ -23,7 +23,7 @@
     "pk": 3, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 1, 
         "sub_type": "AFL", 
         "description": "An AFL club, or a club about AFL"
@@ -33,7 +33,7 @@
     "pk": 4, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 2, 
         "sub_type": "Swimming", 
         "description": "A swimming club, or a club about swimming"
@@ -43,7 +43,7 @@
     "pk": 5, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 2, 
         "sub_type": "Basketball", 
         "description": "A basketball club, or a club about basketball"
@@ -53,7 +53,7 @@
     "pk": 6, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 2, 
         "sub_type": "Tennis", 
         "description": "A tennis club, or a club about tennis"
@@ -63,7 +63,7 @@
     "pk": 7, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 1, 
         "sub_type": "Rugby", 
         "description": "A rugby club, or a club about rugby"
@@ -73,7 +73,7 @@
     "pk": 8, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 3, 
         "sub_type": "Formula One", 
         "description": "A formula one racing club, or a club about formula one racing"
@@ -83,7 +83,7 @@
     "pk": 9, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 4, 
         "sub_type": "Gaming", 
         "description": "A gaming club, or a club about games"
@@ -93,7 +93,7 @@
     "pk": 10, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 4, 
         "sub_type": "Hunting", 
         "description": "A club about game hunting"
@@ -103,7 +103,7 @@
     "pk": 11, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "clubcount": 0, 
+        "club_count": 0, 
         "group": 2, 
         "sub_type": "Cricket", 
         "description": "A cricket club, or a club about cricket"
