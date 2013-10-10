@@ -54,7 +54,8 @@ def logout_user(request):
 def register(request):
     if request.user.is_authenticated():
         return redirect('sportsrec:index')
-    
+
+    context = {}
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -74,20 +75,14 @@ def register(request):
             user = authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 login(request, user)
-            return redirect('sportsrec:register_thanks')
 
+            context['name'] = first_name + " " + last_name
+            context['thanks'] = True
     else:
         form = RegistrationForm()
-        
-    return render(request, 'sportsrec/register.html', {'form' : form})
 
-@login_required
-def register_thanks(request):
-    if not request.user.first_name and not request.user.last_name:
-        name = request.user.username
-    else:
-        name = request.user.first_name + " " + request.user.last_name
-    return render(request, 'sportsrec/thanks.html', {'name' : name})
+    context['form'] = form
+    return render(request, 'sportsrec/register.html', context)
 
 @login_required
 def user_profile(request):
