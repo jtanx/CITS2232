@@ -1,0 +1,49 @@
+[
+  {
+    "model": "auth.Group",
+    "pk": 1,
+    "fields": {
+      "name" : "End User"
+    }
+  },
+  {
+    "model": "auth.Group",
+    "pk": 2,
+    "fields": {
+      "name" : "End Admin"
+    }
+  },
+
+{
+    "pk": 1, 
+    "model": "sportsrec.clubgroup", 
+    "fields": {
+        "name": "Winter sports", 
+        "description": "A sport normally played in winter"
+    }
+},
+{
+    "pk": 2, 
+    "model": "sportsrec.clubgroup", 
+    "fields": {
+        "name": "Summer sports", 
+        "description": "A sport normally played in summer"
+    }
+},
+{
+    "pk": 3,
+    "model": "sportsrec.clubgroup",
+    "fields": {
+        "name" : "Other sports",
+        "description": "Any other sports"
+    }
+},
+{
+    "pk": 4, 
+    "model": "sportsrec.clubgroup", 
+    "fields": {
+        "name": "Recreation", 
+        "description": "Non-sport based recreation"
+    }
+}
+]

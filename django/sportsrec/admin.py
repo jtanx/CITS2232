@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.admin import User
-from sportsrec.models import Contact, Member, Club, Membership
+from sportsrec.models import *
 
 #class SiteUserInline(admin.StackedInline):
 #    model = SiteUser
@@ -17,3 +17,5 @@ from sportsrec.models import Contact, Member, Club, Membership
 admin.site.register(Member)
 admin.site.register(Club)
 admin.site.register(Membership)
+admin.site.register(ClubType)
+admin.site.register(ClubGroup)

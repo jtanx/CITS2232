@@ -1,72 +1,91 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import pre_save, post_save, post_delete
 from datetime import datetime
 
-
-#Contact must be before User so the foreign key constraint is generated
-class Contact(models.Model):
-    '''Public contact details'''
-    public_email = models.EmailField(blank=True, null=True)
+class Member(models.Model):
+    lastname = models.CharField(max_length=40)
+    firstname = models.CharField(max_length=40)
+    email = models.EmailField()
     address = models.CharField(max_length=255, blank=True, null=True)
     facebook = models.CharField(max_length=40, blank=True, null=True)
     twitter = models.CharField(max_length=40, blank=True, null=True)
     phone = models.CharField(max_length=40, blank=True, null=True)
-    fax = models.CharField(max_length=40, blank=True, null=True)
-
-    class Meta:
-        abstract = True
-        
-    def __unicode__(self):
-        return '%s' % (self.public_email)
-
-
-'''
-class SiteUser(Contact):
-    user = models.OneToOneField(User)
-
-    def __unicode__(self):
-        return '%s <%s>' % (self.user.username)#, self.contact.public_email)
-
-def create_site_user(sender, instance, created, **kwargs):
-    #Each time a Django user is made, make the corresponding site user.
-    if created:
-        #contact = Contact.objects.create()
-        profile = SiteUser.objects.create(user=instance)#, contact=contact)
-
-post_save.connect(create_site_user, sender=User)
-'''
-
-class Member(Contact):
-    lastname = models.CharField(max_length=40)
-    firstname = models.CharField(max_length=40)
     interests = models.CharField(max_length=255, blank=True, null=True)
     owner = models.ForeignKey(User)
     
     def __unicode__(self):
         return '%s %s' % (self.firstname, self.lastname)
 
-class Club(Contact):
+class ClubGroup(models.Model):
+    name = models.CharField(max_length=40)
+    description = models.CharField(max_length=255)
+    def __unicode__(self):
+        return '%s (%s)' % (self.name, self.description)
+
+class ClubType(models.Model):
+    group = models.ForeignKey(ClubGroup)
+    sub_type = models.CharField(max_length=40)
+    description = models.CharField(max_length=255)
+    clubcount = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.sub_type, self.group.name)
+
+class Club(models.Model):
     name = models.CharField(max_length=40, unique=True)
-    type = models.CharField(max_length=40, blank=True, null=True)
+    address = models.CharField(max_length=255)
     location = models.CharField(max_length=40, blank=True, null=True)
-    membercount = models.IntegerField(default=0)
+
+    type = models.ForeignKey(ClubType)
+    membercount = models.IntegerField(default=1)
     created = models.DateField(default=datetime.now)
     recruiting = models.BooleanField(default=False)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    contact = models.ForeignKey(Member)
+    description = models.CharField(max_length=255)
+    facebook = models.CharField(max_length=40, blank=True, null=True)
+    twitter = models.CharField(max_length=40, blank=True, null=True)
     owner = models.ForeignKey(User)
-    #contact = models.OneToOneField('Contact')
     
     def __unicode__(self):
         return '%s' % (self.name)
+
+def initClubCount(sender, instance, created, **kwargs):
+    '''Auto increments the club count for a club type when a club is created'''
+    if created and instance.type:
+        instance.type.clubcount += 1
+        instance.type.save()
+
+def updateClubCount(sender, instance,  **kwargs):
+    '''Auto updates club counts if a club type is changed'''
+    if instance.pk:
+        old_info = Club.objects.get(pk=instance.pk)
+        if old_info.type != instance.type:
+            if old_info.type:
+                old_info.type.clubcount -= 1
+                old_info.type.save()
+            if instance.type:
+                instance.type.clubcount += 1
+                instance.type.save()
+
+def decClubCount(sender, instance, **kwargs):
+    '''Auto updates club count when clubs are deleted'''
+    if instance.type:
+        instance.type.clubcount -= 1
+        instance.type.save()
+
+post_save.connect(initClubCount, sender=Club)
+pre_save.connect(updateClubCount, sender=Club)
+post_delete.connect(decClubCount, sender=Club)
 
 class Membership(models.Model):
     joined = models.DateField(default=datetime.now)
     lastpaid = models.DateField(blank=True, null=True)
     member = models.ForeignKey('Member')
     club = models.ForeignKey('Club')
+
+    class Member:
+        unique_together = (("member", "club"),)
 	
     def __unicode__(self):
         return '%s belongs to %s' % (self.member, self.club)
-	
-	

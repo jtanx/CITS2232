@@ -1,6 +1,6 @@
 from django.views import generic
 from django.views.generic import TemplateView
-from django.db.models import Min
+from django.db.models import Min, Avg, Count
 from sportsrec.models import *
 from django.shortcuts import redirect,render
 from django.contrib.auth import authenticate, login, logout
@@ -116,8 +116,29 @@ def user_profile(request):
     context['form'] = form
     return render(request, 'sportsrec/edit.html', context)
 
+class TotalStats(generic.TemplateView):
+    usercount = User.objects.filter(groups__name="End User").count()
+    membercount = Member.objects.all().count()
+    clubcount = Club.objects.all().count()
+    membercountavg = Club.objects.all().aggregate(Avg('membercount'))
+    membercountperclub = Club.objects.values('type').\
+                         annotate(count=Count('type'))
 
-class Index(generic.TemplateView):
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(TotalStats, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['stats'] = {
+            'usercount' : self.usercount,
+            'membercount' : self.membercount,
+            'clubcount' : self.clubcount,
+            'membercountavg' : self.membercountavg,
+            'membercountperclub' : self.membercountperclub
+        }
+        return context
+    
+
+class Index(TotalStats):
     template_name='sportsrec/index.html'
     context_object_name='index'
 
