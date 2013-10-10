@@ -18,14 +18,14 @@ class Member(models.Model):
         return '%s %s' % (self.first_name, self.last_name)
 
 class ClubGroup(models.Model):
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=40, unique=True)
     description = models.CharField(max_length=255)
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.description)
 
 class ClubType(models.Model):
     group = models.ForeignKey(ClubGroup)
-    sub_type = models.CharField(max_length=40)
+    sub_type = models.CharField(max_length=40, unique=True)
     description = models.CharField(max_length=255)
     club_count = models.IntegerField(default=0)
 
