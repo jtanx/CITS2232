@@ -4,8 +4,8 @@ from django.db.models.signals import pre_save, post_save, post_delete
 from datetime import datetime
 
 class Member(models.Model):
-    last_name = models.CharField(max_length=40)
     first_name = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=40)
     email = models.EmailField()
     address = models.CharField(max_length=255, blank=True, null=True)
     facebook = models.CharField(max_length=40, blank=True, null=True)

@@ -1,16 +1,20 @@
 {% extends "sportsrec/base.html" %}
 
 {% block sidebar-content %}
+{% if user.is_authenticated %}
 <div class="widget">
-  <div class="title">Status</div>
   <div class="item">
-    {{ stats.usercount }} <br>
-    {{ stats.membercount }} <br>
-    {{ stats.clubcount }} <br>
-    {{ stats.membercountavg }} <br>
-    {{ stats.membercountperclub }} <br>
+    <div class="title">User stats</div>
+    <p>
+      You administer {{stats.user_member_count}} member(s) with
+      {{stats.user_membership_count}} membership(s) in total.
+    </p>
+    <p>
+      You own {{stats.user_club_count}} club(s).
+    </p>
   </div>
 </div>
+{% endif %}
 <!-- End sidebar -->
 {% endblock %}
 

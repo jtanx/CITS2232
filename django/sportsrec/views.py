@@ -112,24 +112,24 @@ def user_profile(request):
     return render(request, 'sportsrec/edit.html', context)
 
 class TotalStats(generic.TemplateView):
-    usercount = User.objects.filter(groups__name="End User").count()
-    membercount = Member.objects.all().count()
-    clubcount = Club.objects.all().count()
-    membercountavg = Club.objects.all().aggregate(Avg('member_count'))
-    membercountperclub = Club.objects.values('type').\
-                         annotate(count=Count('type'))
+    def get_user_stats(self, stats):
+        if self.request.user.is_authenticated():
+            user_members = Member.objects.filter(owner=self.request.user)
+            user_memberships = Membership.objects.filter(member__in=user_members)
+            user_clubs = Club.objects.filter(owner=self.request.user)
+            
+            stats['user_member_count'] = user_members.count()
+            stats['user_membership_count'] = user_memberships.count()
+            stats['user_club_count'] = user_clubs.count()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(TotalStats, self).get_context_data(**kwargs)
+
+        stats = {}
+        self.get_user_stats(stats)
         # Add in a QuerySet of all the books
-        context['stats'] = {
-            'usercount' : self.usercount,
-            'membercount' : self.membercount,
-            'clubcount' : self.clubcount,
-            'membercountavg' : self.membercountavg,
-            'membercountperclub' : self.membercountperclub
-        }
+        context['stats'] = stats
         return context
     
 
