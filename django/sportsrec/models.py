@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save, post_delete
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 class Member(models.Model):
     first_name = models.CharField(max_length=40)
@@ -29,6 +30,34 @@ class ClubType(models.Model):
     description = models.CharField(max_length=255)
     club_count = models.IntegerField(default=0)
 
+    @staticmethod
+    def club_created(sender, instance, created, **kwargs):
+        '''Auto increments the club count for a club type
+           when a club is created'''
+        if created and instance.type:
+            instance.type.club_count += 1
+            instance.type.save()
+
+    @staticmethod
+    def club_updated(sender, instance,  **kwargs):
+        '''Auto updates club counts if a club type is changed'''
+        if instance.pk:
+            old_info = Club.objects.get(pk=instance.pk)
+            if old_info.type != instance.type:
+                if old_info.type:
+                    old_info.type.club_count -= 1
+                    old_info.type.save()
+                if instance.type:
+                    instance.type.club_count += 1
+                    instance.type.save()
+
+    @staticmethod
+    def club_deleted(sender, instance, **kwargs):
+        '''Auto updates club count when clubs are deleted'''
+        if instance.type:
+            instance.type.club_count -= 1
+            instance.type.save()
+
     def __unicode__(self):
         return '%s (%s)' % (self.sub_type, self.group.name)
 
@@ -41,7 +70,8 @@ class Club(models.Model):
     member_count = models.IntegerField(default=1)
     created = models.DateField(default=datetime.now)
     recruiting = models.BooleanField(default=False)
-    contact = models.ForeignKey(Member)
+    contact = models.ForeignKey(Member, blank=True, null=True,\
+                                on_delete=models.SET_NULL)
     description = models.CharField(max_length=255)
     facebook = models.CharField(max_length=40, blank=True, null=True)
     twitter = models.CharField(max_length=40, blank=True, null=True)
@@ -50,33 +80,9 @@ class Club(models.Model):
     def __unicode__(self):
         return '%s' % (self.name)
 
-def initClubCount(sender, instance, created, **kwargs):
-    '''Auto increments the club count for a club type when a club is created'''
-    if created and instance.type:
-        instance.type.club_count += 1
-        instance.type.save()
-
-def updateClubCount(sender, instance,  **kwargs):
-    '''Auto updates club counts if a club type is changed'''
-    if instance.pk:
-        old_info = Club.objects.get(pk=instance.pk)
-        if old_info.type != instance.type:
-            if old_info.type:
-                old_info.type.club_count -= 1
-                old_info.type.save()
-            if instance.type:
-                instance.type.club_count += 1
-                instance.type.save()
-
-def decClubCount(sender, instance, **kwargs):
-    '''Auto updates club count when clubs are deleted'''
-    if instance.type:
-        instance.type.club_count -= 1
-        instance.type.save()
-
-post_save.connect(initClubCount, sender=Club)
-pre_save.connect(updateClubCount, sender=Club)
-post_delete.connect(decClubCount, sender=Club)
+post_save.connect(ClubType.club_created, sender=Club)
+pre_save.connect(ClubType.club_updated, sender=Club)
+post_delete.connect(ClubType.club_deleted, sender=Club)
 
 class Membership(models.Model):
     joined = models.DateField(default=datetime.now)
@@ -89,3 +95,80 @@ class Membership(models.Model):
 	
     def __unicode__(self):
         return '%s belongs to %s' % (self.member, self.club)
+
+class UserMeta(models.Model):
+    user = models.ForeignKey(User)
+    member_count = models.IntegerField(default=0)
+    membership_count = models.IntegerField(default=0)
+    club_count = models.IntegerField(default=0)
+
+    @staticmethod
+    def member_created(sender, instance, created, **kwargs):
+        if created:
+            meta, created = UserMeta.objects.get_or_create(user=instance.owner)
+            meta.member_count += 1
+            meta.save()
+
+    @staticmethod
+    def member_deleted(sender, instance, **kwargs):
+        try:
+            meta = UserMeta.objects.get(user=instance.owner)
+        except ObjectDoesNotExist:
+            return
+        
+        meta.member_count -= 1
+        meta.save()
+
+    @staticmethod
+    def membership_created(sender, instance, created, **kwargs):
+        if created:
+            user = instance.member.owner
+            meta, created = UserMeta.objects.get_or_create(user=user)
+            meta.membership_count += 1
+            meta.save()
+
+    @staticmethod
+    def membership_deleted(sender, instance, **kwargs):
+        try:
+            user = instance.member.owner
+            meta = UserMeta.objects.get(user=user)
+        except ObjectDoesNotExist:
+            return
+
+        meta.membership_count -= 1
+        meta.save()
+
+    @staticmethod
+    def club_created(sender, instance, created, **kwargs):
+        if created:
+            meta, created = UserMeta.objects.get_or_create(user=instance.owner)
+            meta.club_count += 1
+            meta.save()
+
+    @staticmethod
+    def club_updated(sender, instance,  **kwargs):
+        '''Auto updates club counts if a club type is changed'''
+        if instance.pk:
+            old_info = Club.objects.get(pk=instance.pk)
+            if old_info.owner != instance.owner:
+                UserMeta.club_created(sender, instance, True)
+                UserMeta.club_deleted(sender, old_info)
+
+    @staticmethod
+    def club_deleted(sender, instance, **kwargs):
+        try:
+            meta = UserMeta.objects.get(user=instance.owner)
+        except ObjectDoesNotExist:
+            return
+
+        meta.club_count -= 1
+        meta.save()
+
+post_save.connect(UserMeta.member_created, sender=Member)
+post_delete.connect(UserMeta.member_deleted, sender=Member)
+post_save.connect(UserMeta.membership_created, sender=Membership)
+post_delete.connect(UserMeta.membership_deleted, sender=Membership)
+post_save.connect(UserMeta.club_created, sender=Club)
+pre_save.connect(UserMeta.club_updated, sender=Club)
+post_delete.connect(UserMeta.club_deleted, sender=Club)
+        

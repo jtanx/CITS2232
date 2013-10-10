@@ -2,29 +2,21 @@
 
 {% block sidebar-content %}
 {% if user.is_authenticated %}
-<div class="widget">
-  <div class="item">
-    <div class="title">User stats</div>
-    <p>
-      You administer {{stats.user_member_count}} member(s) with
-      {{stats.user_membership_count}} membership(s) in total.
-    </p>
-    <p>
-      You own {{stats.user_club_count}} club(s).
-    </p>
-  </div>
-</div>
+<!--Nothing here for now-->
 {% endif %}
 <!-- End sidebar -->
 {% endblock %}
 
-{% block content %}
+{% block main %}
 
-<div id="main">
-  <div class="widget">
-    <div class="title">Dashboard</div>
-  </div>
+<div class="widget">
+  <div class="title">Dashboard</div>
+  You own or administer:
+  <ul>
+    <li>{{stats.user_member_count}} member(s)</li>
+    <li>{{stats.user_membership_count}} membership(s)</li>
+    <li>{{stats.user_club_count}} club(s)</li>
+  </ul>
 </div>
-<!-- End main content -->
 
 {% endblock %}

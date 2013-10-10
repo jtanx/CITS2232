@@ -57,9 +57,6 @@
         <div class="nav-menu widget">
           <ul>
             <li><a href="{% url 'sportsrec:index' %}">Home</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
-            {% endif %}
             <li><a href="#">Club list</a></li>
             <li><a href="#">Club search</a></li>
             {% block sidebar-user-menu %}
@@ -67,11 +64,53 @@
             <li><a href="#">Statistics</a></li>
           </ul>
         </div>
+        
+        {% if user.is_authenticated %}
+        <div class="nav-menu widget">
+          <ul>
+            <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
+            <li><a href="{% url 'sportsrec:user_members' %}">Manage members</a></li>
+            <li><a href="#">Manage memberships</a></li>
+            <li><a href="#">Manage clubs</a></li>
+          </ul>
+        </div>
+        {% endif %}
+        
         {% block sidebar-content %}
       {% endblock %}
       </div>
       {% endblock %}
+      
+      {% block pre-content %}
+      {% endblock %}
+      
       {% block content %}
+      <div id="main">
+        {% if messages %}
+          <div class="widget dismiss-container">
+            <div class="dismiss topright">
+              <a href="#">Dismiss</a>
+            </div>
+            
+            <div class="title centre">Notifications</div>
+            {% for message in messages %}
+              <p {% if message.tags %} class="large {{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+          </div>
+        
+          <script type="text/javascript">
+            $(".dismiss").click(function() {
+              $(".dismiss-container").css("display", "none");
+            })
+          </script>
+        {% endif %}
+        
+        {% block main %}
+        {% endblock %}
+      </div>
+      {% endblock%}
+      
+      {% block post-content %}
       {% endblock %}
     </div>
   </body>

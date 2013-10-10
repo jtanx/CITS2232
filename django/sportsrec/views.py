@@ -8,7 +8,9 @@ from django.http import *
 from sportsrec.forms import *
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.contrib import messages
 
 '''
 For validators
@@ -109,18 +111,122 @@ def user_profile(request):
         form = UserProfileForm(user)
 
     context['form'] = form
-    return render(request, 'sportsrec/edit.html', context)
+    return render(request, 'sportsrec/add_edit.html', context)
+
+@login_required
+def user_member_add(request):
+    context = {
+        'created' : True, 'name' : 'member',
+        'view' : 'sportsrec:user_member_add',
+        'submit' : 'Add'
+    }
+    
+    if request.method == "POST":
+        form = MemberForm(request.POST)
+        if form.is_valid():
+            #Don't save yet
+            member = form.save(commit=False)
+            #Tack on the owner
+            member.owner = request.user
+            member.save()
+            messages.add_message(request, messages.INFO, \
+                                 "Member successfully created!")
+            return redirect('sportsrec:user_members')
+    else:
+        form = MemberForm()
+
+    context['form'] = form
+
+    return render(request, 'sportsrec/add_edit.html', context)
+            
+
+@login_required
+def user_member_edit(request, pk):
+    member = Member.objects.filter(pk=pk, owner=request.user)
+    if not member.exists():
+        messages.add_message(request, messages.ERROR, \
+                             "You can't edit a member you didn't create.")
+        return redirect('sportsrec:user_members')
+
+    context = {
+        'created' : False,
+        'name' : 'member details',
+        'view' : 'sportsrec:user_member_edit',
+        'delete_view' : 'sportsrec:user_member_delete',
+        'delete_text' : 'this member',
+        'pk' : pk,
+        'submit' : 'Edit'
+    }
+
+    if request.method == "POST":
+        form = MemberForm(request.POST, instance = member[0])
+        if form.is_valid():
+            form.save()
+            context['pass'] = "Updated successfully!"
+    else:
+        form = MemberForm(instance = member[0])
+
+    context['form'] = form
+
+    return render(request, 'sportsrec/add_edit.html', context)
+
+@login_required
+def user_member_delete(request, pk):
+    member = Member.objects.filter(pk=pk, owner=request.user)
+    if not member.exists():
+        messages.add_message(request, messages.ERROR, \
+                             "You can't delete a member you didn't create.")
+        return redirect('sportsrec:user_members')
+
+    member = member[0]
+    context = {
+        'name' : "member: '%s'" % member,
+        'view' : 'sportsrec:user_member_delete',
+        'pk' : pk,
+        'form' : DeleteForm(),
+        'submit' : 'Submit'
+    }
+
+    if request.method == "POST":
+        form = DeleteForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['confirm']:
+                member.delete()
+                messages.add_message(request, messages.INFO, \
+                             "Member deleted successfully!")
+        return redirect('sportsrec:user_members')
+    
+    return render(request, 'sportsrec/delete.html', context)
+
+class LoginRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).\
+               dispatch(request, *args, **kwargs)
+
+class UserMemberView(LoginRequiredMixin, generic.ListView):
+    template_name = 'sportsrec/user_members.html'
+    context_object_name = 'user_members'
+
+    def get_queryset(self):
+        return Member.objects.filter(owner=self.request.user)
 
 class TotalStats(generic.TemplateView):
     def get_user_stats(self, stats):
-        if self.request.user.is_authenticated():
-            user_members = Member.objects.filter(owner=self.request.user)
-            user_memberships = Membership.objects.filter(member__in=user_members)
-            user_clubs = Club.objects.filter(owner=self.request.user)
-            
-            stats['user_member_count'] = user_members.count()
-            stats['user_membership_count'] = user_memberships.count()
-            stats['user_club_count'] = user_clubs.count()
+        #needed at all? performance? urgh
+        if not self.request.user.is_authenticated():
+            return
+
+        try:
+            meta = UserMeta.objects.get(user=self.request.user)
+        except UserMeta.DoesNotExist:
+            stats['user_member_count'] = 0
+            stats['user_membership_count'] = 0
+            stats['user_club_count'] = 0
+        else:
+            stats['user_member_count'] = meta.member_count
+            stats['user_membership_count'] = meta.membership_count
+            stats['user_club_count'] = meta.club_count
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

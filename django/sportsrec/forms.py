@@ -1,4 +1,4 @@
-from django.forms import Form, ModelForm
+from django.forms import Form, ModelForm, Textarea
 from django import forms
 from django.contrib.auth.models import User
 from sportsrec.models import *
@@ -129,6 +129,17 @@ class UserProfileForm(Form):
                 del cleaned_data["confirm_password"]
         return cleaned_data
 
+class MemberForm(ModelForm):    
+    class Meta:
+        model=Member
+        fields=['first_name', 'last_name', 'email', 'address',
+                'facebook', 'twitter', 'phone','interests']
+        widgets = {
+            'interests': Textarea(attrs={
+                'cols': 70, 'rows': 6,
+                'style' : 'width: 100%',
+                'maxlength' :  Member._meta.get_field('interests').max_length}),
+        }
 
-
-
+class DeleteForm(Form):
+    confirm = forms.BooleanField()
