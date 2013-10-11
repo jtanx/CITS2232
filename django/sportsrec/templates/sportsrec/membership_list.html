@@ -20,12 +20,12 @@
       {% for membership in membership_list %}
       <tr>
         <td class="clickable menu-hilight">
-          <a href="{% url 'sportsrec:membership_edit' pk=membership.id %}">
+          <a href="{% url 'sportsrec:membership_detail' pk=membership.id %}">
           {{membership.id}}
           </a>
         </td>
     	<td class="clickable menu-hilight">
-          <a href="{% url 'sportsrec:member_edit' pk=membership.member.id %}">
+          <a href="{% url 'sportsrec:member_detail' pk=membership.member.id %}">
             {{membership.member}}
           </a>
         </td>

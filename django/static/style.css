@@ -113,6 +113,13 @@ td {
   padding: 0 1em;
 }
 
+th.horizontal-top {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  font-weight: bold;
+  width: auto !important;
+}
+
 .break {
   word-break: break-all;
 }

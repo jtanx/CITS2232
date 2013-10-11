@@ -42,7 +42,28 @@
     </a>
   </div>
   {% endifequal %}
-  
 </div>
+
+{% if owned_clubs %}
+<div class="widget">
+  <div class="large bold">Clubs owned by this member</div>
+  <table class="horizontal">
+    <tr>
+      <th class="horizontal-top">Name</th>
+      <th class="horizontal-top">Description</th>
+    </tr>
+    {% for club in owned_clubs %}
+    <tr>
+      <th class="clickable menu-hilight">
+        <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+        {{club.name}}
+        </a>
+      </th>
+      <td class="break">{{club.description}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
 
 {% endblock %}

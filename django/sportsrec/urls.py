@@ -18,11 +18,12 @@ urlpatterns = patterns('',
     url(r'^member/delete/(?P<pk>\d+)$', views.member_delete, \
         name='member_delete'),
     url(r'^club/add$', views.club_add, name='club_add'),
-    url(r'^club/list$', views.ClubList.as_view(), name='club_list'),
+    url(r'^clubs$', views.ClubList.as_view(), name='club_list'),
     url(r'^club/edit/(?P<pk>\d+)$', views.club_edit, name='club_edit'),
+    url(r'^user/clubs$', views.UserClubList.as_view(), name='user_club_list'),
     url(r'^club/(?P<pk>\d+)$', views.club_detail, name='club_detail'),
-    url(r'^memberships/list$', views.MembershipList.as_view(), \
+    url(r'^memberships$', views.MembershipList.as_view(), \
         name='membership_list'),
-    url(r'^membership/edit/(?P<pk>\d+)$', views.membership_edit, \
-        name='membership_edit'),
+    url(r'^membership/detail/(?P<pk>\d+)$', views.membership_detail, \
+        name='membership_detail'),
 )

@@ -122,7 +122,9 @@ def member_detail(request, pk):
                             "Member with that id does not exist.")
         return redirect('sportsrec:index')
 
-    return render(request, 'sportsrec/member_detail.html', {'member' : member})
+    owned_clubs = Club.objects.filter(owner=member)
+    context = {'member' : member, 'owned_clubs' : owned_clubs}
+    return render(request, 'sportsrec/member_detail.html', context)
 
 @login_required
 def member_add(request):
@@ -261,7 +263,42 @@ def club_add(request):
 
 @login_required
 def club_edit(request, pk):
-    return redirect('sportsrec:index')
+    club = Club.objects.filter(pk=pk)
+    if not club.exists():
+        messages.add_message(request, messages.ERROR, \
+                             "Club does not exist.")
+        return redirect('sportsrec:club_list')
+
+    club = club[0]
+    if not club.owner.owner == request.user and not is_admin(request.user):
+        messages.add_message(request, messages.ERROR, \
+                             "You cannot edit a club you did not make.")
+        return redirect('sportsrec:club_list')
+
+    #restrict to current members of club
+    memberids = Membership.objects.values_list('pk', flat=True).\
+                filter(club=club)
+    members = Member.objects.filter(pk__in=set(memberids))
+
+    context = {
+            'created' : False, 'name' : 'club details',
+            'view' : 'sportsrec:club_edit',
+            'detail_view' : 'sportsrec:club_detail',
+            'pk' : pk,
+            'submit' : 'Edit'
+    }
+    
+    if request.method == "POST":
+        form = ClubForm(request.POST, members=members, instance=club)
+        if form.is_valid():
+            club = form.save()
+            context['pass'] = 'Club details successfully edited!'
+    else:
+            form = ClubForm(members=members, instance=club)
+
+    context['form'] = form
+
+    return render(request, 'sportsrec/add_edit.html', context)
 
 class LoginRequiredMixin(object):
     @method_decorator(login_required)
@@ -301,8 +338,21 @@ class MembershipList(LoginRequiredMixin, generic.ListView):
             return Membership.objects.all()
         return Membership.objects.filter(member__owner=self.request.user)
 
-def membership_edit(request, pk):
-    return redirect('sportsrec:index')
+def membership_detail(request, pk):
+    try:
+        membership = Membership.objects.get(pk=pk)
+    except Membership.DoesNotExist:
+        messages.add_message(request, messages.ERROR, \
+                             "Membership does not exist.")
+        return redirect('sportsrec:index')
+
+    if membership.member.owner != request.user and not is_admin(request.user):
+        messages.add_message(request, messages.ERROR, \
+                             "You cannot edit a membership you do not own.")
+        return redirect('sportsrec:index')
+
+    context = {'membership' : membership}
+    return render(request, 'sportsrec/membership_detail.html', context)
 
 class TotalStats(generic.TemplateView):
     def get_user_stats(self, stats):
@@ -350,6 +400,21 @@ class ClubList(generic.ListView):
 
     def get_queryset(self):
         return Club.objects.all()
+
+class UserClubList(LoginRequiredMixin, generic.ListView):
+    template_name = 'sportsrec/user_club_list.html'
+    context_object_name = 'club_list'
+    paginate_by = 15 #15 clubs/page
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['admin'] = is_admin(self.request.user)
+        return context
+
+    def get_queryset(self):
+        members=  Member.objects.filter(owner=self.request.user)
+        return Club.objects.filter(owner__in=members).order_by('id')
 
 def club_detail(request, pk):
 	instance = Club.objects.get(pk=pk)

@@ -1,0 +1,22 @@
+{% extends 'sportsrec/base.html' %}
+{% block main %}
+<div class="widget">
+  <div class="title centre">
+    Membership to 
+    <a href="{% url 'sportsrec:club_detail' pk=membership.club.id%}">
+      {{membership.club.name}}
+    </a>
+    for
+    <a href="{% url 'sportsrec:member_detail' pk=membership.member.id%}">
+    {{membership.member.first_name}} {{membership.member.last_name}}
+    </a>
+  </div>
+  <div class="large bold">Membership details</div>
+  <table class="horizontal">
+    <tr><th>Date joined</th><td>{{membership.joined}}</td></tr>
+    <tr><th>Last paid membership fees</th><td>{{membership.last_paid|default:''}}</td></tr>
+  </table>
+
+</div>
+
+{% endblock %}

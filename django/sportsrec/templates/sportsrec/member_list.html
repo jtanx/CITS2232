@@ -35,7 +35,9 @@
         {% endif %}
         <td>{{member.first_name}}</td>
         <td>{{member.last_name}}</td>
-        <td>{{member.email}}</td>
+        <td class="clickable menu-hilight">
+          <a href="mailto:{{member.email}}">{{member.email}}</a>
+        </td>
         <td style="max-width:200px;">{{member.interests}}</td>
       </tr>
       {% endfor %}

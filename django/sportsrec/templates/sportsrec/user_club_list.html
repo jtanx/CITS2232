@@ -3,7 +3,7 @@
 
 {% block main %}
 <div class="widget">
-  <div class="title centre">All Clubs</div>
+  <div class="title centre">Administered clubs</div>
   {% if club_list %}
   {% include 'sportsrec/paginate.html' %}
   <table class="centre">
@@ -45,21 +45,21 @@
         {% endif %}
         
         {% if club.facebook %}
-        <td class="clickable menu-hilight">
-          <a href="https://facebook.com/{{club.facebook}}">{{club.facebook}}</a>
-        </td>
-        {% else %}
-        <td></td>
-        {% endif %}
+         <td class="clickable menu-hilight">
+           <a href="https://facebook.com/{{club.facebook}}">{{club.facebook}}</a>
+         </td>
+         {% else %}
+         <td></td>
+         {% endif %}
 
-        {% if club.twitter %}
-        <td class="clickable menu-hilight">
-          <a href="https://twitter.com{{club.twitter}}">{{club.twitter}}</a>
-        </td>
-        {% else %}
-        <td></td>
-        {% endif %}
-        
+         {% if club.twitter %}
+         <td class="clickable menu-hilight">
+           <a href="https://twitter.com{{club.twitter}}">{{club.twitter}}</a>
+         </td>
+         {% else %}
+         <td></td>
+         {% endif %}
+      </tr>
       {% endfor %}
     </tbody>
   </table>
