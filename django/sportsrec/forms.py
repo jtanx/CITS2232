@@ -1,6 +1,7 @@
 from django.forms import Form
 from django import forms
 from django.contrib.auth.models import User
+from sportsrec.models import *
 import re
 
 class LoginForm(Form):
@@ -59,3 +60,25 @@ class RegistrationForm(Form):
                 del cleaned_data["confirm_password"]
         return cleaned_data
 
+class ClubForm(forms.ModelForm):
+	class Meta:
+		model = Club
+		fields = ['name','type','location','recruiting','description']	
+		
+class MemberForm(forms.ModelForm):
+	class Meta:
+		model = Member
+		
+class DeleteClubForm(forms.ModelForm):
+	class Meta:
+		model = Club
+		fields = []
+		
+class DeleteMemberForm(forms.ModelForm):
+	class Meta:
+		model = Member
+		fields = []
+
+class ContactForm(forms.ModelForm):
+	class Meta:
+		model = Contact

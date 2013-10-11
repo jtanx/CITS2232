@@ -59,7 +59,9 @@
             <li><a href="{% url 'sportsrec:index' %}">Home</a></li>
             {% if user.is_authenticated %}
             <li><a href="#">User profile</a></li>
+            <li><a href="{% url 'sportsrec:edit_contact' %}">Contact Details</a></li>
             {% endif %}
+            <li><a href="{% url 'sportsrec:create_club' %}">Create a Club</a></li>
             <li><a href="#">Club list</a></li>
             <li><a href="#">Club search</a></li>
             {% block sidebar-user-menu %}

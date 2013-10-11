@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib import admin
+import datetime
 
 #Contact must be before User so the foreign key constraint is generated
 class Contact(models.Model):
@@ -47,12 +49,15 @@ class Club(models.Model):
     created = models.DateField()
     recruiting = models.BooleanField(default=True)
     description = models.CharField(max_length=255, blank=True, null=True)
-    owner = models.ForeignKey('SiteUser')
-    contact = models.OneToOneField('Contact')
+    owner = models.ForeignKey('SiteUser', null=True, blank=True)
+    contact = models.OneToOneField('Contact', null=True, blank=True)
     
     def __unicode__(self):
         return '%s' % (self.name)
-
+        
+    def clean(self):
+    	self.created = datetime.date.today()
+    	self.membercount = 0
 
 class Membership(models.Model):
     joined = models.DateField()
