@@ -14,11 +14,9 @@
       {# Include the visible fields #}
       {% for field in form.visible_fields %}
           <div class="fieldWrapper">
-            {% if field.field.required %}
-              <b>{{ field.label_tag }}</b>
-            {% else %}
+            <div class="{% if field.field.required %} bold {%endif%}">
               {{ field.label_tag }}
-            {% endif %}
+            </div>
             
             {{ field }}
             {% for error in field.errors %}

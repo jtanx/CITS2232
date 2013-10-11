@@ -1,9 +1,12 @@
 {% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:members' %}
 
 {% block main %}
 <div class="widget">
   <div class="title centre">Administered members</div>
-  {% if user_members %}
+  {% if members %}
+  
+  {% include 'sportsrec/paginate.html' %}
   <table class="centre">
     <thead>
       <tr class="header">
@@ -18,10 +21,10 @@
       </tr>
     </thead>
     <tbody>
-      {% for member in user_members %}
+      {% for member in members %}
       <tr>
-        <td class="clickable" href="{% url 'sportsrec:user_member_edit' pk=member.id %}">
-          <a href="{% url 'sportsrec:user_member_edit' pk=member.id %}">
+        <td class="clickable menu-hilight" href="{% url 'sportsrec:member_edit' pk=member.id %}">
+          <a href="{% url 'sportsrec:member_edit' pk=member.id %}">
           {{member.id}}
           </a>
         </td>
@@ -45,12 +48,16 @@
       window.document.location = $(this).attr("href");
     });
   </script>
+  
+  {% include 'sportsrec/paginate.html' %}
   {% else %}
   <p>You don't own or administer any members.</p>
   {% endif %}
 
   <div class="sub-title centre">
-    Add a <a href="{% url 'sportsrec:user_member_add' %}">new member</a>.
+    Add a <a href="{% url 'sportsrec:member_add' %}">new member</a>.
   </div>
 </div>
 {% endblock %}
+
+{% endwith %}

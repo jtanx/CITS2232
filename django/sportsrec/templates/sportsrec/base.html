@@ -69,8 +69,8 @@
         <div class="nav-menu widget">
           <ul>
             <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
-            <li><a href="{% url 'sportsrec:user_members' %}">Manage members</a></li>
-            <li><a href="#">Manage memberships</a></li>
+            <li><a href="{% url 'sportsrec:members' %}">Manage members</a></li>
+            <li><a href="{% url 'sportsrec:membership_list' %}">Manage memberships</a></li>
             <li><a href="#">Manage clubs</a></li>
             <li><a href="{% url 'sportsrec:club_add' %}">Add a club</a></li>
           </ul>
@@ -94,9 +94,9 @@
               <a href="#">Dismiss</a>
             </div>
             
-            <div class="title centre">Notifications</div>
+            <div class="title large">Notifications</div>
             {% for message in messages %}
-              <p {% if message.tags %} class="large {{ message.tags }}"{% endif %}>{{ message }}</p>
+              <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
             {% endfor %}
           </div>
         

@@ -115,10 +115,10 @@ def user_profile(request):
     return render(request, 'sportsrec/add_edit.html', context)
 
 @login_required
-def user_member_add(request):
+def member_add(request):
     context = {
         'created' : True, 'name' : 'member',
-        'view' : 'sportsrec:user_member_add',
+        'view' : 'sportsrec:member_add',
         'submit' : 'Add'
     }
     
@@ -132,7 +132,7 @@ def user_member_add(request):
             member.save()
             messages.add_message(request, messages.INFO, \
                                  "Member successfully created!")
-            return redirect('sportsrec:user_members')
+            return redirect('sportsrec:members')
     else:
         form = MemberForm()
 
@@ -142,25 +142,25 @@ def user_member_add(request):
             
 
 @login_required
-def user_member_edit(request, pk):
+def member_edit(request, pk):
     member = Member.objects.filter(pk=pk)
     if not member.exists():
         messages.add_message(request, messages.ERROR, \
                              "Member does not exist.")
-        return redirect('sportsrec:user_members')
+        return redirect('sportsrec:members')
 
     member = member[0]
     
     if not member.owner == request.user and not is_admin(request.user):
         messages.add_message(request, messages.ERROR, \
                              "You can't edit a member you didn't create.")
-        return redirect('sportsrec:user_members')
+        return redirect('sportsrec:members')
 
     context = {
         'created' : False,
         'name' : 'member details',
-        'view' : 'sportsrec:user_member_edit',
-        'delete_view' : 'sportsrec:user_member_delete',
+        'view' : 'sportsrec:member_edit',
+        'delete_view' : 'sportsrec:member_delete',
         'delete_text' : 'this member',
         'pk' : pk,
         'submit' : 'Edit'
@@ -179,23 +179,23 @@ def user_member_edit(request, pk):
     return render(request, 'sportsrec/add_edit.html', context)
 
 @login_required
-def user_member_delete(request, pk):
+def member_delete(request, pk):
     member = Member.objects.filter(pk=pk)
     if not member.exists():
         messages.add_message(request, messages.ERROR, \
                              "Member does not exist.")
-        return redirect('sportsrec:user_members')
+        return redirect('sportsrec:members')
 
     member = member[0]
     
     if not member.owner == request.user and not is_admin(request.user):
         messages.add_message(request, messages.ERROR, \
                              "You can't delete a member you didn't create.")
-        return redirect('sportsrec:user_members')
+        return redirect('sportsrec:members')
     
     context = {
         'name' : "member: '%s'" % member,
-        'view' : 'sportsrec:user_member_delete',
+        'view' : 'sportsrec:member_delete',
         'pk' : pk,
         'form' : DeleteForm(),
         'submit' : 'Submit'
@@ -208,7 +208,7 @@ def user_member_delete(request, pk):
                 member.delete()
                 messages.add_message(request, messages.INFO, \
                              "Member deleted successfully!")
-        return redirect('sportsrec:user_members')
+        return redirect('sportsrec:members')
     
     return render(request, 'sportsrec/delete.html', context)
 
@@ -219,9 +219,18 @@ def club_add(request):
 		'view' : 'sportsrec:club_add',
 		'submit' : 'Add'
 	}
+
+        if not is_admin(request.user):
+            members = Member.objects.filter(owner=request.user)
+            if not members.exists():
+                messages.add_message(request, messages.ERROR, \
+                             "You must create a member before adding a club.")
+                return redirect('sportsrec:member_add')
+        else:
+            members=  Member.objects.all()
 	
 	if request.method == "POST":
-		form = ClubForm(request.POST)
+		form = ClubForm(request.POST, members=members)
 		if form.is_valid():
 			club = form.save()
 			owner = Membership.objects.create(member=form.cleaned_data['owner'],club=club)
@@ -233,7 +242,7 @@ def club_add(request):
 								 "Club successfully created!")
 			return redirect('sportsrec:index')
 	else:
-		form = ClubForm()
+		form = ClubForm(members=members)
 
 	context['form'] = form
 
@@ -245,9 +254,10 @@ class LoginRequiredMixin(object):
         return super(LoginRequiredMixin, self).\
                dispatch(request, *args, **kwargs)
 
-class UserMemberView(LoginRequiredMixin, generic.ListView):
-    template_name = 'sportsrec/user_members.html'
-    context_object_name = 'user_members'
+class MemberList(LoginRequiredMixin, generic.ListView):
+    template_name = 'sportsrec/member_list.html'
+    context_object_name = 'members'
+    paginate_by = 15 #15 members per page
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -260,6 +270,25 @@ class UserMemberView(LoginRequiredMixin, generic.ListView):
             return Member.objects.all()
         return Member.objects.filter(owner=self.request.user)
 
+class MembershipList(LoginRequiredMixin, generic.ListView):
+    template_name = 'sportsrec/membership_list.html'
+    context_object_name = 'membership_list'
+    paginate_by = 2 #15 members per page
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['admin'] = is_admin(self.request.user)
+        return context
+
+    def get_queryset(self):
+        if is_admin(self.request.user):
+            return Membership.objects.all()
+        return Membership.objects.filter(member__owner=self.request.user)
+
+def membership_edit(request, pk):
+    return redirect('sportsrec:index')
+
 class TotalStats(generic.TemplateView):
     def get_user_stats(self, stats):
         #needed at all? performance? urgh
@@ -269,12 +298,12 @@ class TotalStats(generic.TemplateView):
         try:
             meta = UserMeta.objects.get(user=self.request.user)
         except UserMeta.DoesNotExist:
-            stats['user_member_count'] = 0
-            stats['user_membership_count'] = 0
+            stats['member_count'] = 0
+            stats['membership_count'] = 0
             stats['user_club_count'] = 0
         else:
-            stats['user_member_count'] = meta.member_count
-            stats['user_membership_count'] = meta.membership_count
+            stats['member_count'] = meta.member_count
+            stats['membership_count'] = meta.membership_count
             stats['user_club_count'] = meta.club_count
 
     def get_context_data(self, **kwargs):
@@ -296,6 +325,7 @@ class Index(TotalStats):
 class ClubList(generic.ListView):
     template_name = 'sportsrec/club_list.html'
     context_object_name = 'club_list'
+    paginate_by = 15 #15 clubs/page
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

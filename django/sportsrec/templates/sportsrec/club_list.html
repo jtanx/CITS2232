@@ -1,19 +1,19 @@
 {% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:club_list' %}
 
 {% block main %}
 <div class="widget">
   <div class="title centre">All Clubs</div>
   {% if club_list %}
+  {% include 'sportsrec/paginate.html' %}
   <table class="centre">
     <thead>
       <tr class="header">
       	<th>ID</th>
         <th>Name</th>
-        <th>Address</th>
         <th>Type</th>
         <th>No. Members</th>
         <th>Date Created</th>
-        <th>Owner</th>
         <th>Contact</th>
         <th>Facebook</th>
         <th>Twitter</th>
@@ -22,17 +22,17 @@
     <tbody>
       {% for club in club_list %}
       <tr class="clickable" href="{% url 'sportsrec:club_detail' pk=club.id %}">
-        <td class="clickable">
+        <td class="menu-hilight">
           <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
           {{club.id}}
           </a>
         </td>
     	<td>{{club.name}}</td>
-        <td>{{club.address}}</td>
+        <!--<td>{{club.address}}</td>-->
         <td>{{club.type}}</td>
         <td>{{club.member_count}}</td>
         <td>{{club.created}}</td>
-        <td>{{club.owner}}</td>
+        <!--<td>{{club.owner}}</td>-->
         <td>{{club.contact}}</td>
         <td>{{club.facebook}}</td>
         <td>{{club.twitter}}</td>
@@ -47,6 +47,9 @@
       window.document.location = $(this).attr("href");
     });
   </script>
+  
+  {% include 'sportsrec/paginate.html' %}
+  
   {% else %}
   <p>There are no clubs.</p>
   {% endif %}
@@ -56,3 +59,5 @@
   </div>
 </div>
 {% endblock %}
+
+{% endwith %}

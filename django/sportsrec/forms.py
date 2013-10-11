@@ -143,10 +143,15 @@ class DeleteForm(Form):
     confirm = forms.BooleanField()
     
 class ClubForm(ModelForm):
+    '''Club add/edit form. Requires member queryset.'''
+    
     def __init__(self, *args, **kwargs):
-       super(ClubForm, self).__init__(*args, **kwargs)
-       self.fields['foo'].value = 'bar'
-       
+        member_queryset = kwargs.pop('members')
+        super(ClubForm, self).__init__(*args, **kwargs)
+        self.fields['owner'].queryset = member_queryset
+        self.fields['owner'].required = True
+        self.fields['contact'].queryset = member_queryset
+    
     class Meta:
             model=Club
             fields=['name','owner','address','location','tags','type','recruiting','contact',

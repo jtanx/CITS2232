@@ -70,7 +70,15 @@ div.centre.sub-title {
 }
 
 .large {
-  font-size: 130%;
+  font-size: 130% !important;
+}
+
+.normal {
+  font-size: inherit !important;
+}
+
+.small {
+  font-size: 80% !important;
 }
 
 table {
@@ -105,13 +113,12 @@ tr {
   border-bottom: 1px solid #ccc;
 }
 
-
-td.clickable:hover {
+.menu-hilight:hover, .clickable:hover .menu-hilight {
   background: #2580a2 url('hover.gif') left center no-repeat;
   color: white;
 }
 
-td.clickable:hover a {
+.menu-hilight:hover a, .clickable:hover .menu-hilight a {
   color: #184F63;
 }
 
@@ -240,6 +247,7 @@ input[type="text"]:focus, input[type="password"]:focus {
   overflow: auto;
   padding-left: 2em;
   min-width: 400px;
+  transition: all 0.2s ease 0s;
 }
 
 .sub-title {

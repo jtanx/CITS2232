@@ -9,13 +9,17 @@ urlpatterns = patterns('',
     url(r'^logout$', views.logout_user, name='logout'),
     url(r'^register$', views.register, name='register'),
     url(r'^user/profile$', views.user_profile, name='user_profile'),
-    url(r'^user/members$', views.UserMemberView.as_view(), name='user_members'),
-    url(r'^user/member/add$', views.user_member_add, name='user_member_add'),
-    url(r'^user/member/edit/(?P<pk>\d+)$', views.user_member_edit, \
-        name='user_member_edit'),
-    url(r'^user/member/delete/(?P<pk>\d+)$', views.user_member_delete, \
-        name='user_member_delete'),
+    url(r'^user/members$', views.MemberList.as_view(), name='members'),
+    url(r'^user/member/add$', views.member_add, name='member_add'),
+    url(r'^user/member/edit/(?P<pk>\d+)$', views.member_edit, \
+        name='member_edit'),
+    url(r'^user/member/delete/(?P<pk>\d+)$', views.member_delete, \
+        name='member_delete'),
     url(r'^club/add$', views.club_add, name='club_add'),
     url(r'^club/list$', views.ClubList.as_view(), name='club_list'),
     url(r'^club/details/(?P<pk>\d+)$', views.club_detail, name='club_detail'),
+    url(r'^memberships/list$', views.MembershipList.as_view(), \
+        name='membership_list'),
+    url(r'^membership/edit/(?P<pk>\d+)$', views.membership_edit, \
+        name='membership_edit'),
 )

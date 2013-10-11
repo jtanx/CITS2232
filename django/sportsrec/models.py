@@ -16,7 +16,7 @@ class Member(models.Model):
     owner = models.ForeignKey(User)
     
     def __unicode__(self):
-        return '%s %s' % (self.first_name, self.last_name)
+        return '%s %s (%s)' % (self.first_name, self.last_name, self.email)
 
 class ClubTag(models.Model):
     name = models.CharField(max_length=40)
