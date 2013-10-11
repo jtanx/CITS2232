@@ -144,7 +144,7 @@ class DeleteForm(Form):
     
 class ClubForm(ModelForm):
     def __init__(self, *args, **kwargs):
-       super(PersonForm, self).__init__(*args, **kwargs)
+       super(ClubForm, self).__init__(*args, **kwargs)
        self.fields['foo'].value = 'bar'
        
     class Meta:

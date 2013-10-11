@@ -53,7 +53,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('sportsrec:index')
-    
+
 def register(request):
     if request.user.is_authenticated():
         return redirect('sportsrec:index')
@@ -219,13 +219,9 @@ def club_add(request):
 		'view' : 'sportsrec:club_add',
 		'submit' : 'Add'
 	}
-
-        initial = {}
-        initial['owner'] = Member.objects.filter(owner=request.user)
-        initial['contact'] = initial['owner']
 	
 	if request.method == "POST":
-		form = ClubForm(request.POST, initial=initial)
+		form = ClubForm(request.POST)
 		if form.is_valid():
 			club = form.save()
 			owner = Membership.objects.create(member=form.cleaned_data['owner'],club=club)
@@ -234,7 +230,7 @@ def club_add(request):
 								 "Club successfully created!")
 			return redirect('sportsrec:index')
 	else:
-		form = ClubForm(initial=initial)
+		form = ClubForm()
 
 	context['form'] = form
 
@@ -293,38 +289,7 @@ class Index(TotalStats):
     template_name='sportsrec/index.html'
     context_object_name='index'
 
-def create_club(request):
-    if request.method == "POST":
-        form = ClubForm(request.POST)
-        if form.is_valid():
-        	club = form
-        	club.owner = request.user
-        	try:
-        		club.contact = request.user.contact
-        	except AttributeError:
-        		club.contact = Contact(email='no-contact@badclub.com')
-        	club.save()
-        	club.full_clean()
-        	return redirect('sportsrec:index')
-    else:
-    	form = ClubForm()
-    return render(request, 'sportsrec/create_club.html', {'form': form})
-    
-def edit_contact(request):
-	try:
-		instance = request.user.contact
-	except AttributeError:
-		request.user.contact = Contact(email='no-reply@uwa.edu.au')
-		instance = request.user.contact
-	if request.method == "POST":
-		form = ContactForm(request.POST, instance = instance)
-		if form.is_valid():
-			contact = form.save()
-			return redirect('.')
-	else:
-		form = ContactForm(instance = instance)
-	return render(request, 'sportsrec/edit_contact.html', {'form': form})
-	
+
 class ClubList(generic.ListView):
     template_name = 'sportsrec/club_list.html'
     context_object_name = 'club_list'
