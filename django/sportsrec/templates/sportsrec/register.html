@@ -5,6 +5,19 @@
 {% endblock %}
 
 {% block content %}
+{# Override the main content #}
+
+{% if thanks %}
+
+<div class="form-container">
+  <div class="widget centre">
+    <div class="title centre">Thanks</div>
+    Thanks for registering, {{name}}!<br>
+    Click <a href="{% url 'sportsrec:index' %}">here</a> to continue!
+  </div>
+</div>
+
+{% else %}
 
 <div class="form-container widget">
   <div class="title centre">Registration form</div>
@@ -32,5 +45,7 @@
       </div>
   </form>
 </div>
+
+{% endif %}
 
 {% endblock %}

@@ -54,14 +54,9 @@
     <div id="content">
       {% block sidebar %}
       <div id="sidebar">
-        <div class="widget nav-menu">
+        <div class="nav-menu widget">
           <ul>
             <li><a href="{% url 'sportsrec:index' %}">Home</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="#">User profile</a></li>
-            <li><a href="{% url 'sportsrec:edit_contact' %}">Contact Details</a></li>
-            {% endif %}
-            <li><a href="{% url 'sportsrec:create_club' %}">Create a Club</a></li>
             <li><a href="#">Club list</a></li>
             <li><a href="#">Club search</a></li>
             {% block sidebar-user-menu %}
@@ -69,11 +64,55 @@
             <li><a href="#">Statistics</a></li>
           </ul>
         </div>
+        
+        {% if user.is_authenticated %}
+        <div class="nav-menu widget">
+          <ul>
+            <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
+            <li><a href="{% url 'sportsrec:user_members' %}">Manage members</a></li>
+            <li><a href="#">Manage memberships</a></li>
+            <li><a href="#">Manage clubs</a></li>
+            <li><a href="{% url 'sportsrec:club_add' %}">Add a club</a></li>
+          </ul>
+        </div>
+        
+        {% endif %}
+        
         {% block sidebar-content %}
       {% endblock %}
       </div>
       {% endblock %}
+      
+      {% block pre-content %}
+      {% endblock %}
+      
       {% block content %}
+      <div id="main">
+        {% if messages %}
+          <div class="widget dismiss-container">
+            <div class="dismiss topright">
+              <a href="#">Dismiss</a>
+            </div>
+            
+            <div class="title centre">Notifications</div>
+            {% for message in messages %}
+              <p {% if message.tags %} class="large {{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+          </div>
+        
+          <script type="text/javascript">
+            $(".dismiss").click(function() {
+              $(".dismiss-container").css("display", "none");
+            })
+          </script>
+        {% endif %}
+        
+        {% block main %}
+        {% endblock %}
+      </div>
+      {% endblock%}
+      
+      {% block post-content %}
       {% endblock %}
     </div>
   </body>

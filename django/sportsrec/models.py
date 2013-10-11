@@ -1,71 +1,176 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib import admin
-import datetime
+from django.db.models.signals import pre_save, post_save, post_delete
+from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
-#Contact must be before User so the foreign key constraint is generated
-class Contact(models.Model):
-    '''Public contact details'''
-    email = models.CharField(max_length=40)
+class Member(models.Model):
+    first_name = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=40)
+    email = models.EmailField()
     address = models.CharField(max_length=255, blank=True, null=True)
     facebook = models.CharField(max_length=40, blank=True, null=True)
     twitter = models.CharField(max_length=40, blank=True, null=True)
     phone = models.CharField(max_length=40, blank=True, null=True)
-    fax = models.CharField(max_length=40, blank=True, null=True)
-	
-    def __unicode__(self):
-        '''
-            #is this allowed? id is not defined above but it will be...
-            "There's no way to tell what the value of an ID will be before you call save(), 
-            because that value is calculated by your database, not by Django."
-
-            http://stackoverflow.com/questions/14234917/django-how-to-get-self-id-when-saving-a-new-object
-        '''
-        return '%s' % (self.email)
-
-
-class SiteUser(models.Model):
-    user = models.OneToOneField(User)
-    contact = models.OneToOneField('Contact', null=True)
-    
-    def __unicode__(self):
-        return '%s <%s>' % (self.user.username, self.contact.email)
-    	
-class Member(models.Model):
-    lastname = models.CharField(max_length=40)
-    firstname = models.CharField(max_length=40)
     interests = models.CharField(max_length=255, blank=True, null=True)
-    owner = models.ForeignKey('SiteUser')
-    contact = models.OneToOneField('Contact', null=False)
+    owner = models.ForeignKey(User)
     
     def __unicode__(self):
-        return '%s %s' % (self.firstname, self.lastname)
-		
+        return '%s %s' % (self.first_name, self.last_name)
+
+class ClubTag(models.Model):
+    name = models.CharField(max_length=40)
+
+    def __unicode__(self):
+        return '%s' % (self.name)
+
+class ClubType(models.Model):
+    name = models.CharField(max_length=40, unique=True)
+    description = models.CharField(max_length=255)
+    club_count = models.IntegerField(default=0)
+
+    @staticmethod
+    def club_created(sender, instance, created, **kwargs):
+        '''Auto increments the club count for a club type
+           when a club is created'''
+        if created and instance.type:
+            instance.type.club_count += 1
+            instance.type.save()
+
+    @staticmethod
+    def club_updated(sender, instance,  **kwargs):
+        '''Auto updates club counts if a club type is changed'''
+        if instance.pk:
+            old_info = Club.objects.get(pk=instance.pk)
+            if old_info.type != instance.type:
+                if old_info.type:
+                    old_info.type.club_count -= 1
+                    old_info.type.save()
+                if instance.type:
+                    instance.type.club_count += 1
+                    instance.type.save()
+
+    @staticmethod
+    def club_deleted(sender, instance, **kwargs):
+        '''Auto updates club count when clubs are deleted'''
+        if instance.type:
+            instance.type.club_count -= 1
+            instance.type.save()
+
+    def __unicode__(self):
+        return '%s' % (self.name)
+
 class Club(models.Model):
     name = models.CharField(max_length=40, unique=True)
-    type = models.CharField(max_length=40, blank=True, null=True)
+    address = models.CharField(max_length=255)
     location = models.CharField(max_length=40, blank=True, null=True)
-    membercount = models.IntegerField()
-    created = models.DateField()
+
+    tags = models.ManyToManyField(ClubTag, blank=True, null=True)
+    type = models.ForeignKey(ClubType)
+    member_count = models.IntegerField(default=1)
+    created = models.DateField(default=datetime.now)
     recruiting = models.BooleanField(default=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
-    owner = models.ForeignKey('SiteUser', null=True, blank=True)
-    contact = models.OneToOneField('Contact', null=True, blank=True)
+    contact = models.ForeignKey(Member, blank=True, null=True,\
+                                on_delete=models.SET_NULL,related_name='member_contact')
+    description = models.CharField(max_length=255)
+    facebook = models.CharField(max_length=40, blank=True, null=True)
+    twitter = models.CharField(max_length=40, blank=True, null=True)
+    owner = models.ForeignKey('Member',on_delete=models.SET_NULL, null=True, blank=True,\
+    							related_name='member_owner')
     
     def __unicode__(self):
         return '%s' % (self.name)
-        
-    def clean(self):
-    	self.created = datetime.date.today()
-    	self.membercount = 0
 
 class Membership(models.Model):
-    joined = models.DateField()
-    lastpaid = models.DateField(blank=True, null=True)
+    joined = models.DateField(default=datetime.now)
+    last_paid = models.DateField(blank=True, null=True)
     member = models.ForeignKey('Member')
     club = models.ForeignKey('Club')
+
+    class Member:
+        unique_together = (("member", "club"),)
 	
     def __unicode__(self):
         return '%s belongs to %s' % (self.member, self.club)
-	
-	
+
+class UserMeta(models.Model):
+    #Needed? I dunno. maybe remove
+    user = models.ForeignKey(User)
+    member_count = models.IntegerField(default=0)
+    membership_count = models.IntegerField(default=0)
+    club_count = models.IntegerField(default=0)
+'''
+    @staticmethod
+    def member_created(sender, instance, created, **kwargs):
+        if created:
+            meta, created = UserMeta.objects.get_or_create(user=instance.owner)
+            meta.member_count += 1
+            meta.save()
+
+    @staticmethod
+    def member_deleted(sender, instance, **kwargs):
+        try:
+            meta = UserMeta.objects.get(user=instance.owner)
+        except ObjectDoesNotExist:
+            return
+        
+        meta.member_count -= 1
+        meta.save()
+
+    @staticmethod
+    def membership_created(sender, instance, created, **kwargs):
+        if created:
+            user = instance.member.owner
+            meta, created = UserMeta.objects.get_or_create(user=user)
+            meta.membership_count += 1
+            meta.save()
+
+    @staticmethod
+    def membership_deleted(sender, instance, **kwargs):
+        try:
+            user = instance.member.owner
+            meta = UserMeta.objects.get(user=user)
+        except ObjectDoesNotExist:
+            return
+
+        meta.membership_count -= 1
+        meta.save()
+
+    @staticmethod
+    def club_created(sender, instance, created, **kwargs):
+        if created:
+            meta, created = UserMeta.objects.get_or_create(user=instance.owner)
+            meta.club_count += 1
+            meta.save()
+
+    @staticmethod
+    def club_updated(sender, instance,  **kwargs):
+        if instance.pk:
+            old_info = Club.objects.get(pk=instance.pk)
+            if old_info.owner != instance.owner:
+                UserMeta.club_created(sender, instance, True)
+                UserMeta.club_deleted(sender, old_info)
+
+    @staticmethod
+    def club_deleted(sender, instance, **kwargs):
+        try:
+            meta = UserMeta.objects.get(user=instance.owner)
+        except ObjectDoesNotExist:
+            return
+
+        meta.club_count -= 1
+        meta.save()
+'''
+#For club counting by type
+post_save.connect(ClubType.club_created, sender=Club)
+pre_save.connect(ClubType.club_updated, sender=Club)
+post_delete.connect(ClubType.club_deleted, sender=Club)
+#For keeping track of user stats. May not be needed
+'''post_save.connect(UserMeta.member_created, sender=Member)
+post_delete.connect(UserMeta.member_deleted, sender=Member)
+post_save.connect(UserMeta.membership_created, sender=Membership)
+post_delete.connect(UserMeta.membership_deleted, sender=Membership)
+post_save.connect(UserMeta.club_created, sender=Club)
+pre_save.connect(UserMeta.club_updated, sender=Club)
+post_delete.connect(UserMeta.club_deleted, sender=Club)'''
+        

@@ -1,0 +1,4 @@
+Call:
+python manage.py syncdb
+python manage.py loaddata clubgroup.json
+python manage.py loaddata clubtype.json

@@ -1,0 +1,56 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">Administered members</div>
+  {% if user_members %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+        <th>ID</th>
+        {% if admin %}
+        <th>Owner</td>
+        {% endif %}
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Interests</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for member in user_members %}
+      <tr>
+        <td class="clickable" href="{% url 'sportsrec:user_member_edit' pk=member.id %}">
+          <a href="{% url 'sportsrec:user_member_edit' pk=member.id %}">
+          {{member.id}}
+          </a>
+        </td>
+        {% if admin %}
+        <td>
+          {{member.owner}}
+        </td>
+        {% endif %}
+        <td>{{member.first_name}}</td>
+        <td>{{member.last_name}}</td>
+        <td>{{member.email}}</td>
+        <td style="max-width:200px;">{{member.interests}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+    //Make rows clickable
+    $(".clickable").click(function() {
+      window.document.location = $(this).attr("href");
+    });
+  </script>
+  {% else %}
+  <p>You don't own or administer any members.</p>
+  {% endif %}
+
+  <div class="sub-title centre">
+    Add a <a href="{% url 'sportsrec:user_member_add' %}">new member</a>.
+  </div>
+</div>
+{% endblock %}

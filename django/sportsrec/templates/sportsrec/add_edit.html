@@ -1,0 +1,63 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+  <div class="form-small">
+    <div class="title centre">
+      {% if created %}
+        Add a
+      {% else %}
+        Edit
+      {% endif %}
+
+      {{ name }}
+    </div>
+
+    <form method="post" 
+          {% if pk %} action="{% url view pk=pk  %}" 
+          {% else %} action="{% url view %}" {% endif %} 
+    >
+      {% csrf_token %}
+      {# Include the hidden fields #}
+      {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+      {% endfor %}
+      {# Include the visible fields #}
+      {% for field in form.visible_fields %}
+          <div class="fieldWrapper">
+            {% if field.field.required %}
+              <b>{{ field.label_tag }}</b>
+            {% else %}
+              {{ field.label_tag }}
+            {% endif %}
+            <br>
+            {{ field }}
+            {% for error in field.errors %}
+            <div class="fail">{{ error|escape }}</div>
+            {% endfor %}
+          </div>
+      {% endfor %}
+      <p style="float:right; margin:0;">
+         <input type="submit" value="{{ submit }}">
+      </p>
+
+      <div id="result">
+        <div class="fail">
+          {{ form.non_field_errors }}
+          {{ fail }}
+        </div>
+        <div class="pass">
+          {{ pass }}
+        </div>
+      </div>
+  </form>
+  </div>
+  
+  {% if delete_view %}
+  <div class="large centre clear">
+    Delete <a href="{% url delete_view pk=pk %}">{{delete_text}}</a>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

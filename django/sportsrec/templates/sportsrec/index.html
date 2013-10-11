@@ -1,22 +1,22 @@
 {% extends "sportsrec/base.html" %}
 
 {% block sidebar-content %}
-<div class="widget">
-  <div class="title">Status</div>
-  <div class="item">
-
-  </div>         
-</div>
+{% if user.is_authenticated %}
+<!--Nothing here for now-->
+{% endif %}
 <!-- End sidebar -->
 {% endblock %}
 
-{% block content %}
+{% block main %}
 
-<div id="main">
-  <div class="widget">
-    <div class="title">Dashboard</div>
-  </div>
+<div class="widget">
+  <div class="title">Dashboard</div>
+  You own or administer:
+  <ul>
+    <li>{{stats.user_member_count}} member(s)</li>
+    <li>{{stats.user_membership_count}} membership(s)</li>
+    <li>{{stats.user_club_count}} club(s)</li>
+  </ul>
 </div>
-<!-- End main content -->
 
 {% endblock %}
