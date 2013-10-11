@@ -69,13 +69,14 @@ class Club(models.Model):
     type = models.ForeignKey(ClubType)
     member_count = models.IntegerField(default=1)
     created = models.DateField(default=datetime.now)
-    recruiting = models.BooleanField(default=False)
+    recruiting = models.BooleanField(default=True)
     contact = models.ForeignKey(Member, blank=True, null=True,\
-                                on_delete=models.SET_NULL)
+                                on_delete=models.SET_NULL,related_name='member_contact')
     description = models.CharField(max_length=255)
     facebook = models.CharField(max_length=40, blank=True, null=True)
     twitter = models.CharField(max_length=40, blank=True, null=True)
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey('Member',on_delete=models.SET_NULL, null=True, blank=True,\
+    							related_name='member_owner')
     
     def __unicode__(self):
         return '%s' % (self.name)
@@ -98,7 +99,7 @@ class UserMeta(models.Model):
     member_count = models.IntegerField(default=0)
     membership_count = models.IntegerField(default=0)
     club_count = models.IntegerField(default=0)
-
+'''
     @staticmethod
     def member_created(sender, instance, created, **kwargs):
         if created:
@@ -144,7 +145,6 @@ class UserMeta(models.Model):
 
     @staticmethod
     def club_updated(sender, instance,  **kwargs):
-        '''Auto updates club counts if a club type is changed'''
         if instance.pk:
             old_info = Club.objects.get(pk=instance.pk)
             if old_info.owner != instance.owner:
@@ -160,17 +160,17 @@ class UserMeta(models.Model):
 
         meta.club_count -= 1
         meta.save()
-
+'''
 #For club counting by type
 post_save.connect(ClubType.club_created, sender=Club)
 pre_save.connect(ClubType.club_updated, sender=Club)
 post_delete.connect(ClubType.club_deleted, sender=Club)
 #For keeping track of user stats. May not be needed
-post_save.connect(UserMeta.member_created, sender=Member)
+'''post_save.connect(UserMeta.member_created, sender=Member)
 post_delete.connect(UserMeta.member_deleted, sender=Member)
 post_save.connect(UserMeta.membership_created, sender=Membership)
 post_delete.connect(UserMeta.membership_deleted, sender=Membership)
 post_save.connect(UserMeta.club_created, sender=Club)
 pre_save.connect(UserMeta.club_updated, sender=Club)
-post_delete.connect(UserMeta.club_deleted, sender=Club)
+post_delete.connect(UserMeta.club_deleted, sender=Club)'''
         

@@ -212,8 +212,29 @@ def user_member_delete(request, pk):
     
     return render(request, 'sportsrec/delete.html', context)
 
+@login_required
 def club_add(request):
-    return redirect('sportsrec:index')
+	context = {
+		'created' : True, 'name' : 'club',
+		'view' : 'sportsrec:club_add',
+		'submit' : 'Add'
+	}
+	
+	if request.method == "POST":
+		form = ClubForm(request.POST)
+		if form.is_valid():
+			club = form.save()
+			owner = Membership.objects.create(member=form.cleaned_data['owner'],club=club)
+			contact = Membership.objects.create(member=form.cleaned_data['contact'],club=club)
+			messages.add_message(request, messages.INFO, \
+								 "Club successfully created!")
+			return redirect('sportsrec:index')
+	else:
+		form = ClubForm()
+
+	context['form'] = form
+
+	return render(request, 'sportsrec/add_edit.html', context)
 
 class LoginRequiredMixin(object):
     @method_decorator(login_required)
