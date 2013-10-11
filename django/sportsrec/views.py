@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.contrib import messages
+from sportsrec.admin import is_admin
 
 '''
 For validators
@@ -142,8 +143,15 @@ def user_member_add(request):
 
 @login_required
 def user_member_edit(request, pk):
-    member = Member.objects.filter(pk=pk, owner=request.user)
+    member = Member.objects.filter(pk=pk)
     if not member.exists():
+        messages.add_message(request, messages.ERROR, \
+                             "Member does not exist.")
+        return redirect('sportsrec:user_members')
+
+    member = member[0]
+    
+    if not member.owner == request.user and not is_admin(request.user):
         messages.add_message(request, messages.ERROR, \
                              "You can't edit a member you didn't create.")
         return redirect('sportsrec:user_members')
@@ -159,12 +167,12 @@ def user_member_edit(request, pk):
     }
 
     if request.method == "POST":
-        form = MemberForm(request.POST, instance = member[0])
+        form = MemberForm(request.POST, instance = member)
         if form.is_valid():
             form.save()
             context['pass'] = "Updated successfully!"
     else:
-        form = MemberForm(instance = member[0])
+        form = MemberForm(instance = member)
 
     context['form'] = form
 
@@ -172,13 +180,19 @@ def user_member_edit(request, pk):
 
 @login_required
 def user_member_delete(request, pk):
-    member = Member.objects.filter(pk=pk, owner=request.user)
+    member = Member.objects.filter(pk=pk)
     if not member.exists():
         messages.add_message(request, messages.ERROR, \
-                             "You can't delete a member you didn't create.")
+                             "Member does not exist.")
         return redirect('sportsrec:user_members')
 
     member = member[0]
+    
+    if not member.owner == request.user and not is_admin(request.user):
+        messages.add_message(request, messages.ERROR, \
+                             "You can't delete a member you didn't create.")
+        return redirect('sportsrec:user_members')
+    
     context = {
         'name' : "member: '%s'" % member,
         'view' : 'sportsrec:user_member_delete',
@@ -208,7 +222,15 @@ class UserMemberView(LoginRequiredMixin, generic.ListView):
     template_name = 'sportsrec/user_members.html'
     context_object_name = 'user_members'
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['admin'] = is_admin(self.request.user)
+        return context
+
     def get_queryset(self):
+        if is_admin(self.request.user):
+            return Member.objects.all()
         return Member.objects.filter(owner=self.request.user)
 
 class TotalStats(generic.TemplateView):

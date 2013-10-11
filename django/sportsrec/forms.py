@@ -5,14 +5,12 @@ from sportsrec.models import *
 from django.contrib.auth import authenticate
 import re
 
-
 class LoginForm(Form):
     '''A login form'''
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
     next_location = forms.CharField(required=False, widget=forms.HiddenInput)
     
-
 class RegistrationForm(Form):
     '''A registration form'''
     username = forms.CharField(max_length=30)

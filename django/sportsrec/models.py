@@ -18,15 +18,14 @@ class Member(models.Model):
     def __unicode__(self):
         return '%s %s' % (self.first_name, self.last_name)
 
-class ClubGroup(models.Model):
-    name = models.CharField(max_length=40, unique=True)
-    description = models.CharField(max_length=255)
+class ClubTag(models.Model):
+    name = models.CharField(max_length=40)
+
     def __unicode__(self):
-        return '%s (%s)' % (self.name, self.description)
+        return '%s' % (self.name)
 
 class ClubType(models.Model):
-    group = models.ForeignKey(ClubGroup)
-    sub_type = models.CharField(max_length=40, unique=True)
+    name = models.CharField(max_length=40, unique=True)
     description = models.CharField(max_length=255)
     club_count = models.IntegerField(default=0)
 
@@ -59,13 +58,14 @@ class ClubType(models.Model):
             instance.type.save()
 
     def __unicode__(self):
-        return '%s (%s)' % (self.sub_type, self.group.name)
+        return '%s' % (self.name)
 
 class Club(models.Model):
     name = models.CharField(max_length=40, unique=True)
     address = models.CharField(max_length=255)
     location = models.CharField(max_length=40, blank=True, null=True)
 
+    tags = models.ManyToManyField(ClubTag, blank=True, null=True)
     type = models.ForeignKey(ClubType)
     member_count = models.IntegerField(default=1)
     created = models.DateField(default=datetime.now)
@@ -97,6 +97,7 @@ class Membership(models.Model):
         return '%s belongs to %s' % (self.member, self.club)
 
 class UserMeta(models.Model):
+    #Needed? I dunno. maybe remove
     user = models.ForeignKey(User)
     member_count = models.IntegerField(default=0)
     membership_count = models.IntegerField(default=0)

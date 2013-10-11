@@ -8,6 +8,9 @@
     <thead>
       <tr class="header">
         <th>ID</th>
+        {% if admin %}
+        <th>Owner</td>
+        {% endif %}
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
@@ -22,6 +25,11 @@
           {{member.id}}
           </a>
         </td>
+        {% if admin %}
+        <td>
+          {{member.owner}}
+        </td>
+        {% endif %}
         <td>{{member.first_name}}</td>
         <td>{{member.last_name}}</td>
         <td>{{member.email}}</td>
