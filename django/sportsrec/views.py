@@ -219,9 +219,13 @@ def club_add(request):
 		'view' : 'sportsrec:club_add',
 		'submit' : 'Add'
 	}
+
+        initial = {}
+        initial['owner'] = Member.objects.filter(owner=request.user)
+        initial['contact'] = initial['owner']
 	
 	if request.method == "POST":
-		form = ClubForm(request.POST)
+		form = ClubForm(request.POST, initial=initial)
 		if form.is_valid():
 			club = form.save()
 			owner = Membership.objects.create(member=form.cleaned_data['owner'],club=club)
@@ -230,7 +234,7 @@ def club_add(request):
 								 "Club successfully created!")
 			return redirect('sportsrec:index')
 	else:
-		form = ClubForm()
+		form = ClubForm(initial=initial)
 
 	context['form'] = form
 

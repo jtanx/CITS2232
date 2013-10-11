@@ -143,13 +143,17 @@ class DeleteForm(Form):
     confirm = forms.BooleanField()
     
 class ClubForm(ModelForm):
-	class Meta:
-		model=Club
-		fields=['name','owner','address','location','tags','type','recruiting','contact',
-				'facebook','twitter','description']
-		widgets = {
-            'description': Textarea(attrs={
-                'cols': 70, 'rows': 6,
-                'style' : 'width: 100%',
-                'maxlength' :  Club._meta.get_field('description').max_length}),
-        }
+    def __init__(self, *args, **kwargs):
+       super(PersonForm, self).__init__(*args, **kwargs)
+       self.fields['foo'].value = 'bar'
+       
+    class Meta:
+            model=Club
+            fields=['name','owner','address','location','tags','type','recruiting','contact',
+                            'facebook','twitter','description']
+            widgets = {
+        'description': Textarea(attrs={
+            'cols': 70, 'rows': 6,
+            'style' : 'width: 100%',
+            'maxlength' :  Club._meta.get_field('description').max_length}),
+    }
