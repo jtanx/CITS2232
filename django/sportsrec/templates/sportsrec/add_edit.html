@@ -10,7 +10,11 @@
         Edit
       {% endif %}
 
+      {% if detail_view %}
+      <a href="{% url detail_view pk=pk %}">{{ name }}</a>
+      {% else %}
       {{ name }}
+      {% endif %}
     </div>
 
     <form method="post" 

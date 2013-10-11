@@ -52,6 +52,10 @@ form.controls {
   float: right;
 }
 
+.narrow {
+  margin: 0.2em 0em;
+}
+
 div.centre {
   text-align: center;
   margin: auto;
@@ -87,6 +91,7 @@ table {
   border-collapse: collapse;
   word-wrap: break-word;
   line-height: 1.3em;
+  width: 100%;
 }
 
 table.centre {
@@ -94,8 +99,22 @@ table.centre {
   text-align: center;
 }
 
+table.horizontal {
+  line-height: 1.6em;
+}
+
+table.horizontal th {
+  border-right: 1px solid #ccc;
+  border-bottom: 0;
+  width: 10%;
+}
+
 td {
   padding: 0 1em;
+}
+
+.break {
+  word-break: break-all;
 }
 
 tr.header {

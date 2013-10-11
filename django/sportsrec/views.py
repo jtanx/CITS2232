@@ -114,6 +114,16 @@ def user_profile(request):
     context['form'] = form
     return render(request, 'sportsrec/add_edit.html', context)
 
+def member_detail(request, pk):
+    try:
+        member = Member.objects.get(pk=pk)
+    except Member.DoesNotExist:
+        messages.add_message(request, messages.ERROR, \
+                            "Member with that id does not exist.")
+        return redirect('sportsrec:index')
+
+    return render(request, 'sportsrec/member_detail.html', {'member' : member})
+
 @login_required
 def member_add(request):
     context = {
@@ -160,6 +170,7 @@ def member_edit(request, pk):
         'created' : False,
         'name' : 'member details',
         'view' : 'sportsrec:member_edit',
+        'detail_view' : 'sportsrec:member_detail',
         'delete_view' : 'sportsrec:member_delete',
         'delete_text' : 'this member',
         'pk' : pk,
@@ -248,6 +259,10 @@ def club_add(request):
 
 	return render(request, 'sportsrec/add_edit.html', context)
 
+@login_required
+def club_edit(request, pk):
+    return redirect('sportsrec:index')
+
 class LoginRequiredMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -273,7 +288,7 @@ class MemberList(LoginRequiredMixin, generic.ListView):
 class MembershipList(LoginRequiredMixin, generic.ListView):
     template_name = 'sportsrec/membership_list.html'
     context_object_name = 'membership_list'
-    paginate_by = 2 #15 members per page
+    paginate_by = 15 #15 members per page
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

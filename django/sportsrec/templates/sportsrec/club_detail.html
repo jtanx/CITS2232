@@ -1,46 +1,59 @@
 {% extends 'sportsrec/base.html' %}
 {% block main %}
-	<div class="widget">
-    <div class="title">Club Name: {{ club.name }}</div>
-    <p>
-        <strong>ID:</strong> {{ club.id }}
-    </p>
-    <p>
-        <strong>Address:</strong> {{ club.address }}
-    </p>
-    <p>
-        <strong>Location:</strong> {{ club.location }}
-    </p>
-    <p>
-        <strong>Tags:</strong> {{ club.tags }}
-    </p>
-    <p>
-        <strong>Type:</strong> {{ club.type }}
-    </p>
-    <p>
-        <strong>No. of Members:</strong> {{ club.member_count }}
-    </p>
-    <p>
-        <strong>Date Created:</strong> {{ club.created }}
-    </p>
-    <p>
-        <strong>Recruiting?:</strong> {{ club.recruiting }}
-    </p>
-    <p>
-        <strong>Contact:</strong> {{ club.contact }}
-    </p>
-    <p>
-        <strong>Owner:</strong> {{ club.owner }}
-    </p>
-    <p>
-        <strong>Facebook:</strong> {{ club.facebook }}
-    </p>
-    <p>
-        <strong>Twitter:</strong> {{ club.twitter }}
-    </p>
-    <p>
-        <strong>Description:</strong> 
-        <p>{{ club.description }}</p>
-    </p>
-    </div>
+  <div class="widget">
+    <div class="title centre">{{club.name}}</div>
+    <div class="large bold">Club details</div>
+    
+    <table class="horizontal">
+    <tr><th>Club ID</th><td>{{club.id}}</td></tr>
+    <tr><th>Address</th><td>{{club.address}}</td></tr>
+    <tr><th>Location</th><td>{{club.location}}</td></tr>
+    <tr>
+      <th>Tags</th>
+      <td>{%for tag in club.tags.all%}{{tag}}{% endfor %}</td>
+    </tr>
+    <tr><th>Type</th><td>{{club.type}}</td></tr>
+    <tr><th>Member count</th><td>{{club.member_count}}</td></tr>
+    <tr><th>Date created</th><td>{{club.created}}</td></tr>
+    <tr><th>Recruiting</th><td>{%if club.recruiting%}Yes{%else%}No{%endif%}</td></tr>
+    <tr><th>Contact</th><td>{{club.contact|default:''}}</td></tr>
+    <tr>
+      <th>Owner</th>
+      <td class="menu-hilight clickable">
+        <a href="{% url 'sportsrec:member_detail' pk=club.owner.id%}">
+           {{club.owner.first_name}} {{club.owner.last_name}}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <th>Facebook</th>
+      {% if club.facebook %}
+      <td class="clickable menu-hilight">
+        <a href="{{club.facebook}}">{{club.facebook}}</a>
+      </td>
+      {% else %}
+      <td></td>
+      {% endif %}
+    </tr>
+    <tr>
+      <th>Twitter</th>
+      {% if club.twitter %}
+      <td class="clickable menu-hilight">
+        <a href="{{club.twitter}}">{{club.twitter}}</a>
+      </td>
+      {% else %}
+      <td></td>
+      {% endif %}
+    </tr>
+    <tr><th>Description</th><td>{{club.description}}</td></tr>
+  </table>
+
+  {% ifequal club.owner.owner user %}
+  <div class="large centre bold">
+    <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+      Edit this club
+    </a>
+  </div>
+  {% endifequal %}
+  </div>
 {% endblock %}

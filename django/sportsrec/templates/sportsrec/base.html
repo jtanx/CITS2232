@@ -11,7 +11,14 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css">
     <script type="text/javascript">
       $(document).ready(function () {
-        //$("#menu-container").populateNavbar();
+        //make links clickable
+        $(".clickable").click(function () {
+          var href = $(this).attr("href");
+          href = (!href) ? ($(this).find("a").first().attr("href")) : href;
+          if (href) {
+            window.location = href;
+          }
+        });
       });
     </script>
   </head>

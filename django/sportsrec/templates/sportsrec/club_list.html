@@ -21,7 +21,7 @@
     </thead>
     <tbody>
       {% for club in club_list %}
-      <tr class="clickable" href="{% url 'sportsrec:club_detail' pk=club.id %}">
+      <tr class="clickable">
         <td class="menu-hilight">
           <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
           {{club.id}}
@@ -33,20 +33,13 @@
         <td>{{club.member_count}}</td>
         <td>{{club.created}}</td>
         <!--<td>{{club.owner}}</td>-->
-        <td>{{club.contact}}</td>
+        <td>{{club.contact | default:''}}</td>
         <td>{{club.facebook}}</td>
         <td>{{club.twitter}}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-
-  <script>
-    //Make rows clickable
-    $(".clickable").click(function() {
-      window.document.location = $(this).attr("href");
-    });
-  </script>
   
   {% include 'sportsrec/paginate.html' %}
   

@@ -1,0 +1,48 @@
+{% extends 'sportsrec/base.html' %}
+{% block main %}
+<div class="widget">
+  <div class="title centre">Member {{member.first_name}} {{member.last_name}}</div>
+  <div class="large bold">Contact details</div>
+  <table class="horizontal">
+    <tr>
+      <th>Email</th>
+      <td class="clickable menu-hilight">
+        <a href="mailto:{{member.email}}">{{member.email}}</a>
+      </td>
+    </tr>
+    <tr><th>Address</th><td>{{member.address}}</td></tr>
+    <tr>
+      <th>Facebook</th>
+      {% if member.facebook %}
+      <td class="clickable menu-hilight">
+        <a href="{{member.facebook}}">{{member.facebook}}</a>
+      </td>
+      {% else %}
+      <td></td>
+      {% endif %}
+    </tr>
+    <tr>
+      <th>Twitter</th>
+      {% if member.twitter %}
+      <td class="clickable menu-hilight">
+        <a href="{{member.twitter}}">{{member.twitter}}</a>
+      </td>
+      {% else %}
+      <td></td>
+      {% endif %}
+    </tr>
+    <tr><th>Phone</th><td>{{member.phone}}</td></tr>
+    <tr><th>Interests</th><td class="break">{{member.interests}}</td></tr>
+  </table>
+
+  {% ifequal member.owner user %}
+  <div class="large centre bold">
+    <a href="{% url 'sportsrec:member_edit' pk=member.id %}">
+      Edit this profile
+    </a>
+  </div>
+  {% endifequal %}
+  
+</div>
+
+{% endblock %}

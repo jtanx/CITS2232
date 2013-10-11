@@ -23,8 +23,8 @@
     <tbody>
       {% for member in members %}
       <tr>
-        <td class="clickable menu-hilight" href="{% url 'sportsrec:member_edit' pk=member.id %}">
-          <a href="{% url 'sportsrec:member_edit' pk=member.id %}">
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_detail' pk=member.id %}">
           {{member.id}}
           </a>
         </td>
@@ -41,13 +41,6 @@
       {% endfor %}
     </tbody>
   </table>
-
-  <script>
-    //Make rows clickable
-    $(".clickable").click(function() {
-      window.document.location = $(this).attr("href");
-    });
-  </script>
   
   {% include 'sportsrec/paginate.html' %}
   {% else %}
