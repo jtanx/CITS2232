@@ -80,10 +80,6 @@ class Club(models.Model):
     def __unicode__(self):
         return '%s' % (self.name)
 
-post_save.connect(ClubType.club_created, sender=Club)
-pre_save.connect(ClubType.club_updated, sender=Club)
-post_delete.connect(ClubType.club_deleted, sender=Club)
-
 class Membership(models.Model):
     joined = models.DateField(default=datetime.now)
     last_paid = models.DateField(blank=True, null=True)
@@ -165,6 +161,11 @@ class UserMeta(models.Model):
         meta.club_count -= 1
         meta.save()
 
+#For club counting by type
+post_save.connect(ClubType.club_created, sender=Club)
+pre_save.connect(ClubType.club_updated, sender=Club)
+post_delete.connect(ClubType.club_deleted, sender=Club)
+#For keeping track of user stats. May not be needed
 post_save.connect(UserMeta.member_created, sender=Member)
 post_delete.connect(UserMeta.member_deleted, sender=Member)
 post_save.connect(UserMeta.membership_created, sender=Membership)

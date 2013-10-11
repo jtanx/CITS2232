@@ -212,6 +212,9 @@ def user_member_delete(request, pk):
     
     return render(request, 'sportsrec/delete.html', context)
 
+def club_add(request):
+    return redirect('sportsrec:index')
+
 class LoginRequiredMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

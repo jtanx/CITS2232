@@ -72,8 +72,10 @@
             <li><a href="{% url 'sportsrec:user_members' %}">Manage members</a></li>
             <li><a href="#">Manage memberships</a></li>
             <li><a href="#">Manage clubs</a></li>
+            <li><a href="{% url 'sportsrec:club_add' %}">Add a club</a></li>
           </ul>
         </div>
+        
         {% endif %}
         
         {% block sidebar-content %}
