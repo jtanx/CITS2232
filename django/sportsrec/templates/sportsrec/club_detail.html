@@ -1,0 +1,44 @@
+{% extends 'sportsrec/base.html' %}
+{% block main %}
+    <h1>Club: {{ club.name }}</h1>
+    <p>
+        <strong>ID:</strong> {{ club.id }}
+    </p>
+    <p>
+        <strong>Address:</strong> {{ club.address }}
+    </p>
+    <p>
+        <strong>Location:</strong> {{ club.location }}
+    </p>
+    <p>
+        <strong>Tags:</strong> {{ club.tags }}
+    </p>
+    <p>
+        <strong>Type:</strong> {{ club.type }}
+    </p>
+    <p>
+        <strong>No. of Members:</strong> {{ club.member_count }}
+    </p>
+    <p>
+        <strong>Date Created:</strong> {{ club.created }}
+    </p>
+    <p>
+        <strong>Recruiting?:</strong> {{ club.recruiting }}
+    </p>
+    <p>
+        <strong>Contact:</strong> {{ club.contact }}
+    </p>
+    <p>
+        <strong>Owner:</strong> {{ club.owner }}
+    </p>
+    <p>
+        <strong>Facebook:</strong> {{ club.facebook }}
+    </p>
+    <p>
+        <strong>Twitter:</strong> {{ club.twitter }}
+    </p>
+    <p>
+        <strong>Description:</strong> 
+        <p>{{ club.description }}</p>
+    </p>
+{% endblock %}

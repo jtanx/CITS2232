@@ -320,3 +320,22 @@ def edit_contact(request):
 	else:
 		form = ContactForm(instance = instance)
 	return render(request, 'sportsrec/edit_contact.html', {'form': form})
+	
+class ClubList(generic.ListView):
+    template_name = 'sportsrec/club_list.html'
+    context_object_name = 'club_list'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['admin'] = is_admin(self.request.user)
+        return context
+
+    def get_queryset(self):
+        return Club.objects.all()
+
+def club_detail(request, pk):
+	instance = Club.objects.get(pk=pk)
+	context = {'club' : instance}
+	
+	return render(request, 'sportsrec/club_detail.html', context)

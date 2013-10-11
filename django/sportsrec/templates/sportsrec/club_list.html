@@ -1,0 +1,58 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">All Clubs</div>
+  {% if clubs %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+      	<th>ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Type</th>
+        <th>No. Numbers</th>
+        <th>Date Created</th>
+        <th>Owner</th>
+        <th>Contact</th>
+        <th>Facebook</th>
+        <th>Twitter</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for club in clubs %}
+      <tr>
+        <td class="clickable" href="{% url 'sportsrec:club_detail' pk=club.id %}">
+          <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+          {{club.id}}
+          </a>
+        </td>
+    	<td>{{club.name}}</td>
+        <td>{{club.address}}</td>
+        <td>{{club.type}}</td>
+        <td>{{club.member_count}}</td>
+        <td>{{club.created}}</td>
+        <td>{{club.owner}}</td>
+        <td>{{club.contact}}</td>
+        <td>{{club.facebook}}</td>
+        <td>{{club.twitter}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+    //Make rows clickable
+    $(".clickable").click(function() {
+      window.document.location = $(this).attr("href");
+    });
+  </script>
+  {% else %}
+  <p>There are no clubs.</p>
+  {% endif %}
+
+  <div class="sub-title centre">
+    Add a <a href="{% url 'sportsrec:club_add' %}">new club</a>.
+  </div>
+</div>
+{% endblock %}

@@ -57,7 +57,7 @@
         <div class="nav-menu widget">
           <ul>
             <li><a href="{% url 'sportsrec:index' %}">Home</a></li>
-            <li><a href="#">Club list</a></li>
+            <li><a href="{% url 'sportsrec:club_list' %}">Club list</a></li>
             <li><a href="#">Club search</a></li>
             {% block sidebar-user-menu %}
             {% endblock %}
