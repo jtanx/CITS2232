@@ -3,7 +3,7 @@
 {% block main %}
 <div class="widget">
   <div class="title centre">All Clubs</div>
-  {% if clubs %}
+  {% if club_list %}
   <table class="centre">
     <thead>
       <tr class="header">
@@ -11,7 +11,7 @@
         <th>Name</th>
         <th>Address</th>
         <th>Type</th>
-        <th>No. Numbers</th>
+        <th>No. Members</th>
         <th>Date Created</th>
         <th>Owner</th>
         <th>Contact</th>
@@ -20,9 +20,9 @@
       </tr>
     </thead>
     <tbody>
-      {% for club in clubs %}
-      <tr>
-        <td class="clickable" href="{% url 'sportsrec:club_detail' pk=club.id %}">
+      {% for club in club_list %}
+      <tr class="clickable" href="{% url 'sportsrec:club_detail' pk=club.id %}">
+        <td class="clickable">
           <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
           {{club.id}}
           </a>

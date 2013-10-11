@@ -225,7 +225,10 @@ def club_add(request):
 		if form.is_valid():
 			club = form.save()
 			owner = Membership.objects.create(member=form.cleaned_data['owner'],club=club)
-			contact = Membership.objects.create(member=form.cleaned_data['contact'],club=club)
+			owner.save()
+			if form.cleaned_data['contact']:
+				contact = Membership.objects.create(member=form.cleaned_data['contact'],club=club)
+				contact.save()
 			messages.add_message(request, messages.INFO, \
 								 "Club successfully created!")
 			return redirect('sportsrec:index')

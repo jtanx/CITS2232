@@ -1,6 +1,7 @@
 {% extends 'sportsrec/base.html' %}
 {% block main %}
-    <h1>Club: {{ club.name }}</h1>
+	<div class="widget">
+    <div class="title">Club Name: {{ club.name }}</div>
     <p>
         <strong>ID:</strong> {{ club.id }}
     </p>
@@ -41,4 +42,5 @@
         <strong>Description:</strong> 
         <p>{{ club.description }}</p>
     </p>
+    </div>
 {% endblock %}
