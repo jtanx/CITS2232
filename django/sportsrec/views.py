@@ -410,8 +410,8 @@ class MembershipApplyView(LoginRequiredMixin, MessageMixin, FormView):
            self.error_message = "This club is not recruiting members."
            self.error_url = reverse_lazy('sportsrec:club_detail', \
                         kwargs = {'pk' : self.kwargs['pk']})
-            raise Http404
-        
+           raise Http404
+            
         context['club'] = club
         return context
     
