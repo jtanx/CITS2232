@@ -53,7 +53,7 @@
           <ul>
             <li><a href="{% url 'sportsrec:index' %}">Home</a></li>
             <li><a href="{% url 'sportsrec:club_list' %}">Club list</a></li>
-            <li><a href="#">Club search</a></li>
+            <li><a href="{% url 'sportsrec:search' %}">Club search</a></li>
             {% block sidebar-user-menu %}
             {% endblock %}
             <li><a href="#">Statistics</a></li>

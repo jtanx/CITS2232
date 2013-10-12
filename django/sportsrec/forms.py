@@ -60,7 +60,7 @@ class RegistrationForm(Form):
             if p1 != p2:
                 msg="Passwords do not match."
             elif len(p1) < 6:
-                msg = "Password must be at least 6 chars long."
+                msg = "Password must be at least 6 characters long."
 
             if msg:
                 self._errors["confirm_password"] = self.error_class([msg])
@@ -173,3 +173,6 @@ class ClubForm(ModelForm):
             'style' : 'width: 100%',
             'maxlength' :  Club._meta.get_field('description').max_length}),
     }
+    
+class SearchForm(Form):
+	name = forms.CharField()

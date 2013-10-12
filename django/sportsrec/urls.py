@@ -39,5 +39,6 @@ urlpatterns = patterns('',
     url(r'^membership/detail/(?P<pk>\d+)$', views.MembershipDetailView.as_view(), \
         name='membership_detail'),
     url(r'^membership/delete/(?P<pk>\d+)$', views.MembershipDeleteView.as_view(), \
-        name='membership_delete')
+        name='membership_delete'),
+    url(r'^club/search$', views.search, name='search'),
 )

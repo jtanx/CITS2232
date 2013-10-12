@@ -587,3 +587,21 @@ class ClubDetailView(AdminMixin, MessageMixin, DetailView):
     template_name='sportsrec/club_detail.html'
     error_message="This club doesn't exist."
     error_url=reverse_lazy('sportsrec:club_list')
+    
+def search(request):
+	context = {}
+	if request.method == 'POST':
+		form = SearchForm(request.POST)
+		if form.is_valid():
+			name = form.cleaned_data['name']
+			club = Club.objects.get(name=name)
+			if club:
+				context['exists'] = True
+				context['club'] = club
+			else:
+				context['exists'] = False
+	else:
+		form = SearchForm()
+		
+	context['form'] = form
+	return render(request, 'sportsrec/search.html', context)
