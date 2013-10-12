@@ -80,7 +80,17 @@ class Club(models.Model):
     
     def __unicode__(self):
         return '%s' % (self.name)
-        
+  
+'''  ???
+class ClubMeta(models.Model):
+    club = models.OneToOneField(Club)
+    tags = models.ManyToManyField(ClubTag, blank=True, null=True)
+    member_count = models.IntegerField(default=0)
+    total_application_count = models.IntegerField(default=0)
+    pending_application_count = models.IntegerField(default=0)
+    recruiting = models.BooleanField(default=True)
+''' 
+    
 class Membership(models.Model):
     joined = models.DateField(default=datetime.now)
     last_paid = models.DateField(blank=True, null=True)

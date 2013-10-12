@@ -315,6 +315,26 @@ def club_edit(request, pk):
 
     return render(request, 'sportsrec/add_edit.html', context)
 
+class ClubMembersView(MessageMixin, ListView):
+    template_name = 'sportsrec/club_member_list.html'
+    context_object_name = 'club_member_list'
+    paginate_by = 15 #15 members per page
+    error_message = 'Club does not exist.'
+    error_url = reverse_lazy('sportsrec:club_list')
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        try:
+            club = Club.objects.get(pk=self.kwargs['pk'])
+        except Club.DoesNotExist:
+            raise Http404
+        context['club'] = club
+        return context
+    
+    def get_queryset(self):
+        return Membership.objects.filter(club__id=self.kwargs['pk'])
+    
 class ClubDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
     model = Club
     success_url = reverse_lazy('sportsrec:user_club_list')
@@ -335,7 +355,7 @@ class ClubDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
             return qs
         return qs.filter(owner__owner=self.request.user)    
              
-class MemberList(LoginRequiredMixin, AdminMixin, generic.ListView):
+class MemberList(LoginRequiredMixin, AdminMixin, ListView):
     template_name = 'sportsrec/member_list.html'
     context_object_name = 'members'
     paginate_by = 15 #15 members per page

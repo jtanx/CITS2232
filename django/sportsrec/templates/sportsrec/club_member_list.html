@@ -1,0 +1,46 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:club_member_list' %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">
+    Member list for
+    <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+      {{club}}
+    </a>
+  </div>
+  
+  {% if club_member_list %}
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+      	<th>Membership ID</th>
+        <th>Member</th>
+        <th>Since</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for membership in club_member_list %}
+      <tr>
+        <td>{{membership.id}}</td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_detail' pk=membership.member.id %}">
+          {{membership.member}}
+          </a>
+        </td>
+        <td>{{membership.joined}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  
+  {% else %}
+  <p>There are no members for this club.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% endwith %}

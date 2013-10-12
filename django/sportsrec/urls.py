@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^club/edit/(?P<pk>\d+)$', views.club_edit, name='club_edit'),
     url(r'^club/delete/(?P<pk>\d+)$',views.ClubDeleteView.as_view(), name='club_delete'),
     url(r'^club/(?P<pk>\d+)$', views.ClubDetailView.as_view(), name='club_detail'),
+    url(r'^club/(?P<pk>\d+)/members$', views.ClubMembersView.as_view(), name='club_member_list'),
     url(r'^memberships$', views.MembershipList.as_view(), \
         name='membership_list'),
     url(r'^membership/apply/(?P<pk>\d+)$', views.MembershipApplyView.as_view(), \

@@ -11,12 +11,9 @@
       <tr class="header">
       	<th>ID</th>
         <th>Name</th>
-        <th>Type</th>
-        <th>No. Members</th>
-        <th>Date Created</th>
-        <th>Contact</th>
-        <th>Facebook</th>
-        <th>Twitter</th>
+        <th>Edit</th>
+        <th>Member List</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -28,32 +25,21 @@
           </a>
         </td>
     	<td>{{club.name}}</td>
-        <!--<td>{{club.address}}</td>-->
-        <td>{{club.type}}</td>
-        <td>{{club.member_count}}</td>
-        <td>{{club.created}}</td>
-        <!--<td>{{club.owner}}</td>-->
-        
-        <td class="menu-hilight clickable">
-          {% if club.contact %}
-          <a href="{% url 'sportsrec:member_detail' pk=club.contact.id%}">
-            {{club.contact|default:''}}
+      <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+          {{club.id}}
           </a>
-          {% endif %}
-        </td>
-        
-        <td class="clickable menu-hilight">
-        {% if club.facebook %}
-         <a href="https://facebook.com/{{club.facebook}}">{{club.facebook}}</a>
-        {% endif %}
-        </td>
-         
-         <td class="clickable menu-hilight">
-          {% if club.twitter %}
-           <a href="https://twitter.com/{{club.twitter}}">{{club.twitter}}</a>
-          {% endif %}
-         </td>
-         
+      </td>
+      <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_member_list' pk=club.id %}">
+            List
+          </a>
+      </td>
+      <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_delete' pk=club.id %}">
+            Delete
+          </a>
+      </td>
       </tr>
       {% endfor %}
     </tbody>
