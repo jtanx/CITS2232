@@ -403,12 +403,61 @@
         "is_active": true, 
         "is_superuser": true, 
         "is_staff": true, 
-        "last_login": "2013-10-12T11:15:34.269Z", 
+        "last_login": "2013-10-10T23:42:24.817Z", 
         "groups": [], 
         "user_permissions": [], 
-        "password": "pbkdf2_sha256$10000$or9t7gBScKKu$+Gh+WHynnoxNRdZxztB9tos/5woTg5BybWrchyDbnMc=", 
+        "password": "pbkdf2_sha256$10000$qUhmHidnE8lV$isYslDNZARfLppvtdptSEMDK2Wa9dRHDPzJXvgI/Z9w=", 
         "email": "do-not-reply@uwa.edu.au", 
-        "date_joined": "2013-10-12T11:15:34.269Z"
+        "date_joined": "2013-10-10T11:06:13.362Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "testuser", 
+        "first_name": "test", 
+        "last_name": "user", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-10T13:07:44.857Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$be41VjcFqXXT$hh9IUY7puGECVyGaSzmm76NPMuovD80OJoATveKFLI0=", 
+        "email": "test@user.com", 
+        "date_joined": "2013-10-10T11:07:45.545Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "testadmin", 
+        "first_name": "test", 
+        "last_name": "admin", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-10T23:42:14Z", 
+        "groups": [
+            1, 
+            2
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$Fc8w7mjBMHy6$QxnI78hrp+h4/bPpCSJTUY6Ky5iVVMEBeCjKXrR0TeY=", 
+        "email": "test@admin.com", 
+        "date_joined": "2013-10-10T23:42:12Z"
+    }
+},
+{
+    "pk": "0r55m2jar3la8t5but3p8v6tr5cfdi7q", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2013-10-26T11:19:45.070Z", 
+        "session_data": "ZWYyMmUyNzQyMjAwZmVhNzE1OGM4NTM0YTM4M2Q5ZjI1ZjRhNzgxODqAAn1xAS4="
     }
 },
 {
