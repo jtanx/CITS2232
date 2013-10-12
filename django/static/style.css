@@ -69,10 +69,6 @@ div.centre.sub-title {
   font-weight: bold;
 }
 
-.clickable {
-  cursor: pointer;
-}
-
 .large {
   font-size: 130% !important;
 }
@@ -139,14 +135,29 @@ tr {
   border-bottom: 1px solid #ccc;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
+.clickable a {
+	display: block;
+}
+
+.clickable input[type='submit'] {
+	width: 100%;
+	height: 100%;
+}
+
 .menu-hilight:hover, .clickable:hover .menu-hilight {
   background: #2580a2 url('hover.gif') left center no-repeat;
   color: white;
 }
 
 .menu-hilight:hover a, .clickable:hover .menu-hilight a {
-  color: #184F63;
+  color: white;
 }
+
+
 
 th {
   padding: 0.2em 1.2em;

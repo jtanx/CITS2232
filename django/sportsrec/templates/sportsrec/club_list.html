@@ -34,32 +34,29 @@
         <td>{{club.created}}</td>
         <!--<td>{{club.owner}}</td>-->
 
-        {% if club.contact %}
+        
         <td class="menu-hilight clickable">
+        {% if club.contact %}
           <a href="{% url 'sportsrec:member_detail' pk=club.contact.id%}">
             {{club.contact|default:''}}
           </a>
-        </td>
-        {% else %}
-        <td></td>
         {% endif %}
+        </td>
+         
         
-        {% if club.facebook %}
         <td class="clickable menu-hilight">
+          {% if club.facebook %}
           <a href="https://facebook.com/{{club.facebook}}">{{club.facebook}}</a>
+          {% endif %}
         </td>
-        {% else %}
-        <td></td>
-        {% endif %}
-
-        {% if club.twitter %}
-        <td class="clickable menu-hilight">
-          <a href="https://twitter.com/{{club.twitter}}">{{club.twitter}}</a>
-        </td>
-        {% else %}
-        <td></td>
-        {% endif %}
         
+        
+        <td class="clickable menu-hilight">
+          {% if club.twitter %}
+          <a href="https://twitter.com/{{club.twitter}}">{{club.twitter}}</a>
+          {% endif %}
+        </td>
+
       {% endfor %}
     </tbody>
   </table>

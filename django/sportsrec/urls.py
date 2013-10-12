@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, include, url
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import RedirectView
 from sportsrec import views
+from sportsrec import models
 
 urlpatterns = patterns('',
     url(r'^$', views.Index.as_view(), name='index'),
@@ -9,21 +10,33 @@ urlpatterns = patterns('',
     url(r'^logout$', views.logout_user, name='logout'),
     url(r'^register$', views.register, name='register'),
     url(r'^user/profile$', views.user_profile, name='user_profile'),
-    url(r'^members$', views.MemberList.as_view(), name='members'),
-    url(r'^member/(?P<pk>\d+)$', views.member_detail, \
+    url(r'^user/clubs$', views.UserClubList.as_view(), name='user_club_list'),
+    url(r'^user/club/applications$', views.UserClubApplicationList.as_view(),\
+        name='user_club_application_list'),
+    url(r'^members$', views.MemberList.as_view(), name='member_list'),
+    url(r'^member/(?P<pk>\d+)$', views.MemberDetailView.as_view(), \
         name='member_detail'),
-    url(r'^member/add$', views.member_add, name='member_add'),
+    url(r'^member/add$', views.MemberAddView.as_view(), name='member_add'),
     url(r'^member/edit/(?P<pk>\d+)$', views.member_edit, \
         name='member_edit'),
-    url(r'^member/delete/(?P<pk>\d+)$', views.member_delete, \
+    url(r'^member/delete/(?P<pk>\d+)$', views.MemberDeleteView.as_view(), \
         name='member_delete'),
-    url(r'^club/add$', views.club_add, name='club_add'),
     url(r'^clubs$', views.ClubList.as_view(), name='club_list'),
+    url(r'^club/add$', views.club_add, name='club_add'),
     url(r'^club/edit/(?P<pk>\d+)$', views.club_edit, name='club_edit'),
-    url(r'^user/clubs$', views.UserClubList.as_view(), name='user_club_list'),
-    url(r'^club/(?P<pk>\d+)$', views.club_detail, name='club_detail'),
+    url(r'^club/delete/(?P<pk>\d+)$',views.ClubDeleteView.as_view(), name='club_delete'),
+    url(r'^club/(?P<pk>\d+)$', views.ClubDetailView.as_view(), name='club_detail'),
     url(r'^memberships$', views.MembershipList.as_view(), \
         name='membership_list'),
-    url(r'^membership/detail/(?P<pk>\d+)$', views.membership_detail, \
+    url(r'^membership/apply/(?P<pk>\d+)$', views.MembershipApplyView.as_view(), \
+        name='membership_apply'),
+    url(r'^membership/applications$', views.MembershipApplicationView.as_view(), \
+        name='membership_application_list'),
+    url(r'^membership/application/delete/(?P<pk>\d+)$',\
+        views.MembershipApplicationDeleteView.as_view(), \
+        name='membership_application_delete'),
+    url(r'^membership/detail/(?P<pk>\d+)$', views.MembershipDetailView.as_view(), \
         name='membership_detail'),
+    url(r'^membership/delete/(?P<pk>\d+)$', views.MembershipDeleteView.as_view(), \
+        name='membership_delete')
 )

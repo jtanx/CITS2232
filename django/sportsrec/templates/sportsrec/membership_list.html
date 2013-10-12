@@ -11,6 +11,7 @@
       <tr class="header">
       	<th>Membership ID</th>
         <th>Member</th>
+		<th>Member ID</th>
         <th>Club</th>
         <th>Date Created</th>
         <th>Last paid</th>
@@ -29,6 +30,9 @@
             {{membership.member}}
           </a>
         </td>
+      <td>
+        {{membership.member.id}}
+      </td>
         <td class="clickable menu-hilight">
           <a href="{% url 'sportsrec:club_detail' pk=membership.club.id %}">
             {{membership.club}}

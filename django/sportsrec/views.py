@@ -1,5 +1,5 @@
 from django.views import generic
-from django.views.generic import TemplateView
+from django.views.generic import *
 from django.db.models import Min, Avg, Count
 from sportsrec.models import *
 from django.shortcuts import redirect,render
@@ -12,11 +12,43 @@ from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.contrib import messages
 from sportsrec.admin import is_admin
+from django.core.urlresolvers import reverse_lazy
+from django.core.exceptions import PermissionDenied
 
-'''
-For validators
-https://docs.djangoproject.com/en/dev/ref/validators/
-'''
+'''Mixins'''
+
+class LoginRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).\
+               dispatch(request, *args, **kwargs)
+               
+class AdminMixin(object):
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(AdminMixin, self).get_context_data(**kwargs)
+        context['admin'] = is_admin(self.request.user)
+        return context
+               
+class MessageMixin(object):
+    ''' Modification of class found at: http://goo.gl/aKvuWY'''
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(MessageMixin, self).delete(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super(MessageMixin, self).get(request, *args, **kwargs)
+        except Http404:
+            if self.error_message:
+                messages.error(self.request, self.error_message)
+            if self.error_url:
+                return redirect(self.error_url)
+            pass
+        
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        return super(MessageMixin, self).form_valid(form)
 
 def login_user(request):
     if request.user.is_authenticated():
@@ -113,46 +145,31 @@ def user_profile(request):
 
     context['form'] = form
     return render(request, 'sportsrec/add_edit.html', context)
+        
+class MemberAddView(LoginRequiredMixin, MessageMixin, FormView):
+    template_name = 'sportsrec/add_edit.html'
+    form_class = MemberForm
+    success_message = 'Member created successfully!'
 
-def member_detail(request, pk):
-    try:
-        member = Member.objects.get(pk=pk)
-    except Member.DoesNotExist:
-        messages.add_message(request, messages.ERROR, \
-                            "Member with that id does not exist.")
-        return redirect('sportsrec:index')
-
-    owned_clubs = Club.objects.filter(owner=member)
-    context = {'member' : member, 'owned_clubs' : owned_clubs}
-    return render(request, 'sportsrec/member_detail.html', context)
-
-@login_required
-def member_add(request):
-    context = {
-        'created' : True, 'name' : 'member',
-        'view' : 'sportsrec:member_add',
-        'submit' : 'Add'
-    }
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['created'] = True
+        context['name'] = 'member'
+        context['submit'] = 'Add'
+        return context
     
-    if request.method == "POST":
-        form = MemberForm(request.POST)
-        if form.is_valid():
-            #Don't save yet
-            member = form.save(commit=False)
-            #Tack on the owner
-            member.owner = request.user
-            member.save()
-            messages.add_message(request, messages.INFO, \
-                                 "Member successfully created!")
-            return redirect('sportsrec:members')
-    else:
-        form = MemberForm()
-
-    context['form'] = form
-
-    return render(request, 'sportsrec/add_edit.html', context)
+    def form_valid(self, form):
+        member = form.save
+        #Don't save yet
+        member = form.save(commit=False)
+        #Tack on the owner
+        member.owner = self.request.user
+        member.save()
+        self.success_url = reverse_lazy('sportsrec:member_detail',\
+                                        kwargs = {'pk' : member.id, })
+        return super(MemberAddView,self).form_valid(form)          
             
-
 @login_required
 def member_edit(request, pk):
     member = Member.objects.filter(pk=pk)
@@ -191,75 +208,71 @@ def member_edit(request, pk):
 
     return render(request, 'sportsrec/add_edit.html', context)
 
-@login_required
-def member_delete(request, pk):
-    member = Member.objects.filter(pk=pk)
-    if not member.exists():
-        messages.add_message(request, messages.ERROR, \
-                             "Member does not exist.")
-        return redirect('sportsrec:members')
+class MemberDetailView(MessageMixin, DetailView):
+    model = Member
+    template_name='sportsrec/member_detail.html'
+    error_message="That member doesn't exist"
+    error_url=reverse_lazy('sportsrec:member_list')
 
-    member = member[0]
     
-    if not member.owner == request.user and not is_admin(request.user):
-        messages.add_message(request, messages.ERROR, \
-                             "You can't delete a member you didn't create.")
-        return redirect('sportsrec:members')
+class MemberDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
+    model = Member
+    success_url = reverse_lazy('sportsrec:member_list')
+    template_name='sportsrec/member_delete.html'
+    success_message='The member was deleted successfully.'
+    error_message="You can't delete a member you didn't make."
+    error_url=success_url
     
-    context = {
-        'name' : "member: '%s'" % member,
-        'view' : 'sportsrec:member_delete',
-        'pk' : pk,
-        'form' : DeleteForm(),
-        'submit' : 'Submit'
-    }
-
-    if request.method == "POST":
-        form = DeleteForm(request.POST)
-        if form.is_valid():
-            if form.cleaned_data['confirm']:
-                member.delete()
-                messages.add_message(request, messages.INFO, \
-                             "Member deleted successfully!")
-        return redirect('sportsrec:members')
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['owned_clubs'] = Club.objects.filter(pk=self.kwargs['pk'])
+        context['memberships'] = Membership.objects.filter(pk=self.kwargs['pk'])
+        return context
     
-    return render(request, 'sportsrec/delete.html', context)
+    def get_queryset(self):
+        qs = super(MemberDeleteView, self).get_queryset()
+        if is_admin(self.request.user):
+            return qs
+        return qs.filter(owner=self.request.user)
 
 @login_required
 def club_add(request):
-	context = {
-		'created' : True, 'name' : 'club',
-		'view' : 'sportsrec:club_add',
-		'submit' : 'Add'
-	}
+    context = {
+        'created' : True, 'name' : 'club',
+        'view' : 'sportsrec:club_add',
+        'submit' : 'Add'
+    }
 
-        if not is_admin(request.user):
-            members = Member.objects.filter(owner=request.user)
-            if not members.exists():
-                messages.add_message(request, messages.ERROR, \
-                             "You must create a member before adding a club.")
-                return redirect('sportsrec:member_add')
-        else:
-            members=  Member.objects.all()
-	
-	if request.method == "POST":
-		form = ClubForm(request.POST, members=members)
-		if form.is_valid():
-			club = form.save()
-			owner = Membership.objects.create(member=form.cleaned_data['owner'],club=club)
-			owner.save()
-			if form.cleaned_data['contact']:
-				contact = Membership.objects.create(member=form.cleaned_data['contact'],club=club)
-				contact.save()
-			messages.add_message(request, messages.INFO, \
-								 "Club successfully created!")
-			return redirect('sportsrec:index')
-	else:
-		form = ClubForm(members=members)
+    if not is_admin(request.user):
+        members = Member.objects.filter(owner=request.user)
+        if not members.exists():
+            messages.add_message(request, messages.ERROR, \
+                         "You must create a member before adding a club.")
+            return redirect('sportsrec:member_add')
+    else:
+        members = Member.objects.all()
+    
+    if request.method == "POST":
+        form = ClubForm(request.POST, members=members)
+        if form.is_valid():
+            club = form.save()
+            owner = Membership.objects.create(member=form.cleaned_data['owner'],club=club)
+            owner.save()
+            if form.cleaned_data['contact']:
+                contact = form.cleaned_data['contact']
+                if not Membership.objects.filter(member=contact, club=club).exists():
+                    contact = Membership.objects.create(member=contact,club=club)
+                    contact.save()
+            messages.add_message(request, messages.INFO, \
+                                 "Club successfully created!")
+            return redirect('sportsrec:user_club_list')
+    else:
+        form = ClubForm(members=members)
 
-	context['form'] = form
+    context['form'] = form
 
-	return render(request, 'sportsrec/add_edit.html', context)
+    return render(request, 'sportsrec/add_edit.html', context)
 
 @login_required
 def club_edit(request, pk):
@@ -284,6 +297,8 @@ def club_edit(request, pk):
             'created' : False, 'name' : 'club details',
             'view' : 'sportsrec:club_edit',
             'detail_view' : 'sportsrec:club_detail',
+            'delete_view' : 'sportsrec:club_delete',
+            'delete_text' : 'this club',
             'pk' : pk,
             'submit' : 'Edit'
     }
@@ -300,60 +315,155 @@ def club_edit(request, pk):
 
     return render(request, 'sportsrec/add_edit.html', context)
 
-class LoginRequiredMixin(object):
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(LoginRequiredMixin, self).\
-               dispatch(request, *args, **kwargs)
-
-class MemberList(LoginRequiredMixin, generic.ListView):
-    template_name = 'sportsrec/member_list.html'
-    context_object_name = 'members'
-    paginate_by = 15 #15 members per page
-
+class ClubDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
+    model = Club
+    success_url = reverse_lazy('sportsrec:user_club_list')
+    template_name='sportsrec/club_delete.html'
+    success_message='The club was deleted successfully.'
+    error_message="You can't delete a club you didn't make."
+    error_url=success_url
+    
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(self.__class__, self).get_context_data(**kwargs)
-        context['admin'] = is_admin(self.request.user)
+        context['memberships'] = Membership.objects.filter(club__pk=self.kwargs['pk'])
         return context
+    
+    def get_queryset(self):
+        qs = super(ClubDeleteView, self).get_queryset()
+        if is_admin(self.request.user):
+            return qs
+        return qs.filter(owner__owner=self.request.user)    
+             
+class MemberList(LoginRequiredMixin, AdminMixin, generic.ListView):
+    template_name = 'sportsrec/member_list.html'
+    context_object_name = 'members'
+    paginate_by = 15 #15 members per page
 
     def get_queryset(self):
         if is_admin(self.request.user):
             return Member.objects.all()
         return Member.objects.filter(owner=self.request.user)
 
-class MembershipList(LoginRequiredMixin, generic.ListView):
-    template_name = 'sportsrec/membership_list.html'
-    context_object_name = 'membership_list'
-    paginate_by = 15 #15 members per page
-
+class MembershipApplyView(LoginRequiredMixin, MessageMixin, FormView):
+    template_name = 'sportsrec/membership_apply.html'
+    form_class = MembershipApplicationForm
+    success_message = 'Membership application created successfully!'
+    
+    '''def get(self, request, *args, **kwargs):
+        self.error_url = reverse_lazy('sportsrec:club_detail', \
+                        kwargs = {'pk' : self.kwargs['pk']})
+        return super(MembershipApplyView, self).get(request, *args, **kwargs)
+    '''
+    
+    def get_form_kwargs(self):
+        kwargs = super(MembershipApplyView, self).get_form_kwargs()
+        members = Member.objects.filter(owner=self.request.user)
+        existing_membership = Membership.objects.filter(club__id=self.kwargs['pk']).\
+                    values_list('member__id', flat=True)
+        existing_application = MembershipApplication.objects.filter(\
+                        club__id=self.kwargs['pk']).\
+                    values_list('member__id', flat=True)
+        members = members.exclude(id__in=existing_membership)
+        members = members.exclude(id__in=existing_application)
+        if not members.exists():
+            self.error_message = "You don't have any members that can apply to this club."
+            self.error_url = reverse_lazy('sportsrec:club_detail', \
+                        kwargs = {'pk' : self.kwargs['pk']})
+            raise Http404
+        
+        kwargs['members'] = members
+        return kwargs
+    
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(self.__class__, self).get_context_data(**kwargs)
-        context['admin'] = is_admin(self.request.user)
+        try:
+            club = Club.objects.get(pk=self.kwargs['pk'])
+        except Club.DoesNotExist:
+           self.error_message = "This club doesn't exist."
+           self.error_url = reverse_lazy('sportsrec:club_list')
+           raise Http404
+        
+        context['club'] = club
         return context
+    
+    def form_valid(self, form):
+        try:
+            club = Club.objects.get(pk=self.kwargs['pk'])
+        except Club.DoesNotExist:
+           self.error_message = "This club doesn't exist."
+           self.error_url = reverse_lazy('sportsrec:club_list')
+           raise Http404
+        
+        #Don't save yet
+        application = form.save(commit=False)
+        application.club = club
+        application.save()
+        self.success_url = reverse_lazy('sportsrec:club_detail',\
+                                        kwargs = {'pk' : self.kwargs['pk']})
+        return super(MembershipApplyView,self).form_valid(form)       
+    
+class MembershipApplicationView(LoginRequiredMixin, AdminMixin, ListView):
+    template_name = 'sportsrec/membership_application_list.html'
+    context_object_name = 'membership_application_list'
+    paginate_by = 15
+    
+    def get_queryset(self):
+        if is_admin(self.request.user):
+            return MembershipApplication.objects.all()
+        return MembershipApplication.objects.filter(member__owner=self.request.user)
+        
+class MembershipApplicationDeleteView(LoginRequiredMixin, MessageMixin, AdminMixin, DeleteView):
+    model = MembershipApplication
+    success_url = reverse_lazy('sportsrec:membership_application_list')
+    template_name='sportsrec/membership_application_delete.html'
+    success_message='Your membership appplication was removed successfully.'
+    error_message="You can't remove a membership application you didn't make."
+    error_url=success_url
+
+    def get_queryset(self):
+        qs = super(MembershipApplicationDeleteView, self).get_queryset()
+        if not is_admin(self.request.user):
+            return qs.filter(member__owner=self.request.user)
+        return qs
+        
+class MembershipList(LoginRequiredMixin, AdminMixin, ListView):
+    template_name = 'sportsrec/membership_list.html'
+    context_object_name = 'membership_list'
+    paginate_by = 15 #15 members per page
 
     def get_queryset(self):
         if is_admin(self.request.user):
             return Membership.objects.all()
         return Membership.objects.filter(member__owner=self.request.user)
 
-def membership_detail(request, pk):
-    try:
-        membership = Membership.objects.get(pk=pk)
-    except Membership.DoesNotExist:
-        messages.add_message(request, messages.ERROR, \
-                             "Membership does not exist.")
-        return redirect('sportsrec:index')
+class MembershipDetailView(LoginRequiredMixin, MessageMixin, DetailView):
+    model = Membership
+    template_name='sportsrec/membership_detail.html'
+    error_message="You don't administer that membership."
+    error_url=reverse_lazy('sportsrec:membership_list')
+    
+    def get_queryset(self):
+        qs = super(MembershipDetailView, self).get_queryset()
+        if not is_admin(self.request.user):
+            return qs.filter(member__owner=self.request.user)
+        return qs
+        
+class MembershipDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
+    model = Membership
+    success_url = reverse_lazy('sportsrec:membership_list')
+    template_name='sportsrec/membership_delete.html'
+    success_message='Your membership was removed successfully.'
+    error_message="You can't remove a membership you didn't make."
+    error_url=success_url
 
-    if membership.member.owner != request.user and not is_admin(request.user):
-        messages.add_message(request, messages.ERROR, \
-                             "You cannot edit a membership you do not own.")
-        return redirect('sportsrec:index')
-
-    context = {'membership' : membership}
-    return render(request, 'sportsrec/membership_detail.html', context)
-
+    def get_queryset(self):
+        qs = super(MembershipDeleteView, self).get_queryset()
+        if not is_admin(self.request.user):
+            return qs.filter(member__owner=self.request.user)
+        return qs
+        
 class TotalStats(generic.TemplateView):
     def get_user_stats(self, stats):
         #needed at all? performance? urgh
@@ -387,37 +497,66 @@ class Index(TotalStats):
     context_object_name='index'
 
 
-class ClubList(generic.ListView):
+class ClubList(AdminMixin, ListView):
     template_name = 'sportsrec/club_list.html'
     context_object_name = 'club_list'
     paginate_by = 15 #15 clubs/page
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(self.__class__, self).get_context_data(**kwargs)
-        context['admin'] = is_admin(self.request.user)
-        return context
-
     def get_queryset(self):
         return Club.objects.all()
 
-class UserClubList(LoginRequiredMixin, generic.ListView):
+class UserClubList(LoginRequiredMixin, AdminMixin, ListView):
     template_name = 'sportsrec/user_club_list.html'
     context_object_name = 'club_list'
     paginate_by = 15 #15 clubs/page
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(self.__class__, self).get_context_data(**kwargs)
-        context['admin'] = is_admin(self.request.user)
-        return context
+    def get_queryset(self):
+        members=set(Member.objects.filter(owner=self.request.user).values_list('pk', flat=True))
+        return Club.objects.filter(owner__pk__in=members).order_by('id')
+
+class UserClubApplicationList(LoginRequiredMixin, MessageMixin, AdminMixin, ListView):
+    template_name = 'sportsrec/user_club_application_list.html'
+    context_object_name = 'user_club_application_list'
+    paginate_by = 15 #15 applications/page
+    
+    def post(self, request, *args, **kwargs):
+        form = ApplicationForm(request.POST)
+        if form.is_valid():
+            id = form.cleaned_data['application_id']
+            try:
+                application = MembershipApplication.objects.get(id=id)
+            except MembershipApplication.DoesNotExist:
+                messages.error(self.request, 'Membership application does not exist')
+                return redirect('sportsrec:user_club_application_list')
+            
+            if application.club.owner.owner != self.request.user and not is_admin(self.request.user):
+                messages.error(self.request, 'You cannot modify this application')
+                return redirect('sportsrec:user_club_application_list')
+            
+            if form.cleaned_data['accept']:
+                membership = Membership.objects.create(club=application.club, member=application.member)
+                try:
+                    membership.save()
+                except:
+                    messages.error(self.request, 'Could not create membership')
+                    return redirect('sportsrec:user_club_application_list')
+                application.delete()
+            else:
+                application.rejected = True
+                application.save()
+            messages.success(self.request, 'Successfully actioned the application!') #laziness
+        else:
+            messages.error(self.request, "Invalid accept/reject post.")
+        return redirect('sportsrec:user_club_application_list')
 
     def get_queryset(self):
-        members=  Member.objects.filter(owner=self.request.user)
-        return Club.objects.filter(owner__in=members).order_by('id')
-
-def club_detail(request, pk):
-	instance = Club.objects.get(pk=pk)
-	context = {'club' : instance}
-	
-	return render(request, 'sportsrec/club_detail.html', context)
+        if is_admin(self.request.user):
+            return MembershipApplication.objects.all()
+        clubs = Club.objects.filter(owner__owner=self.request.user).values_list('pk', flat=True)
+        return MembershipApplication.objects.filter(club__id__in=clubs, rejected=False)
+        
+class ClubDetailView(AdminMixin, MessageMixin, DetailView):
+    model = Club
+    template_name='sportsrec/club_detail.html'
+    error_message="This club doesn't exist."
+    error_url=reverse_lazy('sportsrec:club_list')

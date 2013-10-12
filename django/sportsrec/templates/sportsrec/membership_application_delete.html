@@ -1,0 +1,22 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+  <div class="title">
+	  Delete application for 
+	  <a href="{% url 'sportsrec:member_detail' pk=object.member.id %}">
+		{{object.member.first_name}} {{object.member.last_name}}
+	  </a>&nbsp;
+	  to 
+	  <a href="{% url 'sportsrec:club_detail' pk=object.club.id %}">
+		{{object.club}}
+	  </a>?
+  </div>
+  
+  <form method="post" action="">
+      {% csrf_token %}
+      <p>Are you sure you want to delete this application?</p>
+      <input type="submit" value="Confirm" />
+  </form>
+</div>
+{% endblock %}

@@ -67,7 +67,7 @@ class Club(models.Model):
 
     tags = models.ManyToManyField(ClubTag, blank=True, null=True)
     type = models.ForeignKey(ClubType)
-    member_count = models.IntegerField(default=1)
+    member_count = models.IntegerField(default=0)
     created = models.DateField(default=datetime.now)
     recruiting = models.BooleanField(default=True)
     contact = models.ForeignKey(Member, blank=True, null=True,\
@@ -76,23 +76,51 @@ class Club(models.Model):
     facebook = models.CharField(max_length=40, blank=True, null=True)
     twitter = models.CharField(max_length=40, blank=True, null=True)
     owner = models.ForeignKey('Member',on_delete=models.SET_NULL, null=True, blank=True,\
-    							related_name='member_owner')
+                                related_name='member_owner')
     
     def __unicode__(self):
         return '%s' % (self.name)
-
+        
 class Membership(models.Model):
     joined = models.DateField(default=datetime.now)
     last_paid = models.DateField(blank=True, null=True)
     member = models.ForeignKey('Member')
     club = models.ForeignKey('Club')
+    
+    @staticmethod
+    def membership_created(sender, instance, created, **kwargs):
+        if created:
+            instance.club.member_count += 1
+            instance.club.save()
 
-    class Member:
+    @staticmethod
+    def membership_deleted(sender, instance, **kwargs):
+        if instance.club:
+            instance.club.member_count -= 1
+            if instance.club.owner == instance.member:
+                instance.club.owner = None
+            if instance.club.contact == instance.member:
+                instance.club.contact = None
+            instance.club.save()
+    
+    class Meta:
         unique_together = (("member", "club"),)
-	
+    
     def __unicode__(self):
         return '%s belongs to %s' % (self.member, self.club)
 
+class MembershipApplication(models.Model):
+    applied = models.DateField(default=datetime.now)
+    member = models.ForeignKey('Member')
+    club = models.ForeignKey('Club')
+    rejected = models.BooleanField(default=False)
+    
+    class Meta:
+        unique_together = (("member", "club"),)
+    
+    def __unicode__(self):
+        return '%s to %s' % (self.member, self.club)
+        
 class UserMeta(models.Model):
     #Needed? I dunno. maybe remove
     user = models.ForeignKey(User)
@@ -165,6 +193,9 @@ class UserMeta(models.Model):
 post_save.connect(ClubType.club_created, sender=Club)
 pre_save.connect(ClubType.club_updated, sender=Club)
 post_delete.connect(ClubType.club_deleted, sender=Club)
+#For membership tracking
+post_save.connect(Membership.membership_created, sender=Membership)
+post_delete.connect(Membership.membership_deleted, sender=Membership)
 #For keeping track of user stats. May not be needed
 '''post_save.connect(UserMeta.member_created, sender=Member)
 post_delete.connect(UserMeta.member_deleted, sender=Member)

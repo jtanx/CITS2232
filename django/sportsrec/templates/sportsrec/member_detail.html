@@ -13,23 +13,22 @@
     <tr><th>Address</th><td>{{member.address}}</td></tr>
     <tr>
       <th>Facebook</th>
-      {% if member.facebook %}
+      
       <td class="clickable menu-hilight">
+        {% if member.facebook %}
         <a href="https://facebook.com/{{member.facebook}}">{{member.facebook}}</a>
+        {% endif %}
       </td>
-      {% else %}
-      <td></td>
-      {% endif %}
+      
     </tr>
     <tr>
       <th>Twitter</th>
-      {% if member.twitter %}
       <td class="clickable menu-hilight">
+        {% if member.twitter %}
         <a href="https://twitter.com/{{member.twitter}}">{{member.twitter}}</a>
+        {% endif %}
       </td>
-      {% else %}
-      <td></td>
-      {% endif %}
+      
     </tr>
     <tr><th>Phone</th><td>{{member.phone}}</td></tr>
     <tr><th>Interests</th><td class="break">{{member.interests}}</td></tr>

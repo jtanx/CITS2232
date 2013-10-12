@@ -24,47 +24,53 @@
           {{club.contact|default:''}}
         </a>
       </td>
-      {% else %}
-      <td></td>
       {% endif %}
     </tr>
     <tr>
       <th>Owner</th>
       <td class="menu-hilight clickable">
+        {% if club.owner %}
         <a href="{% url 'sportsrec:member_detail' pk=club.owner.id%}">
            {{club.owner.first_name}} {{club.owner.last_name}}
         </a>
+        {% endif %}
       </td>
+      
     </tr>
     <tr>
       <th>Facebook</th>
-      {% if club.facebook %}
       <td class="clickable menu-hilight">
+        {% if club.facebook %}
         <a href="https://facebook.com/{{club.facebook}}">{{club.facebook}}</a>
+        {% endif %}
       </td>
-      {% else %}
-      <td></td>
-      {% endif %}
     </tr>
     <tr>
       <th>Twitter</th>
-      {% if club.twitter %}
       <td class="clickable menu-hilight">
+        {% if club.twitter %}
         <a href="https://twitter.com/{{club.twitter}}">{{club.twitter}}</a>
+        {% endif %}
       </td>
-      {% else %}
-      <td></td>
-      {% endif %}
     </tr>
     <tr><th>Description</th><td class="break">{{club.description}}</td></tr>
   </table>
 
-  {% ifequal club.owner.owner user %}
+  {% if club.owner.owner == user or admin %}
   <div class="large centre bold">
     <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
       Edit this club
     </a>
   </div>
-  {% endifequal %}
+  {% endif %}
+  </div>
+  
+  <div class="widget">
+    <div class="large centre bold">
+      <a href="{% url 'sportsrec:membership_apply' pk=club.id %}">
+        Apply
+      </a>
+      to this club!
+    </div>
   </div>
 {% endblock %}

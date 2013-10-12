@@ -6,6 +6,8 @@
     <div class="title centre">
       {% if created %}
         Add a
+      {% elif apply %}
+        Apply for
       {% else %}
         Edit
       {% endif %}
@@ -17,10 +19,7 @@
       {% endif %}
     </div>
 
-    <form method="post" 
-          {% if pk %} action="{% url view pk=pk  %}" 
-          {% else %} action="{% url view %}" {% endif %} 
-    >
+    <form method="post" action="">
       {% csrf_token %}
       {# Include the hidden fields #}
       {% for hidden in form.hidden_fields %}

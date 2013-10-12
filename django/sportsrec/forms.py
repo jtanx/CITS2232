@@ -139,8 +139,19 @@ class MemberForm(ModelForm):
                 'maxlength' :  Member._meta.get_field('interests').max_length}),
         }
 
-class DeleteForm(Form):
-    confirm = forms.BooleanField()
+class MembershipApplicationForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        members = kwargs.pop('members')
+        super(MembershipApplicationForm, self).__init__(*args, **kwargs)
+        self.fields['member'].queryset = members
+ 
+    class Meta:
+        model=MembershipApplication
+        fields=['member']
+        
+class ApplicationForm(Form):
+    application_id = forms.IntegerField(widget=forms.HiddenInput())
+    accept = forms.IntegerField(widget=forms.HiddenInput())
     
 class ClubForm(ModelForm):
     '''Club add/edit form. Requires member queryset.'''

@@ -16,7 +16,11 @@
     <tr><th>Date joined</th><td>{{membership.joined}}</td></tr>
     <tr><th>Last paid membership fees</th><td>{{membership.last_paid|default:''}}</td></tr>
   </table>
-
+  <div class="large bold">
+    <a href="{% url 'sportsrec:membership_delete' pk=membership.id %}">
+      Remove this membership
+    </a>
+  </div>
 </div>
 
 {% endblock %}

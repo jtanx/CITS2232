@@ -1,0 +1,38 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+  <div class="title">
+	Delete club <a href="{% url 'sportsrec:club_detail' pk=object.id %}">{{object}}</a>?
+  </div>
+  {% if memberships %}
+    <p>This club has the following memberships:</p>
+    <table class="horizontal">
+      <tr>
+        <th class="horizontal-top">Membership ID</th>
+        <th class="horizontal-top">Member</th>
+      </tr>
+      {% for membership in memberships %}
+      <tr>
+        <th class="clickable menu-hilight">
+          {{membership.id}}
+        </th>
+        <th class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:membership_detail' pk=membership.id %}">{{membership.member}}</a>
+        </th>
+      </tr>
+      {% endfor %}
+    </table>
+    <p>These memberships will be automatically revoked.</p>
+  {% else %}
+    <p>This club has no memberships.</p>
+  {% endif %}
+  
+  <form method="post" action="">
+      {% csrf_token %}
+      <p style="float:right; margin:0;">
+         <input type="submit" value="Confirm">
+      </p>
+  </form>
+</div>
+{% endblock %}

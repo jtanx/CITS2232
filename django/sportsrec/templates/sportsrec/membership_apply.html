@@ -1,0 +1,22 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+  <div class="title">
+	  Apply for membership to
+	  <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+		{{club}}
+	  </a>
+  </div>
+  
+  <div>
+	Select a member for application to this club.
+  </div>
+  
+  <form method="post" action="">
+      {% csrf_token %}
+      {{form}}
+      <input type="submit" value="Apply" />
+  </form>
+</div>
+{% endblock %}

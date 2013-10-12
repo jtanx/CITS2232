@@ -9,18 +9,6 @@
     <link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}favicon.ico" >
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}nav-menu.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css">
-    <script type="text/javascript">
-      $(document).ready(function () {
-        //make links clickable
-        $(".clickable").click(function () {
-          var href = $(this).attr("href");
-          href = (!href) ? ($(this).find("a").first().attr("href")) : href;
-          if (href) {
-            window.location = href;
-          }
-        });
-      });
-    </script>
   </head>
   
   <body>
@@ -69,17 +57,32 @@
             {% block sidebar-user-menu %}
             {% endblock %}
             <li><a href="#">Statistics</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
+            {% endif %}
           </ul>
         </div>
         
         {% if user.is_authenticated %}
         <div class="nav-menu widget">
           <ul>
-            <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
-            <li><a href="{% url 'sportsrec:members' %}">Manage members</a></li>
+            <li><a href="{% url 'sportsrec:member_add' %}">Add a member</a></li>
+            <li><a href="{% url 'sportsrec:member_list' %}">Manage members</a></li>
+            <li><a href="{% url 'sportsrec:membership_application_list' %}">
+                Manage membership applications</a>
+            </li>
             <li><a href="{% url 'sportsrec:membership_list' %}">Manage memberships</a></li>
-            <li><a href="{% url 'sportsrec:user_club_list' %}">Manage clubs</a></li>
+          </ul>
+        </div>
+        
+        <div class="nav-menu widget">
+          <ul>
+            
             <li><a href="{% url 'sportsrec:club_add' %}">Add a club</a></li>
+            <li><a href="{% url 'sportsrec:user_club_list' %}">Manage clubs</a></li>
+            <li><a href="{% url 'sportsrec:user_club_application_list' %}">
+                Manage pending applications</a>
+            </li>
           </ul>
         </div>
         
