@@ -18,6 +18,9 @@
       	<th>Membership ID</th>
         <th>Member</th>
         <th>Since</th>
+        {% if club.owner.owner == user %}
+        <th>Remove</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -30,6 +33,13 @@
           </a>
         </td>
         <td>{{membership.joined}}</td>
+        {% if club.owner.owner == user %}
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:membership_delete' pk=membership.id %}">
+            Remove
+          </a>
+        </td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

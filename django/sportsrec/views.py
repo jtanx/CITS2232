@@ -14,6 +14,7 @@ from django.contrib import messages
 from sportsrec.admin import is_admin
 from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 
 '''Mixins'''
 
@@ -481,7 +482,7 @@ class MembershipDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
     def get_queryset(self):
         qs = super(MembershipDeleteView, self).get_queryset()
         if not is_admin(self.request.user):
-            return qs.filter(member__owner=self.request.user)
+            return qs.filter(Q(member__owner=self.request.user) | Q(club__owner__owner=self.request.user))
         return qs
         
 class TotalStats(generic.TemplateView):
