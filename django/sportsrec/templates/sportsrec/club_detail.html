@@ -102,6 +102,10 @@
       
       {% endautoescape %}
       
+      var infoWindow = new google.maps.InfoWindow({
+        'content': infoHtml
+      });
+      
       function initialize() {
       	geocoder = new google.maps.Geocoder();
         var mapOptions = {
