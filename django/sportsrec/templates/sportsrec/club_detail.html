@@ -7,7 +7,14 @@
     <table class="horizontal">
     <tr><th>Club ID</th><td>{{club.id}}</td></tr>
     <tr><th>Address</th><td>{{club.address}}</td></tr>
-    <tr><th>Location</th><td>{{club.location}}</td></tr>
+    <tr>
+      <th>Location</th>
+      <td>
+        {% if club.latitude and club.longitude %}
+          {{club.latitude}}, {{club.longitude}}
+        {% endif %}
+      </td>
+    </tr>
     <tr>
       <th>Tags</th>
       <td>{%for tag in club.tags.all%}{{tag}}{% endfor %}</td>
@@ -62,11 +69,14 @@
     </a>
   	  
   {% if club.owner.owner == user or admin %}
-  |
+    |
     <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
       Edit this club
     </a>
-  
+    |
+    <a href="{% url 'sportsrec:club_delete' pk=club.id %}">
+      Delete this club
+    </a>
   {% endif %}
   </div>
   </div>
@@ -115,20 +125,19 @@
         };
         map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
         
-        var location = "{{club.location|escapejs}}".split(",")
-        if (location.length == 2) {
-          var latlng = new google.maps.LatLng(Number(location[0]), Number(location[1]));
+        {% if club.latitude and club.longitude %}
+          var latlng = new google.maps.LatLng({{club.latitude}}, {{club.longitude}});
           map.setCenter(latlng);
           var marker = new google.maps.Marker({
-           			map: map,
+                map: map,
                 title : "Club: {{club.name|escapejs}}",
-            		position: latlng
+                position: latlng
           });
             
           google.maps.event.addListener(marker, 'click', function() {
             infoWindow.open(map,marker);
           });
-        }
+        {% endif %}
     }
     
       google.maps.event.addDomListener(window, 'load', initialize);

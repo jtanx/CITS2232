@@ -15,8 +15,7 @@
         <th>No. Members</th>
         <th>Date Created</th>
         <th>Contact</th>
-        <th>Facebook</th>
-        <th>Twitter</th>
+        <th>Apply now!</th>
       </tr>
     </thead>
     <tbody>
@@ -45,8 +44,10 @@
          
         
         <td class="clickable menu-hilight">
-          {% if club.facebook %}
-          <a href="https://facebook.com/{{club.facebook}}">{{club.facebook}}</a>
+          {% if club.recruiting %}
+            <a href="{% url 'sportsrec:membership_apply' pk=club.id %}">
+              Apply
+            </a>
           {% endif %}
         </td>
         

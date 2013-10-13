@@ -34,13 +34,16 @@
     <tr><th>Interests</th><td class="break">{{member.interests}}</td></tr>
   </table>
 
-  {% ifequal member.owner user %}
+  {% if member.owner == user or admin %}
   <div class="large centre bold">
     <a href="{% url 'sportsrec:member_edit' pk=member.id %}">
       Edit this profile
+    </a> |
+    <a href="{% url 'sportsrec:member_delete' pk=member.id %}">
+      Delete this member
     </a>
   </div>
-  {% endifequal %}
+  {% endif %}
 </div>
 
 {% if owned_clubs %}

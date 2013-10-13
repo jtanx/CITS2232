@@ -211,7 +211,7 @@ def member_edit(request, pk):
 
     return render(request, 'sportsrec/add_edit.html', context)
 
-class MemberDetailView(MessageMixin, DetailView):
+class MemberDetailView(MessageMixin, AdminMixin, DetailView):
     model = Member
     template_name='sportsrec/member_detail.html'
     error_message="That member doesn't exist"
@@ -588,7 +588,7 @@ class UserClubApplicationList(LoginRequiredMixin, MessageMixin, AdminMixin, List
 
     def get_queryset(self):
         if is_admin(self.request.user):
-            return MembershipApplication.objects.all()
+            return MembershipApplication.objects.filter(rejected=False)
         clubs = Club.objects.filter(owner__owner=self.request.user).values_list('pk', flat=True)
         return MembershipApplication.objects.filter(club__id__in=clubs, rejected=False)
         

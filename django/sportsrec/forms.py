@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from sportsrec.models import *
 from django.contrib.auth import authenticate
-import re
+import re, decimal
 
 class SocialCleanerMixin(object):
     grep = re.compile(r"(?i)^(?:https?://.*/)?([a-zA-Z0-9-\._@'t#]*)")
@@ -176,6 +176,7 @@ class ApplicationForm(Form):
     
 class ClubForm(SocialCleanerMixin, ModelForm):
     '''Club add/edit form. Requires member queryset.'''
+    location = forms.CharField(max_length=40, required=False)
     
     def __init__(self, *args, **kwargs):
         member_queryset = kwargs.pop('members')
@@ -183,9 +184,19 @@ class ClubForm(SocialCleanerMixin, ModelForm):
         self.fields['owner'].queryset = member_queryset
         self.fields['owner'].required = True
         self.fields['contact'].queryset = member_queryset
+        if self.instance.latitude and self.instance.longitude:
+            self.fields['location'].initial = \
+                "%s, %s" % (self.instance.latitude, self.instance.longitude)
     
-    def clean_location(self):
-        location = self.cleaned_data.get("location")
+    def save(self, *args, **kwargs):
+        if 'latitude' in self.cleaned_data:
+            self.instance.latitude = self.cleaned_data['latitude']
+            self.instance.longitude = self.cleaned_data['longitude']
+        return super(ClubForm, self).save(*args, **kwargs)
+        
+    def clean(self):
+        cleaned_data = super(ClubForm, self).clean()
+        location = cleaned_data.get("location")
         ok = True
         if location:
             parts = location.split(',')
@@ -193,15 +204,18 @@ class ClubForm(SocialCleanerMixin, ModelForm):
                 ok = False
             else:
                 try:
-                    lat = float(parts[0])
-                    long = float(parts[1])
-                except ValueError:
+                    lat = decimal.Decimal(parts[0])
+                    long = decimal.Decimal(parts[1])
+                except:
                     ok = False
+                else:
+                    cleaned_data['latitude'] = lat
+                    cleaned_data['longitude'] = long
         if not ok:
             msg = "Location must be in the form latitude, longitude in decimal notation."
             self._errors["location"] = self.error_class([msg])
-            del self.cleaned_data['location']
-        return location
+            del cleaned_data['location']
+        return cleaned_data
         
     class Meta:
             model=Club

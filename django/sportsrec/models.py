@@ -67,7 +67,9 @@ class ClubType(models.Model):
 class Club(models.Model):
     name = models.CharField(max_length=40, unique=True)
     address = models.CharField(max_length=255)
-    location = models.CharField(max_length=40, blank=True, null=True)
+    #location = models.CharField(max_length=40, blank=True, null=True)
+    latitude = models.DecimalField(max_digits=10, decimal_places=5, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=10, decimal_places=5, blank=True, null=True)
 
     tags = models.ManyToManyField(ClubTag, blank=True, null=True)
     type = models.ForeignKey(ClubType)
