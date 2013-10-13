@@ -290,7 +290,7 @@ def club_edit(request, pk):
         return redirect('sportsrec:club_list')
 
     club = club[0]
-    if not club.owner.owner == request.user and not is_admin(request.user):
+    if not is_admin(request.user) and not club.owner.owner == request.user:
         messages.add_message(request, messages.ERROR, \
                              "You cannot edit a club you did not make.")
         return redirect('sportsrec:club_list')
@@ -324,7 +324,7 @@ def club_edit(request, pk):
 
     return render(request, 'sportsrec/club_add_edit.html', context)
 
-class ClubMembersView(MessageMixin, ListView):
+class ClubMembersView(MessageMixin, AdminMixin, ListView):
     template_name = 'sportsrec/club_member_list.html'
     context_object_name = 'club_member_list'
     paginate_by = 15 #15 members per page
@@ -546,7 +546,9 @@ class UserClubList(LoginRequiredMixin, AdminMixin, ListView):
     paginate_by = 15 #15 clubs/page
 
     def get_queryset(self):
-        members=set(Member.objects.filter(owner=self.request.user).values_list('pk', flat=True))
+        if is_admin(self.request.user):
+            return Club.objects.all()
+        members=Member.objects.filter(owner=self.request.user).values_list('pk', flat=True)
         return Club.objects.filter(owner__pk__in=members).order_by('id')
 
 class UserClubApplicationList(LoginRequiredMixin, MessageMixin, AdminMixin, ListView):

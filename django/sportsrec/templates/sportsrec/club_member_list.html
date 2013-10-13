@@ -18,7 +18,7 @@
       	<th>Membership ID</th>
         <th>Member</th>
         <th>Since</th>
-        {% if club.owner.owner == user %}
+        {% if club.owner.owner == user or admin %}
         <th>Remove</th>
         {% endif %}
       </tr>
@@ -33,7 +33,7 @@
           </a>
         </td>
         <td>{{membership.joined}}</td>
-        {% if club.owner.owner == user %}
+        {% if club.owner.owner == user or admin %}
         <td class="clickable menu-hilight">
           <a href="{% url 'sportsrec:membership_delete' pk=membership.id %}">
             Remove

@@ -54,9 +54,12 @@ class ClubType(models.Model):
     @staticmethod
     def club_deleted(sender, instance, **kwargs):
         '''Auto updates club count when clubs are deleted'''
-        if instance.type:
+        try:
             instance.type.club_count -= 1
             instance.type.save()
+        except ObjectDoesNotExist:
+            #Club type was deleted...
+            return
 
     def __unicode__(self):
         return '%s' % (self.name)
@@ -131,13 +134,16 @@ class Membership(models.Model):
 
     @staticmethod
     def membership_deleted(sender, instance, **kwargs):
-        if instance.club:
+        try:
             instance.club.member_count -= 1
             if instance.club.owner == instance.member:
                 instance.club.owner = None
             if instance.club.contact == instance.member:
                 instance.club.contact = None
             instance.club.save()
+        except ObjectDoesNotExist:
+            #Club no longer exists, oh well
+            return
     
     class Meta:
         unique_together = (("member", "club"),)
