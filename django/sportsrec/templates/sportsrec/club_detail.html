@@ -112,7 +112,7 @@
         map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
         
         var location = "{{club.location|escapejs}}".split(",")
-        if (location.length >= 2) {
+        if (location.length == 2) {
           var latlng = new google.maps.LatLng(Number(location[0]), Number(location[1]));
           map.setCenter(latlng);
           var marker = new google.maps.Marker({

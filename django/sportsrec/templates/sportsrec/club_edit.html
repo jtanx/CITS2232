@@ -1,46 +1,24 @@
 {% extends "sportsrec/add_edit.html" %}
 
 {% block form-data %}
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script>
-  
-  var timeout, locating = false;
+  var timeout;
+  var geocoder = new google.maps.Geocoder();
 
   function geolocate () {
-    if (!locating) {
-      locating = true;
-      
-      var val = $("#id_location").val()
-      var split = val.split(",");
-      if (split.length == 2) {
-        try {
-          var lat = Number(split[0]);
-          var lng = Number(split[1]);
+   if (geocoder) {
+      geocoder.geocode({ 'address': $("#id_address").val() }, function (results, status) {
+         if (status == google.maps.GeocoderStatus.OK) {
+          var latlong = results[0].geometry.location;
+          $("#id_location").val(latlong.lat() + "," + latlong.lng());
           $("#id_location").attr("class", "pass");
-          locating = false;
-          return;
-        } catch(err) {
-        }
-      }
-
-      $.ajax({
-        'url' : 'http://maps.googleapis.com/maps/api/geocode/json',
-        'data' : {
-          'address' : val,
-          'sensor' : 'false'
-        }}).done(function (data) {
-          if (data.results.length > 0) {
-            var latlng = data.results[0].geometry.location;
-            console.log(latlng);
-            $("#id_location").val(latlng.lat + "," + latlng.lng).attr("class", "pass");
-          } else {
-            $("#id_location").attr("class", "fail");
-          }
-          locating = false;
+         }
       });
-    }
+   }
   };
   
-  $("#id_location").keypress(function (evt) {
+  $("#id_address").keypress(function (evt) {
     if (timeout) {
       clearTimeout(timeout);
       timeout = null;
@@ -50,7 +28,31 @@
       return;
     }
     
-    timeout = setTimeout(geolocate, 400);
+    timeout = setTimeout(geolocate, 800);
+  });
+  
+  function checkLocation() {
+    var val = $("#id_location").val();
+    if (/^\s*-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/.test(val)) {
+      $("#id_location").attr("class", "pass");
+    }  else {
+      $("#id_location").attr("class", "fail");
+    }
+  }
+  
+  var locationTimeout;
+  $("#id_location").keypress(function (evt) {
+    $(this).attr("class", "");
+    if (locationTimeout) {
+        clearTimeout(locationTimeout);
+        locationTimeout = null;
+    }
+    
+    if (evt.ctrlKey) {
+      return;
+    }
+      
+    locationTimeout = setTimeout(checkLocation, 200);
   });
 </script>
 {% endblock %}
