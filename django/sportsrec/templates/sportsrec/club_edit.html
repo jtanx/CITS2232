@@ -1,0 +1,56 @@
+{% extends "sportsrec/add_edit.html" %}
+
+{% block form-data %}
+<script>
+  
+  var timeout, locating = false;
+
+  function geolocate () {
+    if (!locating) {
+      locating = true;
+      
+      var val = $("#id_location").val()
+      var split = val.split(",");
+      if (split.length == 2) {
+        try {
+          var lat = Number(split[0]);
+          var lng = Number(split[1]);
+          $("#id_location").attr("class", "pass");
+          locating = false;
+          return;
+        } catch(err) {
+        }
+      }
+
+      $.ajax({
+        'url' : 'http://maps.googleapis.com/maps/api/geocode/json',
+        'data' : {
+          'address' : val,
+          'sensor' : 'false'
+        }}).done(function (data) {
+          if (data.results.length > 0) {
+            var latlng = data.results[0].geometry.location;
+            console.log(latlng);
+            $("#id_location").val(latlng.lat + "," + latlng.lng).attr("class", "pass");
+          } else {
+            $("#id_location").attr("class", "fail");
+          }
+          locating = false;
+      });
+    }
+  };
+  
+  $("#id_location").keypress(function (evt) {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+    
+    if (evt.ctrlKey) {
+      return;
+    }
+    
+    //timeout = setTimeout(geolocate, 400);
+  });
+</script>
+{% endblock %}

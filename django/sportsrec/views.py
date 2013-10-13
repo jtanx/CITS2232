@@ -314,7 +314,7 @@ def club_edit(request, pk):
 
     context['form'] = form
 
-    return render(request, 'sportsrec/add_edit.html', context)
+    return render(request, 'sportsrec/club_edit.html', context)
 
 class ClubMembersView(MessageMixin, ListView):
     template_name = 'sportsrec/club_member_list.html'

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save, post_delete
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+import urllib, urllib2, json
 
 class Member(models.Model):
     first_name = models.CharField(max_length=40)
@@ -77,6 +78,31 @@ class Club(models.Model):
     twitter = models.CharField(max_length=40, blank=True, null=True)
     owner = models.ForeignKey('Member',on_delete=models.SET_NULL, null=True, blank=True,\
                                 related_name='member_owner')
+    
+    
+
+    '''#Geocode on client side
+    def save(self):
+        if self.address:
+            self.location = self.geocode(self.address)
+        super(Club, self).save()
+    
+    def geocode(self, address):
+        result = ''
+        url = 'http://maps.googleapis.com/maps/api/geocode/json'
+        params = urllib.urlencode({'address' : address, 'sensor' : 'false'})
+        url = url + '?' + params
+        response = urllib2.urlopen(url)
+        try:
+            vals = json.load(response)
+        except ValueError:
+            return result
+        
+        if 'results' in vals and len(vals['results']) > 0:
+            loc = vals['results'][0]['geometry']['location']
+            result = ",".join((str(loc['lat']), str(loc['lng'])))
+        return result
+    '''
     
     def __unicode__(self):
         return '%s' % (self.name)

@@ -163,6 +163,25 @@ class ClubForm(ModelForm):
         self.fields['owner'].required = True
         self.fields['contact'].queryset = member_queryset
     
+    def clean_location(self):
+        location = self.cleaned_data.get("location")
+        ok = True
+        if location:
+            parts = location.split(',')
+            if len(parts) != 2:
+                ok = False
+            else:
+                try:
+                    lat = float(parts[0])
+                    long = float(parts[1])
+                except ValueError:
+                    ok = False
+        if not ok:
+            msg = "Location must be in the form latitude, longitude in decimal notation."
+            self._errors["location"] = self.error_class([msg])
+            del self.cleaned_data['location']
+        return location
+        
     class Meta:
             model=Club
             fields=['name','owner','address','location','tags','type','recruiting','contact',

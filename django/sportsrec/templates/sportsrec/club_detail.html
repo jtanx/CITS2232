@@ -89,6 +89,19 @@
     <script>
       var map;
       var geocoder;
+      
+      {% autoescape on%}
+      var infoHtml = 
+        '<div id="content">'+
+          '<h2 id="firstHeading" class="firstHeading">{{club.name|escapejs}}</h2>'+
+          '<div id="bodyContent">'+
+            '<p>Address: {{club.address|escapejs}}</p>' +
+            '<p>{{club.description|escapejs}}</p>' +
+          '</div>'+
+        '</div>';
+      
+      {% endautoescape %}
+      
       function initialize() {
       	geocoder = new google.maps.Geocoder();
         var mapOptions = {
@@ -97,17 +110,21 @@
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-    	geocoder.geocode( { 'address': "{{club.location}}"}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-        		map.setCenter(results[0].geometry.location);
-        		var marker = new google.maps.Marker({
+        
+        var location = "{{club.location|escapejs}}".split(",")
+        if (location.length >= 2) {
+          var latlng = new google.maps.LatLng(Number(location[0]), Number(location[1]));
+          map.setCenter(latlng);
+          var marker = new google.maps.Marker({
            			map: map,
-            		position: results[0].geometry.location
-        		});
-      		} else {
-      			alert("Geocode was not successful for the following reason: " + status);
-  			}
-    	});
+                title : "Club: {{club.name|escapejs}}",
+            		position: latlng
+          });
+            
+          google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.open(map,marker);
+          });
+        }
     }
     
       google.maps.event.addDomListener(window, 'load', initialize);
