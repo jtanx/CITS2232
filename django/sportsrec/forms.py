@@ -165,10 +165,10 @@ class ClubForm(ModelForm):
     
     class Meta:
             model=Club
-            fields=['name','owner','address','location','tags','type','recruiting','contact',
+            fields=['name','owner','address','tags','type','recruiting','contact',
                             'facebook','twitter','description']
             widgets = {
-        'description': Textarea(attrs={
+        	'description': Textarea(attrs={
             'cols': 70, 'rows': 6,
             'style' : 'width: 100%',
             'maxlength' :  Club._meta.get_field('description').max_length}),

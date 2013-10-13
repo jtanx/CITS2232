@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save, post_delete
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+import urllib
 
 class Member(models.Model):
     first_name = models.CharField(max_length=40)
@@ -76,7 +77,22 @@ class Club(models.Model):
     facebook = models.CharField(max_length=40, blank=True, null=True)
     twitter = models.CharField(max_length=40, blank=True, null=True)
     owner = models.ForeignKey('Member',on_delete=models.SET_NULL, null=True, blank=True,\
-                                related_name='member_owner')
+                                related_name='member_owner')    
+    	
+    def geocode(address):
+    	out = "csv"
+    	key = "{AIzaSyAH5OCkIGApptBzMQGjs_Wlz8kc6xqTg8o}"
+    	addr = urllib.quote_plus(address)
+    	request = "http://maps.google.com/maps/geo?q=%s&output=%s&key=%s" % (addr,out,key)
+    	data = urllib.urlopen(request).read()
+    	dlist = data.split[',']
+    	if dlist[0] == '200':
+        	return "%s, %s" % (dlist[2], dlist[3])
+    	else:
+        	return ','
+        	
+    def clean(self):                            
+    	self.location = geocode(self.address)
     
     def __unicode__(self):
         return '%s' % (self.name)
