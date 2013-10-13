@@ -5,6 +5,33 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 import urllib, urllib2, json
 
+class LocationManager(models.Manager):
+    # From http://goo.gl/cy5OUc
+    def nearby_locations(self, latitude, longitude, radius, max_results=40, use_miles=False):
+        if use_miles:
+            distance_unit = 3959
+        else:
+            distance_unit = 6371
+
+        from django.db import connection, transaction
+        from django.conf import settings
+        import math
+        cursor = connection.cursor()
+        
+        connection.connection.create_function('acos', 1, math.acos)
+        connection.connection.create_function('cos', 1, math.cos)
+        connection.connection.create_function('radians', 1, math.radians)
+        connection.connection.create_function('sin', 1, math.sin)
+
+        sql = """SELECT id, (%f * acos( cos( radians(%f) ) * cos( radians( latitude ) ) *
+        cos( radians( longitude ) - radians(%f) ) + sin( radians(%f) ) * sin( radians( latitude ) ) ) )
+        AS distance FROM sportsrec_club WHERE distance < %d
+        ORDER BY distance LIMIT 0 , %d;""" % (distance_unit, latitude, longitude, latitude, int(radius), max_results)
+        cursor.execute(sql)
+        ids = [row[0] for row in cursor.fetchall()]
+
+        return self.filter(id__in=ids)
+
 class Member(models.Model):
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
@@ -29,7 +56,7 @@ class ClubType(models.Model):
     name = models.CharField(max_length=40, unique=True)
     description = models.CharField(max_length=255)
     club_count = models.IntegerField(default=0)
-
+    
     @staticmethod
     def club_created(sender, instance, created, **kwargs):
         '''Auto increments the club count for a club type
@@ -67,10 +94,12 @@ class ClubType(models.Model):
 class Club(models.Model):
     name = models.CharField(max_length=40, unique=True)
     address = models.CharField(max_length=255)
+    objects = models.Manager()
     #location = models.CharField(max_length=40, blank=True, null=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=5, blank=True, null=True)
     longitude = models.DecimalField(max_digits=10, decimal_places=5, blank=True, null=True)
-
+    location = LocationManager()
+    
     tags = models.ManyToManyField(ClubTag, blank=True, null=True)
     type = models.ForeignKey(ClubType)
     member_count = models.IntegerField(default=0)

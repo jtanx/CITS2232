@@ -598,6 +598,16 @@ class ClubDetailView(AdminMixin, MessageMixin, DetailView):
     error_message="This club doesn't exist."
     error_url=reverse_lazy('sportsrec:club_list')
     
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        club = Club.objects.get(id=self.kwargs['pk'])
+        #Clubs within 10km
+        nearby = Club.location.nearby_locations(club.latitude, club.longitude, 10)
+        context['nearby'] = nearby
+        return context
+    
+    
 def search(request):
 	context = {}
 	if request.method == 'POST':
