@@ -200,7 +200,9 @@ def member_edit(request, pk):
     if request.method == "POST":
         form = MemberForm(request.POST, instance = member)
         if form.is_valid():
-            form.save()
+            member = form.save()
+            #Regenerate form
+            form = MemberForm(instance = member)
             context['pass'] = "Updated successfully!"
     else:
         form = MemberForm(instance = member)
@@ -312,6 +314,8 @@ def club_edit(request, pk):
         form = ClubForm(request.POST, members=members, instance=club)
         if form.is_valid():
             club = form.save()
+            #Regenerate form
+            form = ClubForm(members=members, instance=club)
             context['pass'] = 'Club details successfully edited!'
     else:
             form = ClubForm(members=members, instance=club)

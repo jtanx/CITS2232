@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate
 import re
 
 class SocialCleanerMixin(object):
-    grep = re.compile(r"(?i)^(?:https?://.*/)?([a-zA-Z0-9-\._@'t#]*)$")
+    grep = re.compile(r"(?i)^(?:https?://.*/)?([a-zA-Z0-9-\._@'t#]*)")
     def clean(self):
         cleaned_data = super(SocialCleanerMixin, self).clean()
         facebook = cleaned_data.get("facebook")
