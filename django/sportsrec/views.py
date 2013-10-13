@@ -253,6 +253,10 @@ def club_add(request):
             return redirect('sportsrec:member_add')
     else:
         members = Member.objects.all()
+        if not members.exists():
+            messages.add_message(request, messages.ERROR, \
+                    "You must create a member before adding a club.")
+            return redirect('sportsrec:member_add')
     
     if request.method == "POST":
         form = ClubForm(request.POST, members=members)
