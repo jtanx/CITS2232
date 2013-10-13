@@ -79,20 +79,20 @@ class Club(models.Model):
     owner = models.ForeignKey('Member',on_delete=models.SET_NULL, null=True, blank=True,\
                                 related_name='member_owner')    
     	
-    def geocode(address):
-    	out = "csv"
+    def geocode(self, address):
+    	out = "json"
     	key = "{AIzaSyAH5OCkIGApptBzMQGjs_Wlz8kc6xqTg8o}"
     	addr = urllib.quote_plus(address)
-    	request = "http://maps.google.com/maps/geo?q=%s&output=%s&key=%s" % (addr,out,key)
-    	data = urllib.urlopen(request).read()
-    	dlist = data.split[',']
-    	if dlist[0] == '200':
-        	return "%s, %s" % (dlist[2], dlist[3])
+    	request = "http://maps.googleapis.com/maps/api/geocode/%s?address=%s&sensor=true" % (out,addr)
+    	results = urllib.urlopen(request).read()
+    	print("results = %s" % (results))
+    	if results[1] == "OK":
+    		return "%i, %i" % (results[0].geometry.location.lat, results[0].geometry.location.long)
     	else:
-        	return ','
+    		return "-31.9522, 115.8589"
         	
-    def clean(self):                            
-    	self.location = geocode(self.address)
+    def clean(self):       
+    	self.location = self.geocode(self.address)
     
     def __unicode__(self):
         return '%s' % (self.name)
