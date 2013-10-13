@@ -5,6 +5,27 @@ from sportsrec.models import *
 from django.contrib.auth import authenticate
 import re
 
+class SocialCleanerMixin(object):
+    grep = re.compile(r"(?i)^(?:https?://.*/)?([a-zA-Z0-9-\._@'t#]*)$")
+    def clean(self):
+        cleaned_data = super(SocialCleanerMixin, self).clean()
+        facebook = cleaned_data.get("facebook")
+        twitter = cleaned_data.get("twitter")
+        if facebook:
+            m = re.match(self.grep, facebook)
+            facebook = None
+            if m:
+                facebook = m.group(1)
+            cleaned_data['facebook'] = facebook
+        if twitter:
+            m = re.match(self.grep, twitter)
+            twitter = None
+            if m:
+                twitter = m.group(1)
+            cleaned_data['twitter'] = twitter
+            
+        return cleaned_data
+
 class LoginForm(Form):
     '''A login form'''
     username = forms.CharField()
@@ -127,7 +148,7 @@ class UserProfileForm(Form):
                 del cleaned_data["confirm_password"]
         return cleaned_data
 
-class MemberForm(ModelForm):    
+class MemberForm(SocialCleanerMixin, ModelForm):    
     class Meta:
         model=Member
         fields=['first_name', 'last_name', 'email', 'address',
@@ -153,7 +174,7 @@ class ApplicationForm(Form):
     application_id = forms.IntegerField(widget=forms.HiddenInput())
     accept = forms.IntegerField(widget=forms.HiddenInput())
     
-class ClubForm(ModelForm):
+class ClubForm(SocialCleanerMixin, ModelForm):
     '''Club add/edit form. Requires member queryset.'''
     
     def __init__(self, *args, **kwargs):

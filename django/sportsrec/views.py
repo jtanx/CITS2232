@@ -294,9 +294,9 @@ def club_edit(request, pk):
         return redirect('sportsrec:club_list')
 
     #restrict to current members of club
-    memberids = Membership.objects.values_list('pk', flat=True).\
-                filter(club=club)
-    members = Member.objects.filter(pk__in=set(memberids))
+    memberids = Membership.objects.filter(club=club)\
+                    .values_list('member__pk', flat=True)
+    members = Member.objects.filter(pk=memberids)
 
     context = {
             'created' : False, 'name' : 'club details',
