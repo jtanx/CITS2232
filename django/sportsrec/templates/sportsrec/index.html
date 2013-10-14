@@ -40,13 +40,34 @@
 {% endif %}
 
 <div class="widget">
-  <div class="title">Dashboard</div>
-  You own or administer:
-  <ul>
-    <li>{{stats.member_count}} member(s)</li>
-    <li>{{stats.membership_count}} membership(s)</li>
-    <li>{{stats.user_club_count}} club(s)</li>
-  </ul>
+  <div class="title centre">Welcome!</div>
+  <p>
+    Welcome to the unchained sports and recreation database!
+  </p>
+  <p>
+    Begin your search for a club today! Use the left navigation panel to list
+    all the clubs, or use the search feature to quickly find clubs near you!
+  </p>
+</div>
+
+<div class="widget">
+  <div class="title centre">Join today!</div>
+  <p>
+    Join this site today to explore the <i>advanced</i> features available.
+  </p>
+  <p>
+    While anyone can search for clubs, only once you have registered can you use 
+    the online registration function to apply to the club of your desire.
+  </p>
+  <p>
+    Becoming a registered user allows you not only to apply to clubs, but to
+    create a club of your own. Don't see a club of your liking? No problem - 
+    create - and manage a club of your own. Be your own boss.
+  </p>
+  <p>
+    <a href="{% url 'sportsrec:register' %}">Registration</a> is free and easy, 
+    so what are you waiting for? 
+  </p>
 </div>
 
 {% endblock %}
