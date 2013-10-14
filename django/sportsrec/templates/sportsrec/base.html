@@ -56,7 +56,7 @@
             <li><a href="{% url 'sportsrec:search' %}">Club search</a></li>
             {% block sidebar-user-menu %}
             {% endblock %}
-            <li><a href="#">Statistics</a></li>
+            <li><a href="{% url 'sportsrec:stats' %}">Statistics</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
             {% endif %}

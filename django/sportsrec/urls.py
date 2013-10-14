@@ -6,6 +6,8 @@ from sportsrec import models
 
 urlpatterns = patterns('',
     url(r'^$', views.Index.as_view(), name='index'),
+    url(r'^stats$', views.StatsOverView.as_view(), name='stats'),
+    url(r'^stats/clubtype$', views.ClubTypeStatsView.as_view(), name='stats_club'),
     url(r'^login/?$', views.login_user, name='login'),
     url(r'^logout$', views.logout_user, name='logout'),
     url(r'^register$', views.register, name='register'),

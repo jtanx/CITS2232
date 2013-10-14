@@ -217,6 +217,9 @@ class UserDemoteView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
                
     def post(self, request, *args, **kwargs):
         user = User.objects.get(pk=self.kwargs['pk'])
+        if user.is_superuser:
+            messages.error(self.request, 'Nice try')
+            return redirect('sportsrec:index')
         group = Group.objects.get(name="End Admin")
         user.groups.remove(group)
         user.save()
@@ -650,35 +653,30 @@ class MembershipDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
             return qs.filter(Q(member__owner=self.request.user) | Q(club__owner__owner=self.request.user))
         return qs
         
-class TotalStats(TemplateView):
-    def get_user_stats(self, stats):
-        #needed at all? performance? urgh
-        if not self.request.user.is_authenticated():
-            return
-
-        try:
-            meta = UserMeta.objects.get(user=self.request.user)
-        except UserMeta.DoesNotExist:
-            stats['member_count'] = 0
-            stats['membership_count'] = 0
-            stats['user_club_count'] = 0
-        else:
-            stats['member_count'] = meta.member_count
-            stats['membership_count'] = meta.membership_count
-            stats['user_club_count'] = meta.club_count
-
+class StatsOverView(TemplateView):
+    template_name='sportsrec/statistics.html'
+    context_object_name='stats'
+    
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(TotalStats, self).get_context_data(**kwargs)
-
-        stats = {}
-        self.get_user_stats(stats)
-        # Add in a QuerySet of all the books
-        context['stats'] = stats
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        admin = Group.objects.get(name="End Admin")
+        context['user_count'] = User.objects.all().count()
+        context['admin_count'] = User.objects.filter(groups=admin).count()
+        context['member_count'] = Member.objects.all().count()
+        context['club_count'] = Club.objects.all().count()
+        context['application_count'] = MembershipApplication.objects.all().count()
         return context
-    
 
-class Index(AdminMixin, TotalStats):
+class ClubTypeStatsView(ListView):
+    template_name = 'sportsrec/statistics_clubs.html'
+    context_object_name = 'clubtypes'
+    paginate_by = 15 #15 club types per page
+    
+    def get_queryset(self):
+        return ClubType.objects.all().order_by('-club_count','name') 
+
+class Index(AdminMixin, TemplateView):
     template_name='sportsrec/index.html'
     context_object_name='index'
     

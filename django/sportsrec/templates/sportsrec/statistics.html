@@ -1,0 +1,42 @@
+{% extends 'sportsrec/base.html' %}
+{% block main %}
+<div class="widget">
+  <div class="title centre">Site statistics</div>
+  <div class="large bold">Site statistics breakdown</div>
+  <table class="horizontal">
+    <tr>
+      <th>Total number of users</th>
+      <td>
+        {{user_count}}
+      </td>
+    </tr>
+    <tr>
+      <th>Total number of admins</th>
+      <td>
+        {{admin_count}}
+      </td>
+    </tr>
+    <tr>
+      <th>Total number of members</th>
+      <td>
+        {{member_count}}
+      </td>
+    </tr>
+    <tr>
+      <th>Total number of clubs</th>
+      <td class="clickable menu-hilight">
+        <a href="{% url 'sportsrec:stats_club' %}">
+          {{club_count}}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <th>Total number of membership applications</th>
+      <td>
+        {{application_count}}
+      </td>
+    </tr>
+  </table>
+</div>
+
+{% endblock %}
