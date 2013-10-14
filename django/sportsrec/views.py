@@ -1,11 +1,9 @@
-from django.views import generic
 from django.views.generic import *
-from django.db.models import Min, Avg, Count
 from sportsrec.models import *
-from django.shortcuts import redirect,render
-from django.contrib.auth import authenticate, login, logout
-from django.http import *
 from sportsrec.forms import *
+from django.shortcuts import redirect,render
+from django.http import *
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -23,6 +21,14 @@ class LoginRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
         return super(LoginRequiredMixin, self).\
                dispatch(request, *args, **kwargs)
+               
+class AdminRequiredMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user):
+            return redirect('sportsrec:index')
+        return super(AdminRequiredMixin, self).\
+               dispatch(request, *args, **kwargs)
+        
                
 class AdminMixin(object):
     def get_context_data(self, **kwargs):
@@ -125,7 +131,8 @@ def user_profile(request):
     context = {
         'created' : False, 'name' : 'user profile',
         'view' : 'sportsrec:user_profile',
-        'submit' : 'Submit'
+        'submit' : 'Submit', 'user_profile' : True,
+        'admin' : is_admin(request.user)
     }
 
     user = request.user
@@ -147,17 +154,11 @@ def user_profile(request):
     context['form'] = form
     return render(request, 'sportsrec/add_edit.html', context)
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
     model = User
     template_name='sportsrec/user_detail.html'
     error_message="That user doesn't exist"
     error_url=reverse_lazy('sportsrec:index')
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not is_admin(request.user):
-            return redirect('sportsrec:index')
-        return super(UserDetailView, self).\
-               dispatch(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -169,18 +170,19 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         
         return context
         
-class UserPromoteView(LoginRequiredMixin, DetailView):
+class UserPromoteView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
     model = User
-    template_name='sportsrec/user_promote.html'
+    template_name='sportsrec/user_confirm.html'
     error_message="That user doesn't exist"
     error_url=reverse_lazy('sportsrec:index')
     success_message = 'Membership application created successfully!'
     
-    def dispatch(self, request, *args, **kwargs):
-        if not is_admin(request.user):
-            return redirect('sportsrec:index')
-        return super(UserPromoteView, self).\
-               dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['promote'] = True
+        
+        return context
     
     def post(self, request, *args, **kwargs):
         user = User.objects.get(pk=self.kwargs['pk'])
@@ -196,11 +198,43 @@ class UserPromoteView(LoginRequiredMixin, DetailView):
         url = reverse_lazy('sportsrec:user_detail',\
                                         kwargs = {'pk' : user.id, })
         return redirect(url)
+
+class UserDemoteView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
+    template_name='sportsrec/user_confirm.html'
+    context_object_name='demote'
+    
+    def dispatch(self, request, *args, **kwargs):
+        user = User.objects.get(pk=self.kwargs['pk'])
+        if not self.request.user.is_superuser and not user==self.request.user:
+            messages.error(self.request, 'You can only demote yourself')
+            return redirect('sportsrec:index')
+        elif not is_admin(user):
+            messages.error(self.request, 'Nothing to demote - not an admin.')
+            return redirect('sportsrec:index')
         
-class UserDisableView(LoginRequiredMixin, DetailView):
+        return super(self.__class__, self).\
+               dispatch(request, *args, **kwargs)
+               
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(pk=self.kwargs['pk'])
+        group = Group.objects.get(name="End Admin")
+        user.groups.remove(group)
+        user.save()
+        messages.success(self.request, "%s was demoted." % user)
+        return redirect('sportsrec:index')
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        user = User.objects.get(pk=self.kwargs['pk'])
+        context['demote_user'] = user
+        context['demote'] = True
+        return context
+        
+class UserDisableView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
     model = User
     success_url = reverse_lazy('sportsrec:index')
-    template_name='sportsrec/user_enabledisable.html'
+    template_name='sportsrec/user_confirm.html'
     success_message='The user was disabled successfully.'
     error_message="That user doesn't exist."
     error_url=success_url
@@ -212,8 +246,6 @@ class UserDisableView(LoginRequiredMixin, DetailView):
         return context
     
     def dispatch(self, request, *args, **kwargs):
-        if not is_admin(request.user):
-            return redirect('sportsrec:index')
         user = User.objects.get(pk=self.kwargs['pk'])
         if not request.user.is_superuser and is_admin(user):
             messages.error(self.request, 'Cannot disable an admin user and not superuser')
@@ -235,19 +267,19 @@ class UserDisableView(LoginRequiredMixin, DetailView):
                                         kwargs = {'pk' : user.id, })
         return redirect(url)
 
-class UserEnableView(LoginRequiredMixin, DetailView):
+class UserEnableView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
     model = User
     success_url = reverse_lazy('sportsrec:index')
-    template_name='sportsrec/user_enabledisable.html'
+    template_name='sportsrec/user_confirm.html'
     success_message='The user was enabled successfully.'
     error_message="That user doesn't exist."
     error_url=success_url
     
-    def dispatch(self, request, *args, **kwargs):
-        if not is_admin(request.user):
-            return redirect('sportsrec:index')
-        return super(UserEnableView, self).\
-               dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['enable'] = True
+        return context
     
     def post(self, request, *args, **kwargs):
         user = User.objects.get(pk=self.kwargs['pk'])
@@ -258,16 +290,10 @@ class UserEnableView(LoginRequiredMixin, DetailView):
                                         kwargs = {'pk' : user.id, })
         return redirect(url)        
 
-class UserListView(LoginRequiredMixin, AdminMixin, ListView):
+class UserListView(LoginRequiredMixin, AdminRequiredMixin, AdminMixin, ListView):
     template_name = 'sportsrec/user_list.html'
     context_object_name = 'users'
     paginate_by = 15 #15 members per page
-
-    def dispatch(self, request, *args, **kwargs):
-        if not is_admin(request.user):
-            return redirect('sportsrec:index')
-        return super(UserListView, self).\
-               dispatch(request, *args, **kwargs)
     
     def get_queryset(self):
         return User.objects.all().order_by('is_active', 'id')     
@@ -624,7 +650,7 @@ class MembershipDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
             return qs.filter(Q(member__owner=self.request.user) | Q(club__owner__owner=self.request.user))
         return qs
         
-class TotalStats(generic.TemplateView):
+class TotalStats(TemplateView):
     def get_user_stats(self, stats):
         #needed at all? performance? urgh
         if not self.request.user.is_authenticated():

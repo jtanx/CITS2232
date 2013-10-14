@@ -60,6 +60,12 @@
     Delete <a href="{% url delete_view pk=pk %}">{{delete_text}}</a>
   </div>
   {% endif %}
+  
+  {% if user_profile and admin %}
+  <div class="large centre clear">
+    <a href="{% url 'sportsrec:user_demote' pk=user.id %}">Revoke your admin status</a>
+  </div>
+  {% endif %}
 </div>
 
 {% endblock %}
