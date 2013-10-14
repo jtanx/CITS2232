@@ -146,7 +146,132 @@ def user_profile(request):
 
     context['form'] = form
     return render(request, 'sportsrec/add_edit.html', context)
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name='sportsrec/user_detail.html'
+    error_message="That user doesn't exist"
+    error_url=reverse_lazy('sportsrec:index')
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user):
+            return redirect('sportsrec:index')
+        return super(UserDetailView, self).\
+               dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        user = User.objects.get(pk=self.kwargs['pk'])
+        context['user_not_admin'] = not is_admin(user)
+        context['owned_members'] = Member.objects.filter(owner=user)
+        context['owned_clubs'] = Club.objects.filter(owner__owner=user)
         
+        return context
+        
+class UserPromoteView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name='sportsrec/user_promote.html'
+    error_message="That user doesn't exist"
+    error_url=reverse_lazy('sportsrec:index')
+    success_message = 'Membership application created successfully!'
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user):
+            return redirect('sportsrec:index')
+        return super(UserPromoteView, self).\
+               dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(pk=self.kwargs['pk'])
+        if is_admin(user):
+            messages.error(self.request, 'User is already an admin')
+            url = reverse_lazy('sportsrec:user_detail',\
+                                        kwargs = {'pk' : user.id, })
+            return redirect(url)
+        group = Group.objects.get(name="End Admin")
+        user.groups.add(group)
+        user.save()
+        messages.success(self.request, self.success_message)
+        url = reverse_lazy('sportsrec:user_detail',\
+                                        kwargs = {'pk' : user.id, })
+        return redirect(url)
+        
+class UserDisableView(LoginRequiredMixin, DetailView):
+    model = User
+    success_url = reverse_lazy('sportsrec:index')
+    template_name='sportsrec/user_enabledisable.html'
+    success_message='The user was disabled successfully.'
+    error_message="That user doesn't exist."
+    error_url=success_url
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['disable'] = True
+        return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user):
+            return redirect('sportsrec:index')
+        user = User.objects.get(pk=self.kwargs['pk'])
+        if not request.user.is_superuser and is_admin(user):
+            messages.error(self.request, 'Cannot disable an admin user and not superuser')
+            return redirect('sportsrec:index')
+        return super(UserDisableView, self).\
+               dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(pk=self.kwargs['pk'])
+        if not request.user.is_superuser and is_admin(user):
+            messages.error(self.request, 'User is already an admin')
+            url = reverse_lazy('sportsrec:user_detail',\
+                                        kwargs = {'pk' : user.id, })
+            return redirect(url)
+        user.is_active = False
+        user.save()
+        messages.success(self.request, self.success_message)
+        url = reverse_lazy('sportsrec:user_detail',\
+                                        kwargs = {'pk' : user.id, })
+        return redirect(url)
+
+class UserEnableView(LoginRequiredMixin, DetailView):
+    model = User
+    success_url = reverse_lazy('sportsrec:index')
+    template_name='sportsrec/user_enabledisable.html'
+    success_message='The user was enabled successfully.'
+    error_message="That user doesn't exist."
+    error_url=success_url
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user):
+            return redirect('sportsrec:index')
+        return super(UserEnableView, self).\
+               dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(pk=self.kwargs['pk'])
+        user.is_active = True
+        user.save()
+        messages.success(self.request, self.success_message)
+        url = reverse_lazy('sportsrec:user_detail',\
+                                        kwargs = {'pk' : user.id, })
+        return redirect(url)        
+
+class UserListView(LoginRequiredMixin, AdminMixin, ListView):
+    template_name = 'sportsrec/user_list.html'
+    context_object_name = 'users'
+    paginate_by = 15 #15 members per page
+
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user):
+            return redirect('sportsrec:index')
+        return super(UserListView, self).\
+               dispatch(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        return User.objects.all().order_by('is_active', 'id')     
+  
 class MemberAddView(LoginRequiredMixin, MessageMixin, FormView):
     template_name = 'sportsrec/add_edit.html'
     form_class = MemberForm
@@ -181,7 +306,7 @@ def member_edit(request, pk):
 
     member = member[0]
     
-    if not member.owner == request.user and not is_admin(request.user):
+    if not is_admin(request.user) and not member.owner == request.user:
         messages.add_message(request, messages.ERROR, \
                              "You can't edit a member you didn't create.")
         return redirect('sportsrec:members')
@@ -294,11 +419,11 @@ def club_edit(request, pk):
         messages.add_message(request, messages.ERROR, \
                              "You cannot edit a club you did not make.")
         return redirect('sportsrec:club_list')
-
+        
     #restrict to current members of club
     memberids = Membership.objects.filter(club=club)\
                     .values_list('member__pk', flat=True)
-    members = Member.objects.filter(pk=memberids)
+    members = Member.objects.filter(pk__in=memberids)
 
     context = {
             'created' : False, 'name' : 'club details',
@@ -527,10 +652,18 @@ class TotalStats(generic.TemplateView):
         return context
     
 
-class Index(TotalStats):
+class Index(AdminMixin, TotalStats):
     template_name='sportsrec/index.html'
     context_object_name='index'
-
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(Index, self).get_context_data(**kwargs)
+        if is_admin(self.request.user):
+            ownerless = Club.objects.filter(owner=None)
+            context['ownerless'] = ownerless
+        return context
+        
 
 class ClubList(AdminMixin, ListView):
     template_name = 'sportsrec/club_list.html'
@@ -566,7 +699,7 @@ class UserClubApplicationList(LoginRequiredMixin, MessageMixin, AdminMixin, List
                 messages.error(self.request, 'Membership application does not exist')
                 return redirect('sportsrec:user_club_application_list')
             
-            if application.club.owner.owner != self.request.user and not is_admin(self.request.user):
+            if not is_admin(self.request.user) and application.club.owner.owner != self.request.user:
                 messages.error(self.request, 'You cannot modify this application')
                 return redirect('sportsrec:user_club_application_list')
             
@@ -602,9 +735,10 @@ class ClubDetailView(AdminMixin, MessageMixin, DetailView):
         # Call the base implementation first to get a context
         context = super(self.__class__, self).get_context_data(**kwargs)
         club = Club.objects.get(id=self.kwargs['pk'])
-        #Clubs within 10km
-        nearby = Club.location.nearby_locations(club.latitude, club.longitude, 10)
-        context['nearby'] = nearby
+        if club.latitude and club.longitude:
+            #Clubs within 10km
+            nearby = Club.location.nearby_locations(club.latitude, club.longitude, 10)
+            context['nearby'] = nearby
         return context
     
     

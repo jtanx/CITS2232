@@ -9,6 +9,36 @@
 
 {% block main %}
 
+{# For ownerless clubs (admin only) #}
+{% if ownerless %}
+<div class="widget">
+  <div class="title">Ownerless clubs</div>
+  The following clubs are ownerless, and cannot function properly until this
+  is fixed.
+  <table class="horizontal">
+    {% for club in ownerless %}
+      <tr>
+        <th class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+            {{club}}
+          </a>
+        </th>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+            Edit club details
+          </a>
+        </td>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_delete' pk=club.id %}">
+            Delete
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
 <div class="widget">
   <div class="title">Dashboard</div>
   You own or administer:

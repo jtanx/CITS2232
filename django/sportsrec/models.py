@@ -167,13 +167,10 @@ class Membership(models.Model):
     def membership_deleted(sender, instance, **kwargs):
         try:
             instance.club.member_count -= 1
-            if instance.club.owner == instance.member:
-                instance.club.owner = None
-            if instance.club.contact == instance.member:
-                instance.club.contact = None
             instance.club.save()
         except ObjectDoesNotExist:
-            #Club no longer exists, oh well
+            #Club or member no longer exists.
+            #As owner/contact is fk, they're nulled on member delete
             return
     
     class Meta:

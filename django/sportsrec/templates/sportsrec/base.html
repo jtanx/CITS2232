@@ -60,6 +60,9 @@
             {% if user.is_authenticated %}
             <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
             {% endif %}
+            {% if admin %}
+            <li><a href="{% url 'sportsrec:user_list' %}">User list</a></li>
+            {% endif %}
           </ul>
         </div>
         

@@ -1,0 +1,42 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:user_list' %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">User list</div>
+  {% if users %}
+  
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+        <th>ID</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Active</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:user_detail' pk=user.id %}">
+          {{user.id}}
+          </a>
+        </td>
+        <td>{{user.first_name}}</td>
+        <td>{{user.last_name}}</td>
+        <td>{{user.is_active}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  {% else %}
+  <p>There are no users...</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% endwith %}

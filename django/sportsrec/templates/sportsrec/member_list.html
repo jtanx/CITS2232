@@ -29,8 +29,10 @@
           </a>
         </td>
         {% if admin %}
-        <td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:user_detail' pk=member.owner.id %}">
           {{member.owner}}
+          </a>
         </td>
         {% endif %}
         <td>{{member.first_name}}</td>
