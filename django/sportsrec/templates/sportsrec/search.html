@@ -7,8 +7,8 @@
     <div class="large centre bold">
       <form action="{% url 'sportsrec:search_name' %}">
       <p>
-      <input id="name" type="textbox" name="query" value="Sport Club" style="width:200px;">
-      <input type="submit" value="Search">
+      <input id="name" type="textbox" name="query" value="Sport Club" style="width:200px;" class="normal">
+      <input type="submit" value="Search" class="normal">
       </p>
       </form>
     </div>
@@ -31,11 +31,11 @@
     <div class="large centre bold">
     	<form action="{% url 'sportsrec:search_location' %}">
       <p>
-        <label for="name">Search query</label><br>
-        <input id="name" type="textbox" name="query" value="Nedlands, Perth" style="width:60%;"><br>
-        <label for="radius">Search radius (in km)</label><br>
-        <input id="radius" type="textbox" name="radius" value="5" style="width:60%;"><br>
-        <input type="submit" value="Search">
+        <label for="name">Address:</label><br>
+        <input id="name" type="textbox" name="query" value="Nedlands, Perth" style="width:200px;" class="normal">
+        <input type="submit" value="Search" class="normal"><br>
+        <label for="radius">Within Radius:</label><br>
+        <input id="radius" type="textbox" name="radius" value="5" style="width:4%;" class="normal"> km<br>
       </p>
       </form>
     </div>
