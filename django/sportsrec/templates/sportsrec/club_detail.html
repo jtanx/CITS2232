@@ -94,7 +94,7 @@
   
   <div class="widget">
     <div class="title">Club map</div>
-    <div id="map-canvas" style="width:100%;height:300px;"></div>
+    <div id="map-canvas" style="width:100%;height:500px;"></div>
     <script src="https://maps.googleapis.com/maps/api/js?v=3key={AIzaSyAH5OCkIGApptBzMQGjs_Wlz8kc6xqTg8o}&sensor=true"></script>
     <script>
       var map;
@@ -113,6 +113,19 @@
           var latlng = new google.maps.LatLng({{club.latitude}}, {{club.longitude}});
           map.setCenter(latlng);
           
+        	var circleOptions = {
+            	strokeColor: '#FF0000',
+      			strokeOpacity: 0.6,
+      			strokeWeight: 1,
+      			fillColor: '#FF0000',
+      			fillOpacity: 0.2,
+      			map: map,
+     			center: latlng,
+     			radius: 5000
+    		};
+    		// Add the circle for this radius to the map.
+    		cityRadius = new google.maps.Circle(circleOptions);
+          
           var infoHtml;
           {# Oh boy this is such a hack... #}
           {% for near in nearby %}
@@ -122,6 +135,17 @@
                 title : "Club: {{near.name|escapejs}}",
                 position: latlng
             });
+            
+        	//Makes the marker on this club bounce. Not sure if you like this idea.
+        	//Get rid of it if you don't like it :)
+        	if({{near.id}} == {{club.id}}) { 
+        		marker{{near.id}}.setAnimation(google.maps.Animation.BOUNCE);
+           	}
+            function stopBounce() {
+            	marker{{near.id}}.setAnimation(null);
+            }
+            setTimeout(function() { stopBounce(); }, 2500);
+            
             
             {% autoescape on%}
               infoHtml = 
