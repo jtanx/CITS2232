@@ -18,6 +18,8 @@
         <th>Last name</th>
         <th>Email</th>
         <th>Interests</th>
+        <td>Edit</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -41,6 +43,16 @@
           <a href="mailto:{{member.email}}">{{member.email}}</a>
         </td>
         <td style="max-width:200px;">{{member.interests}}</td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_edit' pk=member.id %}">
+            Edit
+          </a>
+      </td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_delete' pk=member.id %}">
+            Delete
+          </a>
+      </td>
       </tr>
       {% endfor %}
     </tbody>
