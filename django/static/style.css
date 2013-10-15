@@ -3,7 +3,15 @@
   font-family: "Open Sans";
   src: url("OpenSans.ttf"),
     url("OpenSans.eot");
+  font-weight: normal;
 }
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("OpenSansBold.ttf");
+  font-weight: bold;
+}
+
 
 /** Limit max width and auto-center content **/
 html  {
