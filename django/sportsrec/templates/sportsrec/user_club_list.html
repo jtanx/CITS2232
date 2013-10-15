@@ -13,6 +13,7 @@
         <th>Name</th>
         <th>Edit</th>
         <th>Member List</th>
+        <th>Edit</th>
         <th>Delete</th>
       </tr>
     </thead>
@@ -33,6 +34,11 @@
       <td class="clickable menu-hilight">
           <a href="{% url 'sportsrec:club_member_list' pk=club.id %}">
             List
+          </a>
+      </td>
+      <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+            Edit
           </a>
       </td>
       <td class="clickable menu-hilight">
