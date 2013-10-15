@@ -17,8 +17,12 @@
 <div class="widget">
 	<div class="title centre">By Tags:</div>
     <div class="large centre bold">
-      <input id="tags" type="textbox" value="Soccer" style="width:200px;">
+      <form action="{% url 'sportsrec:search_tag' %}">
+      <p>
+      <input id="name" type="textbox" name="query" value="Soccer" style="width:200px;">
       <input type="submit" value="Search">
+      </p>
+      </form>
     </div>
 </div>
 

@@ -17,7 +17,7 @@
     </tr>
     <tr>
       <th>Tags</th>
-      <td>{%for tag in club.tags.all%}{{tag}}{% endfor %}</td>
+      <td>{%for tag in club.tags.all%}{{tag}} {% endfor %}</td>
     </tr>
     <tr><th>Type</th><td>{{club.type}}</td></tr>
     <tr><th>Member count</th><td>{{club.member_count}}</td></tr>

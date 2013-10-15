@@ -5,6 +5,7 @@ from sportsrec.models import *
 from django.contrib.auth import authenticate
 import re, decimal
 
+
 class SocialCleanerMixin(object):
     grep = re.compile(r"(?i)^(?:https?://.*/)?([a-zA-Z0-9-\._@'t#]*)")
     def clean(self):
@@ -177,6 +178,8 @@ class ApplicationForm(Form):
 class ClubForm(SocialCleanerMixin, ModelForm):
     '''Club add/edit form. Requires member queryset.'''
     location = forms.CharField(max_length=40, required=False)
+    search_tags = forms.CharField(max_length=250, required=False)
+    grep = re.compile('\s*[a-zA-Z0-9-]+\s*')
     
     def __init__(self, *args, **kwargs):
         member_queryset = kwargs.pop('members')
@@ -187,12 +190,34 @@ class ClubForm(SocialCleanerMixin, ModelForm):
         if self.instance.latitude and self.instance.longitude:
             self.fields['location'].initial = \
                 "%s, %s" % (self.instance.latitude, self.instance.longitude)
+        try:
+            self.fields['search_tags'].initial = ", ".join(str(tag) for tag in self.instance.tags.all())
+        except ValueError:
+            pass
     
     def save(self, *args, **kwargs):
         if 'latitude' in self.cleaned_data:
             self.instance.latitude = self.cleaned_data['latitude']
             self.instance.longitude = self.cleaned_data['longitude']
+        stags = self.cleaned_data.get('search_tags')
+        super(ClubForm, self).save(*args, **kwargs)
+        
+        if stags:
+            self.instance.tags.clear()
+            for stag in stags:
+                if len(stag) > 0:
+                    tag, created = ClubTag.objects.get_or_create(name=stag)
+                    self.instance.tags.add(tag)
+            
         return super(ClubForm, self).save(*args, **kwargs)
+        
+    def clean_search_tags(self):
+        stags = self.cleaned_data.get("search_tags")
+        if stags:
+            sep = re.split(r',|\s', stags)
+            cleaned = [x.strip() for x in sep if re.match(self.grep, x)]
+            return cleaned
+        return stags
         
     def clean(self):
         cleaned_data = super(ClubForm, self).clean()
@@ -219,14 +244,14 @@ class ClubForm(SocialCleanerMixin, ModelForm):
         
     class Meta:
             model=Club
-            fields=['name','owner','address','location','tags','type','recruiting','contact',
+            fields=['name','owner','address','location','search_tags','type','recruiting','contact',
                             'facebook','twitter','description']
             widgets = {
-        'description': Textarea(attrs={
-            'cols': 70, 'rows': 6,
-            'style' : 'width: 100%',
-            'maxlength' :  Club._meta.get_field('description').max_length}),
-    }
+                'description': Textarea(attrs={
+                    'cols': 70, 'rows': 6,
+                    'style' : 'width: 100%',
+                    'maxlength' :  Club._meta.get_field('description').max_length})
+            }
     
 class SearchForm(Form):
 	name = forms.CharField()

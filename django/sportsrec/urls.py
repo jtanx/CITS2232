@@ -51,4 +51,5 @@ urlpatterns = patterns('',
     url(r'^club/search$', views.search, name='search'),
     url(r'^club/search/name$', views.SearchNameView.as_view(), name='search_name'),
     url(r'^club/search/location$', views.SearchLocationView.as_view(), name='search_location'),
+    url(r'^club/search/tag$', views.SearchTagView.as_view(), name='search_tag'),
 )

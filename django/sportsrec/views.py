@@ -51,7 +51,7 @@ class MessageMixin(object):
                 messages.error(self.request, self.error_message)
             if self.error_url:
                 return redirect(self.error_url)
-            pass
+            raise Http404
 
     def form_valid(self, form):
         messages.success(self.request, self.success_message)
@@ -796,6 +796,22 @@ class SearchNameView(MessageMixin, ListView):
         context['query'] = self.request.GET.get('query', '')
         return context
 
+class SearchTagView(MessageMixin, ListView):
+    template_name = 'sportsrec/search_tag.html'
+    context_object_name = 'search_tag'
+    paginate_by = 15 #15 clubs/page
+
+    def get_queryset(self):
+        if 'query' in self.request.GET:
+            query = self.request.GET['query']
+            return Club.objects.filter(tags__name__contains=query)
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('query', '')
+        return context
+        
 class SearchLocationView(MessageMixin, ListView):
     template_name = 'sportsrec/search_location.html'
     context_object_name = 'search_location'
