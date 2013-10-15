@@ -789,6 +789,7 @@ class SearchNameView(MessageMixin, ListView):
         if 'query' in self.request.GET:
             query = self.request.GET['query']
             return Club.objects.filter(name__contains=query)
+        return Club.objects.none()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -805,7 +806,8 @@ class SearchTagView(MessageMixin, ListView):
         if 'query' in self.request.GET:
             query = self.request.GET['query']
             return Club.objects.filter(tags__name__contains=query)
-
+        return Club.objects.none()
+        
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(self.__class__, self).get_context_data(**kwargs)
