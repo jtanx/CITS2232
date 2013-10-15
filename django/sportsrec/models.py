@@ -6,13 +6,12 @@ from django.core.exceptions import ObjectDoesNotExist
 import urllib, urllib2, json
 
 class LocationManager(models.Manager):
-    # From http://goo.gl/cy5OUc
-    def nearby_locations(self, latitude, longitude, radius, max_results=40, use_miles=False):
-        if use_miles:
-            distance_unit = 3959
-        else:
-            distance_unit = 6371
-
+    # Modification of http://goo.gl/cy5OUc
+    def nearby_locations(self, latitude, longitude, radius, max_results=40):
+        distance_unit = 6371
+        if not latitude or not longitude:
+            return self.none()
+        
         from django.db import connection, transaction
         from django.conf import settings
         import math
