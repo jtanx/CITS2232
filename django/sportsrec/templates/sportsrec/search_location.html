@@ -121,7 +121,7 @@
         
         //Bouncy bounce
         marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function() { marker.setAnimation(null); }, 3500);
+        setTimeout(function() { marker.setAnimation(null); }, 2000);
         google.maps.event.addListener(marker, 'click', function() {
             infoWindow.open(map, marker);
         });

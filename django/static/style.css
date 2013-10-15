@@ -271,18 +271,23 @@ input[type="text"]:focus, input[type="password"]:focus {
   width: 210px;
 }
 
-#sidebar .title {
+#sidebar .title, #sidebar-right .title {
   font-size: 20px;
 }
 
-#sidebar .item {
+#sidebar .item , #sidebar-right .item{
   padding: 0.2em;
   margin-bottom: 0.5em;
 }
 
+#sidebar-right {
+  float: right;
+  width: 210px;
+}
+
 #main {
   overflow: auto;
-  padding-left: 2em;
+  padding: 0 1em;
   min-width: 400px;
   transition: all 0.2s ease 0s;
 }

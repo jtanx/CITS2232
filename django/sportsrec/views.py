@@ -132,7 +132,8 @@ def user_profile(request):
         'created' : False, 'name' : 'user profile',
         'view' : 'sportsrec:user_profile',
         'submit' : 'Submit', 'user_profile' : True,
-        'admin' : is_admin(request.user)
+        'admin' : is_admin(request.user),
+        'user_profile' : True
     }
 
     user = request.user
@@ -309,6 +310,7 @@ class MemberAddView(LoginRequiredMixin, MessageMixin, FormView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(self.__class__, self).get_context_data(**kwargs)
+        context['member_add'] = True
         context['created'] = True
         context['name'] = 'member'
         context['submit'] = 'Add'
@@ -348,7 +350,8 @@ def member_edit(request, pk):
         'delete_view' : 'sportsrec:member_delete',
         'delete_text' : 'this member',
         'pk' : pk,
-        'submit' : 'Edit'
+        'submit' : 'Edit',
+        'member_edit' : True
     }
 
     if request.method == "POST":
@@ -398,7 +401,8 @@ def club_add(request):
     context = {
         'created' : True, 'name' : 'club',
         'view' : 'sportsrec:club_add',
-        'submit' : 'Add'
+        'submit' : 'Add',
+        'club_add' : True
     }
 
     if not is_admin(request.user):
@@ -461,7 +465,8 @@ def club_edit(request, pk):
             'delete_view' : 'sportsrec:club_delete',
             'delete_text' : 'this club',
             'pk' : pk,
-            'submit' : 'Edit'
+            'submit' : 'Edit',
+            'club_edit' : True
     }
 
     if request.method == "POST":
