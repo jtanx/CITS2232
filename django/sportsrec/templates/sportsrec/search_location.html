@@ -8,7 +8,10 @@
     <div class="large centre bold">
       <form action="{% url 'sportsrec:search_location' %}">
       <p>
-      <input id="name" type="textbox" name="query" value="{{query}}" style="width:200px;" onclick="initialize()">
+      <label for="name">Search query</label><br>
+      <input id="name" type="textbox" name="query" value="{{query}}" style="width:100%;"><br>
+      <label for="radius">Search radius (in km)</label><br>
+      <input id="radius" type="textbox" name="radius" value="{{radius}}" style="width:100%;"><br>
       <input type="submit" value="Search">
       </p>
     </div>
@@ -94,20 +97,38 @@
       var geocoder;
       
       function getInfo(name, address, description) {
-      return '<div id="content">'+
-                  '<h2 id="firstHeading" class="firstHeading">{{near.name|escapejs}}</h2>'+
-                  '<div id="bodyContent">'+
-                    '<p>Address: {{near.address|escapejs}}</p>' +
-                    '<p>{{near.description|escapejs}}</p>' +
+      return '<div class="map-content">'+
+                  '<h2 class="firstHeading">'+name+'</h2>'+
+                  '<div class="bodyContent">'+
+                    '<p>Address: '+address+'</p>' +
+                    '<p>'+description+'</p>' +
                   '</div>'+
                 '</div>';
+      }
+      
+      function addMarker(map, club) {
+        var latlng = new google.maps.LatLng(club.lat, club.lng);
+        var marker = new google.maps.Marker({
+              map: map,
+              title : "Club: " + club.name,
+              position: latlng
+        });
+        
+        var infoText = getInfo(club.name, club.address, club.description);
+        var infoWindow = new google.maps.InfoWindow({
+          'content' : infoText
+        });
+        
+        google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.open(map, marker);
+        });
       }
       
       function initialize() {
       	geocoder = new google.maps.Geocoder();
         var mapOptions = {
           zoom: 12,
-          center: new google.maps.LatLng(-31.9522, 115.8589),
+          center: new google.maps.LatLng({{centre.0}}, {{centre.1}}),
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
@@ -116,6 +137,7 @@
       		{% if club.latitude and club.longitude %}
         		{{club.id}} : {
         			name : "{{club.name|escapejs}}",
+              address : "{{club.address|escapejs}}",
       				lat : {{club.latitude}},
       				lng : {{club.longitude}},
       				description : "{{club.description|escapejs}}"
@@ -124,127 +146,21 @@
       		{% endfor %}
       	};
       	
-      	
+        // Add circle overlay and bind to marker
+        var circle = new google.maps.Circle({
+          map: map,
+          radius: {{radius}} * 1000,
+          center: map.center,
+          fillColor: '#BB0000',
+          fillOpacity: 0.10
+        });
         
-        {% if club.latitude and club.longitude %}
-          var latlng = new google.maps.LatLng({{club.latitude}}, {{club.longitude}});
-          map.setCenter(latlng);
-          
-          var infoHtml;
-          {# Oh boy this is such a hack... #}
-          {% for near in nearby %}
-            latlng = new google.maps.LatLng({{near.latitude}}, {{near.longitude}});
-            var marker{{near.id}} = new google.maps.Marker({
-                map: map,
-                title : "Club: {{near.name|escapejs}}",
-                position: latlng
-            });
-            
-            {% autoescape on%}
-              infoHtml = 
-                '<div id="content">'+
-                  '<h2 id="firstHeading" class="firstHeading">{{near.name|escapejs}}</h2>'+
-                  '<div id="bodyContent">'+
-                    '<p>Address: {{near.address|escapejs}}</p>' +
-                    '<p>{{near.description|escapejs}}</p>' +
-                  '</div>'+
-                '</div>';
-            {% endautoescape %}
-      
-            
-            var infoWindow{{near.id}} = new google.maps.InfoWindow({
-              'content': infoHtml
-            });
-            
-            google.maps.event.addListener(marker{{near.id}}, 'click', function() {
-              infoWindow{{near.id}}.open(map, marker{{near.id}});
-            });
-          {% endfor %} 
-        {% endif %}
+        for (var id in locations) {
+          var club = locations[id]
+          addMarker(map, club);
+        }
     }
-    
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-    
-<div id="map-canvas" style="width:100%;height:400px;"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3key={AIzaSyAH5OCkIGApptBzMQGjs_Wlz8kc6xqTg8o}&sensor=true"></script>
-    <script>
-      var locations = {
-      {% for club in search_location %}
-      {% if club.latitude and club.longitude %}
-        {{club.id}} : {
-        name : "{{club.name|escapejs}}",
-      	lat : {{club.latitude}},
-      	lng : {{club.longitude}},
-      	description : "{{club.description|escapejs}}"
-      },
-      {% endif %}
-      {% endfor %}
-      }
-      var map;
-      var geocoder;
-      function initialize() {
-      	geocoder = new google.maps.Geocoder();
-      	var center = document.getElementById("name").value;
-      	var mapOptions = {
-          zoom: 12,
-          center: new google.maps.LatLng(-31.9522, 115.8589),
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-      	geocoder.geocode( { 'address': center, 'region': 'AU' }, function(results, status) {
-          	  if (status == google.maps.GeocoderStatus.OK) {
-        			map.setCenter(results[0].geometry.location);
-        			/*var marker = new google.maps.Marker({
-           				map: map,
-           	 			position: results[0].geometry.location
-        			});*/
-        		}
-    		});
-        
-        /* want to put a marker down for all the clubs in the db
-        for (var club=1;club < numclubs; club++)
-        {
-        	var marker = new google.maps.Marker({
-        		map: map
-        		position: clubs[club].location
-        	});
-        }*/
-        map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-    }
-    
-    	function codeAddress() {
-    		var address = document.getElementById("name").value;
-    		geocoder.geocode( { 'address': address, 'region': 'AU'}, function(results, status) {
-          	  if (status == google.maps.GeocoderStatus.OK) {
-        			map.setCenter(results[0].geometry.location);
-        			var marker = new google.maps.Marker({
-           				map: map,
-           	 			position: results[0].geometry.location
-        			});
-        		} else {
-      				alert("Geocode was not successful for the following reason: " + status);
-  				}
-    		});
-    	}	
-    
-      google.maps.event.addDomListener(window, 'load', initialize);
-      
-      function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-      	var R = 6371; // Radius of the earth in km
-  		var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  		var dLon = deg2rad(lon2-lon1); 
-  		var a = 
-  		Math.sin(dLat/2) * Math.sin(dLat/2) +
-  	  	Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-    	Math.sin(dLon/2) * Math.sin(dLon/2); 
-  		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-  		var d = R * c; // Distance in km
-  		return d;
-	}
-
-	function deg2rad(deg) {
-  		return deg * (Math.PI/180)
-	}
+    google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 </div>
 </div>

@@ -8,6 +8,7 @@ import urllib, urllib2, json
 class LocationManager(models.Manager):
     # Modification of http://goo.gl/cy5OUc
     def nearby_locations(self, latitude, longitude, radius, max_results=40):
+        '''Determines all clubs within a set range, given in kilometres'''
         distance_unit = 6371
         if not latitude or not longitude:
             return self.filter(id_in=[])
@@ -17,16 +18,78 @@ class LocationManager(models.Manager):
         import math
         cursor = connection.cursor()
         
-        connection.connection.create_function('acos', 1, math.acos)
-        connection.connection.create_function('cos', 1, math.cos)
-        connection.connection.create_function('radians', 1, math.radians)
-        connection.connection.create_function('sin', 1, math.sin)
-
-        sql = """SELECT id, (%f * acos( cos( radians(%f) ) * cos( radians( latitude ) ) *
-        cos( radians( longitude ) - radians(%f) ) + sin( radians(%f) ) * sin( radians( latitude ) ) ) )
-        AS distance FROM sportsrec_club WHERE distance < %d
-        ORDER BY distance LIMIT 0 , %d;""" % (distance_unit, latitude, longitude, latitude, int(radius), max_results)
-        cursor.execute(sql)
+        def acos(x):
+            #print('acos(x)', x)
+            if x is None: return None
+            elif x <= -1: return math.pi
+            elif x >= 1: return 0
+            else: return math.acos(x)
+        def cos(x):
+            #print('cos(x)', x)
+            if x is None: return None
+            return math.cos(x)
+        def radians(x):
+            #print('radians(x)', x)
+            if x is None: return None
+            return math.radians(x)
+        
+        def sin(x):
+            #print('sin(x)', x)
+            if x is None: return None
+            return math.sin(x)
+        
+        connection.connection.create_function('acos', 1, acos)
+        connection.connection.create_function('cos', 1, cos)
+        connection.connection.create_function('rad', 1, radians)
+        connection.connection.create_function('sin', 1, sin)
+     
+        #Reference: 
+        #http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
+        latitude = math.radians(latitude)
+        longitude = math.radians(longitude)
+        r = 0.1570 / 1000 * radius # 0.1570 per 1000km
+        latmin = latitude - r
+        latmax = latitude + r
+        deltaLong = math.asin(math.sin(r)/math.cos(latitude))
+        lonmin = longitude - deltaLong
+        lonmax = longitude + deltaLong
+        
+        if latmax > math.pi/2:
+            latmax = -math.pi
+            lonmin, lonmax = math.pi/2, math.pi
+        if latmin < -math.pi/2:
+            latmin, lonmin = -math.pi/2, -math.pi
+            lonmax = math.pi
+        if lonmin < -math.pi or lonmax > math.pi:
+            lonmin, lonmax = -math.pi, math.pi
+        
+        #Old
+        sql = \
+        '''
+        SELECT id, (6371 * acos(
+          sin(rad(latitude))*sin(%s) +
+          cos(rad(latitude))*cos(%s) * cos(rad(longitude) - %s)))
+          AS distance
+        FROM (
+          SELECT id, latitude, longitude
+          FROM sportsrec_club
+          WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+        )
+        WHERE distance < %d
+        ORDER BY distance LIMIT 0, %d;
+        ''' % (latitude, latitude, longitude, int(radius), max_results)
+        
+        sql2 = \
+        '''
+        SELECT id
+          FROM sportsrec_club
+          WHERE (rad(latitude) >= %f AND rad(latitude) <= %f) AND
+                (rad(longitude) >= %f AND rad(longitude) <= %f) AND
+                acos(sin(%f) * sin(rad(latitude)) + cos(%f) * cos(rad(latitude)) * cos (rad(longitude) - %f)) <= %f
+          LIMIT 0, %d
+        ''' % (latmin, latmax, lonmin, lonmax, latitude, latitude, longitude, r, max_results)
+        print(sql2)
+        cursor.execute(sql2)
         ids = [row[0] for row in cursor.fetchall()]
 
         return self.filter(id__in=ids)
