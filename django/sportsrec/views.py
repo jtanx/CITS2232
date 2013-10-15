@@ -805,7 +805,7 @@ class SearchTagView(MessageMixin, ListView):
     def get_queryset(self):
         if 'query' in self.request.GET:
             query = self.request.GET['query']
-            return Club.objects.filter(tags__name__contains=query)
+            return Club.objects.filter(tags__name__iexact=query)
         return Club.objects.none()
         
     def get_context_data(self, **kwargs):
