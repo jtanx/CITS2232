@@ -566,7 +566,7 @@
         "name": "Cricket", 
         "description": "A cricket club, or a club about cricket"
     }
-}
+},
 {
     "pk": 12, 
     "model": "sportsrec.clubtype", 
@@ -575,7 +575,7 @@
         "name": "Sailing", 
         "description": "A sailing club, or a club about sailing"
     }
-}
+},
 {
     "pk": 13, 
     "model": "sportsrec.clubtype", 
@@ -584,7 +584,7 @@
         "name": "Recreation", 
         "description": "A recreation club, or a club about recreating"
     }
-}
+},
 {
     "pk": 14, 
     "model": "sportsrec.clubtype", 
@@ -593,7 +593,7 @@
         "name": "Hobby", 
         "description": "A hobby club, or a club about hobbies"
     }
-}
+},
 {
     "pk": 15, 
     "model": "sportsrec.clubtype", 
@@ -602,7 +602,7 @@
         "name": "Social", 
         "description": "A social club, or a club about socials"
     }
-}
+},
 {
     "pk": 16, 
     "model": "sportsrec.clubtype", 
@@ -611,7 +611,7 @@
         "name": "Country", 
         "description": "A Country club, or a club about the country"
     }
-}
+},
 {
     "pk": 17, 
     "model": "sportsrec.clubtype", 
