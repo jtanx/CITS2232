@@ -1,0 +1,88 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:search_name' %}
+
+{% block main %}
+<div class="widget">
+	<div class="title centre">Search for a club by name:</div>
+    <div class="large centre bold">
+      <form action="{% url 'sportsrec:search_name' %}">
+      <p>
+      <input id="name" type="textbox" name="query" value="{{query}}" style="width:200px;">
+      <input type="submit" value="Search">
+      </p>
+    </div>
+</div>
+
+<div class="widget">
+  <div class="title centre">Search by name results:</div>
+  {% if search_name %}
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+      	<th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>No. Members</th>
+        <th>Date Created</th>
+        <th>Contact</th>
+        <th>Apply now!</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for club in search_name %}
+      <tr>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+          {{club.id}}
+          </a>
+        </td>
+    	<td>{{club.name}}</td>
+        <!--<td>{{club.address}}</td>-->
+        <td>{{club.type}}</td>
+        <td>{{club.member_count}}</td>
+        <td>{{club.created}}</td>
+        <!--<td>{{club.owner}}</td>-->
+
+        
+        <td class="menu-hilight clickable">
+        {% if club.contact %}
+          <a href="{% url 'sportsrec:member_detail' pk=club.contact.id%}">
+            {{club.contact|default:''}}
+          </a>
+        {% endif %}
+        </td>
+         
+        
+        <td class="clickable menu-hilight">
+          {% if club.recruiting %}
+            <a href="{% url 'sportsrec:membership_apply' pk=club.id %}">
+              Apply
+            </a>
+          {% endif %}
+        </td>
+        
+        
+        <td class="clickable menu-hilight">
+          {% if club.twitter %}
+          <a href="https://twitter.com/{{club.twitter}}">{{club.twitter}}</a>
+          {% endif %}
+        </td>
+
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  
+  {% else %}
+  <p>There are no clubs.</p>
+  {% endif %}
+
+  <div class="sub-title centre">
+    Add a <a href="{% url 'sportsrec:club_add' %}">new club</a>.
+  </div>
+</div>
+{% endblock %}
+
+{% endwith %}

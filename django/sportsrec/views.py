@@ -783,3 +783,19 @@ def search(request):
 		
 	context['form'] = form
 	return render(request, 'sportsrec/search.html', context)
+
+
+class SearchView(MessageMixin, ListView):
+	template_name = 'sportsrec/search_name.html'
+	context_object_name = 'search_name'
+	paginate_by = 15 #15 clubs/page
+
+	def get_queryset(self):		   
+		query = self.request.GET.get('query', "")
+		return Club.objects.filter(name__contains=query)
+		
+	def get_context_data(self, **kwargs):
+		# Call the base implementation first to get a context
+		context = super(self.__class__, self).get_context_data(**kwargs)
+		context['query'] = self.request.GET.get('query', '')
+		return context

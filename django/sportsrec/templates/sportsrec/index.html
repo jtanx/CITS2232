@@ -50,6 +50,7 @@
   </p>
 </div>
 
+{% if not user.is_authenticated %}
 <div class="widget">
   <div class="title centre">Join today!</div>
   <p>
@@ -69,5 +70,6 @@
     so what are you waiting for? 
   </p>
 </div>
+{% endif %}
 
 {% endblock %}
