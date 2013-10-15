@@ -27,69 +27,14 @@
     <div class="large centre bold">
     	<form action="{% url 'sportsrec:search_location' %}">
       <p>
-      <input id="location" type="textbox" name="query" value="Nedlands, Perth" style="width:300px;">
-      <input type="submit" value="Search">
+        <label for="name">Search query</label><br>
+        <input id="name" type="textbox" name="query" value="Nedlands, Perth" style="width:60%;"><br>
+        <label for="radius">Search radius (in km)</label><br>
+        <input id="radius" type="textbox" name="radius" value="5" style="width:60%;"><br>
+        <input type="submit" value="Search">
       </p>
       </form>
     </div>
-    <br>
-    <div id="map-canvas" style="width:100%;height:400px;"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3key={AIzaSyAH5OCkIGApptBzMQGjs_Wlz8kc6xqTg8o}&sensor=true"></script>
-    <script>
-      var map;
-      var geocoder;
-      function initialize() {
-      	geocoder = new google.maps.Geocoder();
-        var mapOptions = {
-          zoom: 12,
-          center: new google.maps.LatLng(-31.9522, 115.8589),
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        /* want to put a marker down for all the clubs in the db
-        for (var club=1;club < numclubs; club++)
-        {
-        	var marker = new google.maps.Marker({
-        		map: map
-        		position: clubs[club].location
-        	});
-        }*/
-        map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-    }
-    
-    	function codeAddress() {
-    		var address = document.getElementById("location").value;
-    		geocoder.geocode( { 'address': address, 'region': 'AU' }, function(results, status) {
-          	  if (status == google.maps.GeocoderStatus.OK) {
-        			map.setCenter(results[0].geometry.location);
-        			var marker = new google.maps.Marker({
-           				map: map,
-           	 			position: results[0].geometry.location
-        			});
-        		} else {
-      				alert("Geocode was not successful for the following reason: " + status);
-  				}
-    		});
-    	}	
-    
-      google.maps.event.addDomListener(window, 'load', initialize);
-      
-      function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-      	var R = 6371; // Radius of the earth in km
-  		var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  		var dLon = deg2rad(lon2-lon1); 
-  		var a = 
-  		Math.sin(dLat/2) * Math.sin(dLat/2) +
-  	  	Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-    	Math.sin(dLon/2) * Math.sin(dLon/2); 
-  		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-  		var d = R * c; // Distance in km
-  		return d;
-	}
-
-	function deg2rad(deg) {
-  		return deg * (Math.PI/180)
-	}
-    </script>
 </div>
 
 

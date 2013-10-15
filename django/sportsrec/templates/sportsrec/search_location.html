@@ -9,9 +9,9 @@
       <form action="{% url 'sportsrec:search_location' %}">
       <p>
       <label for="name">Search query</label><br>
-      <input id="name" type="textbox" name="query" value="{{query}}" style="width:100%;"><br>
+      <input id="name" type="textbox" name="query" value="{{query}}" style="width:60%;"><br>
       <label for="radius">Search radius (in km)</label><br>
-      <input id="radius" type="textbox" name="radius" value="{{radius}}" style="width:100%;"><br>
+      <input id="radius" type="textbox" name="radius" value="{{radius}}" style="width:60%;"><br>
       <input type="submit" value="Search">
       </p>
     </div>
@@ -97,7 +97,7 @@
       var geocoder;
       
       function getInfo(name, address, description) {
-      return '<div class="map-content">'+
+        return '<div class="map-content">'+
                   '<h2 class="firstHeading">'+name+'</h2>'+
                   '<div class="bodyContent">'+
                     '<p>Address: '+address+'</p>' +
@@ -119,6 +119,9 @@
           'content' : infoText
         });
         
+        //Bouncy bounce
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() { marker.setAnimation(null); }, 3500);
         google.maps.event.addListener(marker, 'click', function() {
             infoWindow.open(map, marker);
         });
@@ -145,15 +148,19 @@
       		{% endif %}
       		{% endfor %}
       	};
-      	
-        // Add circle overlay and bind to marker
-        var circle = new google.maps.Circle({
-          map: map,
-          radius: {{radius}} * 1000,
-          center: map.center,
-          fillColor: '#BB0000',
-          fillOpacity: 0.10
-        });
+        
+      	 var circleOptions = {
+            strokeColor: '#BB0000',
+      			strokeOpacity: 0.6,
+      			strokeWeight: 1.2,
+       			fillColor: '#FF2211',
+       			fillOpacity: 0.1,
+      			map: map,
+      			center: map.center,
+      			radius: {{radius}} * 1000
+     		};
+     		// Add the circle for this radius to the map.
+    		clubRadius = new google.maps.Circle(circleOptions);
         
         for (var id in locations) {
           var club = locations[id]

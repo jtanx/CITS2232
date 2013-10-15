@@ -113,47 +113,34 @@
           var latlng = new google.maps.LatLng({{club.latitude}}, {{club.longitude}});
           map.setCenter(latlng);
           
-          var infoHtml;
-          {# Oh boy this is such a hack... #}
-          {% for near in nearby %}
-            latlng = new google.maps.LatLng({{near.latitude}}, {{near.longitude}});
-            var marker{{near.id}} = new google.maps.Marker({
+          var infoHtml = 
+            '<div id="content">'+
+              '<h2 id="firstHeading" class="firstHeading">{{club.name|escapejs}}</h2>'+
+              '<div id="bodyContent">'+
+                '<p>Address: {{club.address|escapejs}}</p>' +
+                '<p>{{club.description|escapejs}}</p>' +
+              '</div>'+
+            '</div>';
+            
+          var marker = new google.maps.Marker({
                 map: map,
-                title : "Club: {{near.name|escapejs}}",
+                title : "Club: {{club.name|escapejs}}",
                 position: latlng
-            });
-            
-        	//Makes the marker on this club bounce. Not sure if you like this idea.
+          });
+          
+          //Makes the marker on this club bounce. Not sure if you like this idea.
         	//Get rid of it if you don't like it :)
-        	if({{near.id}} == {{club.id}}) { 
-        		marker{{near.id}}.setAnimation(google.maps.Animation.BOUNCE);
-           	}
-            function stopBounce() {
-            	marker{{near.id}}.setAnimation(null);
-            }
-            setTimeout(function() { stopBounce(); }, 2500);
-            
-            
-            {% autoescape on%}
-              infoHtml = 
-                '<div id="content">'+
-                  '<h2 id="firstHeading" class="firstHeading">{{near.name|escapejs}}</h2>'+
-                  '<div id="bodyContent">'+
-                    '<p>Address: {{near.address|escapejs}}</p>' +
-                    '<p>{{near.description|escapejs}}</p>' +
-                  '</div>'+
-                '</div>';
-            {% endautoescape %}
-      
-            
-            var infoWindow{{near.id}} = new google.maps.InfoWindow({
-              'content': infoHtml
-            });
-            
-            google.maps.event.addListener(marker{{near.id}}, 'click', function() {
-              infoWindow{{near.id}}.open(map, marker{{near.id}});
-            });
-          {% endfor %} 
+          //Nah, it's too cool to get rid of :P
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          var infoWindow = new google.maps.InfoWindow({
+            'content': infoHtml
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.open(map, marker);
+          });
+          
+          setTimeout(function() { marker.setAnimation(null); }, 3500);
         {% endif %}
     }
     
