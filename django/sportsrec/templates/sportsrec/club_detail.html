@@ -113,19 +113,6 @@
           var latlng = new google.maps.LatLng({{club.latitude}}, {{club.longitude}});
           map.setCenter(latlng);
           
-        	var circleOptions = {
-            	strokeColor: '#FF0000',
-      			strokeOpacity: 0.6,
-      			strokeWeight: 1,
-      			fillColor: '#FF0000',
-      			fillOpacity: 0.2,
-      			map: map,
-     			center: latlng,
-     			radius: 5000
-    		};
-    		// Add the circle for this radius to the map.
-    		cityRadius = new google.maps.Circle(circleOptions);
-          
           var infoHtml;
           {# Oh boy this is such a hack... #}
           {% for near in nearby %}

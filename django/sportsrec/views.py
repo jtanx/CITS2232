@@ -827,7 +827,7 @@ class SearchLocationView(MessageMixin, ListView):
 			location = self.request.GET['query']
 			latlng = self.geocode(location)
 			if latlng:
-				nearby = Club.location.nearby_locations(latlng[0], latlng[1], 10)
+				nearby = Club.location.nearby_locations(latlng[0], latlng[1], 5)
 				return nearby
 		return Club.objects.none()
 			
