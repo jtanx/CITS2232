@@ -74,7 +74,7 @@
 {# add content here #}
 <div id="sidebar-right">
   {# eg #}
-  {% if club_edit %}
+  {% if club_edit or club_add %}
   <div class="widget">
     <div class="title">Data Dictionary</div>
 	<div>Name:  Name of your Club</div><br>
@@ -90,11 +90,6 @@
 	<div>Description:  Let us know a bit more about your club.</div><br>
 	
   </div>
-  {% elif member_edit %}
-  <div class="widget">
-    For members
-  </div>
-  
   {# afaik values are club_edit, club_add, member_add, member_edit, and user_profile #}
   {% endif %}
 </div>
