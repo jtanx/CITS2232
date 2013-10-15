@@ -1,8 +1,9 @@
 {% extends 'sportsrec/base.html' %}
 {% block main %}
 
+<div class="title left">How would you like to Search?</div>
 <div class="widget">
-	<div class="title centre">Search for a club by name:</div>
+	<div class="title centre">By Name:</div>
     <div class="large centre bold">
       <form action="{% url 'sportsrec:search_name' %}">
       <p>
@@ -14,11 +15,15 @@
 </div>
 
 <div class="widget">
-	<div class="title centre">OR</div>
+	<div class="title centre">By Tags:</div>
+    <div class="large centre bold">
+      <input id="tags" type="textbox" value="Soccer" style="width:200px;">
+      <input type="submit" value="Search">
+    </div>
 </div>
 
 <div class="widget">
-	<div class="title centre">Search for a club by location:</div>
+	<div class="title centre">By Location:</div>
     <div class="large centre bold">
     	<form action="{% url 'sportsrec:search_location' %}">
       <p>
@@ -87,17 +92,7 @@
     </script>
 </div>
 
-<div class="widget">
-	<div class="title centre">OR</div>
-</div>
 
-<div class="widget">
-	<div class="title centre">Search for a club by tags:</div>
-    <div class="large centre bold">
-      <input id="tags" type="textbox" value="Soccer" style="width:200px;">
-      <input type="submit" value="Search">
-    </div>
-</div>
 
 
 {% endblock %}
