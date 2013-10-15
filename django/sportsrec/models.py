@@ -10,7 +10,7 @@ class LocationManager(models.Manager):
     def nearby_locations(self, latitude, longitude, radius, max_results=40):
         distance_unit = 6371
         if not latitude or not longitude:
-            return self.none()
+            return self.filter(id_in=[])
         
         from django.db import connection, transaction
         from django.conf import settings

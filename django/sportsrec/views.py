@@ -785,17 +785,55 @@ def search(request):
 	return render(request, 'sportsrec/search.html', context)
 
 
-class SearchView(MessageMixin, ListView):
+class SearchNameView(MessageMixin, ListView):
 	template_name = 'sportsrec/search_name.html'
 	context_object_name = 'search_name'
 	paginate_by = 15 #15 clubs/page
 
-	def get_queryset(self):		   
-		query = self.request.GET.get('query', "")
-		return Club.objects.filter(name__contains=query)
-		
+	def get_queryset(self):
+		if 'query' in self.request.GET:
+			query = self.request.GET['query']
+			return Club.objects.filter(name__contains=query)
+			
 	def get_context_data(self, **kwargs):
 		# Call the base implementation first to get a context
 		context = super(self.__class__, self).get_context_data(**kwargs)
 		context['query'] = self.request.GET.get('query', '')
+		return context
+		
+class SearchLocationView(MessageMixin, ListView):
+	template_name = 'sportsrec/search_location.html'
+	context_object_name = 'search_location'
+	paginate_by = 15 #15 clubs/page
+
+	def geocode(self, address):
+		result = None
+		url = 'http://maps.googleapis.com/maps/api/geocode/json'
+		params = urllib.urlencode({'address' : address, 'sensor' : 'false', 'region': 'AU'})
+		url = url + '?' + params
+		response = urllib2.urlopen(url)
+		try:
+			vals = json.load(response)
+		except ValueError:
+			return result
+		
+		if 'results' in vals and len(vals['results']) > 0:
+			loc = vals['results'][0]['geometry']['location']
+			result = (float(loc['lat']), float(loc['lng']))
+		return result
+
+	def get_queryset(self):
+		if 'query' in self.request.GET:
+			location = self.request.GET['query']
+			latlng = self.geocode(location)
+			if latlng:
+				nearby = Club.location.nearby_locations(latlng[0], latlng[1], 10)
+				return nearby
+		return Club.objects.none()
+			
+	def get_context_data(self, **kwargs):
+		# Call the base implementation first to get a context
+		context = super(self.__class__, self).get_context_data(**kwargs)
+		context['query'] = self.request.GET.get('query', '')
+		context['clubs'] = self.get_queryset()
 		return context

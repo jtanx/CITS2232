@@ -9,6 +9,7 @@
       <input id="name" type="textbox" name="query" value="Sport Club" style="width:200px;">
       <input type="submit" value="Search">
       </p>
+      </form>
     </div>
 </div>
 
@@ -19,9 +20,12 @@
 <div class="widget">
 	<div class="title centre">Search for a club by location:</div>
     <div class="large centre bold">
-      <input id="location" type="textbox" value="UWA" 
-      style="width:300px;">
-      <input type="submit" value="Search" onclick="codeAddress()">
+    	<form action="{% url 'sportsrec:search_location' %}">
+      <p>
+      <input id="location" type="textbox" name="query" value="Nedlands, Perth" style="width:300px;">
+      <input type="submit" value="Search">
+      </p>
+      </form>
     </div>
     <br>
     <div id="map-canvas" style="width:100%;height:400px;"></div>
@@ -49,7 +53,7 @@
     
     	function codeAddress() {
     		var address = document.getElementById("location").value;
-    		geocoder.geocode( { 'address': address }, function(results, status) {
+    		geocoder.geocode( { 'address': address, 'region': 'AU' }, function(results, status) {
           	  if (status == google.maps.GeocoderStatus.OK) {
         			map.setCenter(results[0].geometry.location);
         			var marker = new google.maps.Marker({
