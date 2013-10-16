@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_save, post_save, post_delete
+from django.db.models.signals import pre_save, post_save, post_delete, post_syncdb
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import connection
 import urllib, urllib2, json
 
 class LocationManager(models.Manager):
@@ -63,7 +64,7 @@ class LocationManager(models.Manager):
         if lonmin < -math.pi or lonmax > math.pi:
             lonmin, lonmax = -math.pi, math.pi
         
-        #Old
+        #Old, unbounded search. Not used anymore
         sql = \
         '''
         SELECT id, (6371 * acos(
@@ -119,17 +120,18 @@ class ClubType(models.Model):
     description = models.CharField(max_length=255)
     club_count = models.IntegerField(default=0)
     
+    ''' #No signal for you!
     @staticmethod
     def club_created(sender, instance, created, **kwargs):
-        '''Auto increments the club count for a club type
-           when a club is created'''
+        #Auto increments the club count for a club type
+        #   when a club is created
         if created and instance.type:
             instance.type.club_count += 1
             instance.type.save()
 
     @staticmethod
     def club_updated(sender, instance,  **kwargs):
-        '''Auto updates club counts if a club type is changed'''
+        #Auto updates club counts if a club type is changed
         if instance.pk:
             old_info = Club.objects.get(pk=instance.pk)
             if old_info.type != instance.type:
@@ -142,13 +144,13 @@ class ClubType(models.Model):
 
     @staticmethod
     def club_deleted(sender, instance, **kwargs):
-        '''Auto updates club count when clubs are deleted'''
+        #Auto updates club count when clubs are deleted
         try:
             instance.type.club_count -= 1
             instance.type.save()
         except ObjectDoesNotExist:
             #Club type was deleted...
-            return
+            return'''
 
     def __unicode__(self):
         return '%s' % (self.name)
@@ -175,43 +177,9 @@ class Club(models.Model):
     owner = models.ForeignKey('Member',on_delete=models.SET_NULL, null=True, blank=True,\
                                 related_name='member_owner')
     
-    
-
-    '''#Geocode on client side
-    def save(self):
-        if self.address:
-            self.location = self.geocode(self.address)
-        super(Club, self).save()
-    
-    def geocode(self, address):
-        result = ''
-        url = 'http://maps.googleapis.com/maps/api/geocode/json'
-        params = urllib.urlencode({'address' : address, 'sensor' : 'false'})
-        url = url + '?' + params
-        response = urllib2.urlopen(url)
-        try:
-            vals = json.load(response)
-        except ValueError:
-            return result
-        
-        if 'results' in vals and len(vals['results']) > 0:
-            loc = vals['results'][0]['geometry']['location']
-            result = ",".join((str(loc['lat']), str(loc['lng'])))
-        return result
-    '''
-    
     def __unicode__(self):
         return '%s' % (self.name)
-  
-'''  ???
-class ClubMeta(models.Model):
-    club = models.OneToOneField(Club)
-    tags = models.ManyToManyField(ClubTag, blank=True, null=True)
-    member_count = models.IntegerField(default=0)
-    total_application_count = models.IntegerField(default=0)
-    pending_application_count = models.IntegerField(default=0)
-    recruiting = models.BooleanField(default=True)
-''' 
+ 
     
 class Membership(models.Model):
     joined = models.DateField(default=datetime.now)
@@ -219,6 +187,7 @@ class Membership(models.Model):
     member = models.ForeignKey('Member')
     club = models.ForeignKey('Club')
     
+    '''#No trigger for you!
     @staticmethod
     def membership_created(sender, instance, created, **kwargs):
         if created:
@@ -234,7 +203,7 @@ class Membership(models.Model):
             #Club or member no longer exists.
             #As owner/contact is fk, they're nulled on member delete
             return
-    
+    '''
     class Meta:
         unique_together = (("member", "club"),)
     
@@ -252,75 +221,92 @@ class MembershipApplication(models.Model):
     
     def __unicode__(self):
         return '%s to %s' % (self.member, self.club)
+
         
-class UserMeta(models.Model):
-    #Needed? I dunno. maybe remove
-    user = models.ForeignKey(User)
-    member_count = models.IntegerField(default=0)
-    membership_count = models.IntegerField(default=0)
-    club_count = models.IntegerField(default=0)
+#sqlite triggers can't be loaded via custom sql. gg
+#https://code.djangoproject.com/ticket/4374        
+membership_triggers = \
 '''
-    @staticmethod
-    def member_created(sender, instance, created, **kwargs):
-        if created:
-            meta, created = UserMeta.objects.get_or_create(user=instance.owner)
-            meta.member_count += 1
-            meta.save()
+DROP TRIGGER IF EXISTS MembershipCreated;
+DROP TRIGGER IF EXISTS MembershipDeleted;
 
-    @staticmethod
-    def member_deleted(sender, instance, **kwargs):
-        try:
-            meta = UserMeta.objects.get(user=instance.owner)
-        except ObjectDoesNotExist:
-            return
-        
-        meta.member_count -= 1
-        meta.save()
+CREATE TRIGGER MembershipCreated
+AFTER INSERT ON sportsrec_membership
+FOR EACH ROW
+BEGIN
+UPDATE sportsrec_club
+SET member_count=member_count+1
+WHERE id=New.club_id;
+END;
 
-    @staticmethod
-    def membership_created(sender, instance, created, **kwargs):
-        if created:
-            user = instance.member.owner
-            meta, created = UserMeta.objects.get_or_create(user=user)
-            meta.membership_count += 1
-            meta.save()
+CREATE TRIGGER MembershipDeleted
+AFTER DELETE ON sportsrec_membership
+FOR EACH ROW
+BEGIN
+UPDATE sportsrec_club
+SET member_count=member_count-1
+WHERE id=Old.club_id;
 
-    @staticmethod
-    def membership_deleted(sender, instance, **kwargs):
-        try:
-            user = instance.member.owner
-            meta = UserMeta.objects.get(user=user)
-        except ObjectDoesNotExist:
-            return
+UPDATE sportsrec_club
+SET owner_id=NULL
+WHERE id=Old.club_id AND owner_id=Old.member_id;
 
-        meta.membership_count -= 1
-        meta.save()
-
-    @staticmethod
-    def club_created(sender, instance, created, **kwargs):
-        if created:
-            meta, created = UserMeta.objects.get_or_create(user=instance.owner)
-            meta.club_count += 1
-            meta.save()
-
-    @staticmethod
-    def club_updated(sender, instance,  **kwargs):
-        if instance.pk:
-            old_info = Club.objects.get(pk=instance.pk)
-            if old_info.owner != instance.owner:
-                UserMeta.club_created(sender, instance, True)
-                UserMeta.club_deleted(sender, old_info)
-
-    @staticmethod
-    def club_deleted(sender, instance, **kwargs):
-        try:
-            meta = UserMeta.objects.get(user=instance.owner)
-        except ObjectDoesNotExist:
-            return
-
-        meta.club_count -= 1
-        meta.save()
+UPDATE sportsrec_club
+SET contact_id=NULL
+WHERE id=Old.club_id AND contact_id=Old.member_id;
+END;
 '''
+
+club_triggers = \
+'''
+DROP TRIGGER IF EXISTS ClubCreated;
+DROP TRIGGER IF EXISTS ClubUpdated;
+DROP TRIGGER IF EXISTS ClubDeleted;
+
+CREATE TRIGGER ClubCreated
+AFTER INSERT ON sportsrec_club
+FOR EACH ROW
+BEGIN
+UPDATE sportsrec_clubtype
+SET club_count=club_count+1
+WHERE id=New.type_id;
+END;
+
+CREATE TRIGGER ClubUpdated
+AFTER UPDATE OF type_id ON sportsrec_club 
+FOR EACH ROW
+BEGIN
+UPDATE sportsrec_clubtype
+SET club_count=club_count+1
+WHERE id=New.type_id;
+
+UPDATE sportsrec_clubtype
+SET club_count=club_count-1
+WHERE id=Old.type_id;
+END;
+
+CREATE TRIGGER ClubDeleted
+AFTER DELETE ON sportsrec_club
+FOR EACH ROW
+BEGIN
+UPDATE sportsrec_clubtype
+SET club_count=club_count-1
+WHERE id=Old.type_id;
+END;
+
+--no signal for you!
+'''
+
+def a_hack_to_load_sqlite_triggers_just_because(created_models, **kwargs):
+    cursor = connection.cursor()
+    cursor.executescript(membership_triggers)
+    cursor.executescript(club_triggers)
+
+#herp derp
+post_syncdb.connect(a_hack_to_load_sqlite_triggers_just_because)
+
+'''
+#No signals!!! stupidity ensues
 #For club counting by type
 post_save.connect(ClubType.club_created, sender=Club)
 pre_save.connect(ClubType.club_updated, sender=Club)
@@ -329,6 +315,8 @@ post_delete.connect(ClubType.club_deleted, sender=Club)
 post_save.connect(Membership.membership_created, sender=Membership)
 post_delete.connect(Membership.membership_deleted, sender=Membership)
 #For keeping track of user stats. May not be needed
+'''
+
 '''post_save.connect(UserMeta.member_created, sender=Member)
 post_delete.connect(UserMeta.member_deleted, sender=Member)
 post_save.connect(UserMeta.membership_created, sender=Membership)

@@ -21,7 +21,7 @@ admin.site.register(Club)
 admin.site.register(Membership)
 admin.site.register(ClubType)
 admin.site.register(ClubTag)
-admin.site.register(UserMeta)
+#admin.site.register(UserMeta)
 
 
 def is_admin(user):
