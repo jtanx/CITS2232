@@ -42,7 +42,9 @@
         <td>{{membership.joined}}</td>
         {% if club.owner.owner == user or admin %}
         <td class="clickable menu-hilight">
+           <a href="{% url 'sportsrec:membership_update' pk=membership.member.id %}">
           {{membership.last_paid|default:"Never"}}
+          </a>
         </td>
         <td class="clickable menu-hilight">
           <a href="{% url 'sportsrec:membership_delete' pk=membership.id %}">
