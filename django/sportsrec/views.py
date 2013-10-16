@@ -841,8 +841,8 @@ class SearchLocationView(MessageMixin, ListView):
             latlng = self.geocode(location)
             if latlng:
                 self.centre = latlng
+                self.radius = radius = 5
                 if 'radius' in self.request.GET:
-                    radius = 10
                     try:
                         radius = int(self.request.GET['radius'])
                     except ValueError:

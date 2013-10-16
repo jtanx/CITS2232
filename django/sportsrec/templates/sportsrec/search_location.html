@@ -96,12 +96,14 @@
       var map;
       var geocoder;
       
-      function getInfo(name, address, description) {
+      function getInfo(entry) {
         return '<div class="map-content">'+
-                  '<h2 class="firstHeading">'+name+'</h2>'+
+                  '<a href="' + entry.url + '">' +
+                  '<h2 class="firstHeading">'+
+                      entry.name + '</h2></a>'+
                   '<div class="bodyContent">'+
-                    '<p>Address: '+address+'</p>' +
-                    '<p>'+description+'</p>' +
+                    '<p>Address: '+entry.address+'</p>' +
+                    '<p>'+entry.description+'</p>' +
                   '</div>'+
                 '</div>';
       }
@@ -114,7 +116,7 @@
               position: latlng
         });
         
-        var infoText = getInfo(club.name, club.address, club.description);
+        var infoText = getInfo(club);
         var infoWindow = new google.maps.InfoWindow({
           'content' : infoText
         });
@@ -141,6 +143,7 @@
         		{{club.id}} : {
         			name : "{{club.name|escapejs}}",
               address : "{{club.address|escapejs}}",
+              url : "{%url 'sportsrec:club_detail' pk=club.id%}",
       				lat : {{club.latitude}},
       				lng : {{club.longitude}},
       				description : "{{club.description|escapejs}}"
