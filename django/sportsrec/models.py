@@ -8,6 +8,7 @@ import urllib, urllib2, json
 
 class LocationManager(models.Manager):
     # Modification of http://goo.gl/cy5OUc
+    # More based on http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
     def nearby_locations(self, latitude, longitude, radius, max_results=40):
         '''Determines all clubs within a set range, given in kilometres'''
         distance_unit = 6371
@@ -55,13 +56,14 @@ class LocationManager(models.Manager):
         lonmin = longitude - deltaLong
         lonmax = longitude + deltaLong
         
+        
         if latmax > math.pi/2:
-            latmax = -math.pi
-            lonmin, lonmax = math.pi/2, math.pi
-        if latmin < -math.pi/2:
+            lonmin = -math.pi
+            latmax, lonmax = math.pi/2, math.pi
+        if latmin < -math.pi/2: 
             latmin, lonmin = -math.pi/2, -math.pi
             lonmax = math.pi
-        if lonmin < -math.pi or lonmax > math.pi:
+        if lonmin < -math.pi or lonmin > math.pi or lonmax < -math.pi or lonmax > math.pi:
             lonmin, lonmax = -math.pi, math.pi
         
         #Old, unbounded search. Not used anymore
