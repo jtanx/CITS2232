@@ -46,6 +46,8 @@ urlpatterns = patterns('',
         name='membership_application_delete'),
     url(r'^membership/detail/(?P<pk>\d+)$', views.MembershipDetailView.as_view(), \
         name='membership_detail'),
+    url(r'^membership/update/(?P<pk>\d+)$', views.MembershipUpdateView.as_view(), \
+        name='membership_update'),    
     url(r'^membership/delete/(?P<pk>\d+)$', views.MembershipDeleteView.as_view(), \
         name='membership_delete'),
     url(r'^club/search$', views.search, name='search'),

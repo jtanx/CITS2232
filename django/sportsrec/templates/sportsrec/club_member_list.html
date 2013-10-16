@@ -19,6 +19,7 @@
         <th>Member</th>
         <th>Since</th>
         {% if club.owner.owner == user or admin %}
+        <th>Last paid</th>
         <th>Remove</th>
         {% endif %}
       </tr>
@@ -26,7 +27,13 @@
     <tbody>
       {% for membership in club_member_list %}
       <tr>
-        <td>{{membership.id}}</td>
+        <td{% if club.owner.owner == user or admin %} class="clickable menu-hilight"{%endif%}>
+          {% if club.owner.owner == user or admin %}
+          <a href="{% url 'sportsrec:membership_detail' pk=membership.id %}"> {% endif %}
+          {{membership.id}}
+          
+          {% if club.owner.owner == user or admin %}</a>{% endif %}
+        </td>
         <td class="clickable menu-hilight">
           <a href="{% url 'sportsrec:member_detail' pk=membership.member.id %}">
           {{membership.member}}
@@ -34,6 +41,9 @@
         </td>
         <td>{{membership.joined}}</td>
         {% if club.owner.owner == user or admin %}
+        <td class="clickable menu-hilight">
+          {{membership.last_paid|default:"Never"}}
+        </td>
         <td class="clickable menu-hilight">
           <a href="{% url 'sportsrec:membership_delete' pk=membership.id %}">
             Remove

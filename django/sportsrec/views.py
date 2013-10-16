@@ -317,7 +317,6 @@ class MemberAddView(LoginRequiredMixin, MessageMixin, FormView):
         return context
 
     def form_valid(self, form):
-        member = form.save
         #Don't save yet
         member = form.save(commit=False)
         #Tack on the owner
@@ -632,7 +631,7 @@ class MembershipList(LoginRequiredMixin, AdminMixin, ListView):
             return Membership.objects.all()
         return Membership.objects.filter(member__owner=self.request.user)
 
-class MembershipDetailView(LoginRequiredMixin, MessageMixin, DetailView):
+class MembershipDetailView(LoginRequiredMixin, MessageMixin, AdminMixin, DetailView):
     model = Membership
     template_name='sportsrec/membership_detail.html'
     error_message="You don't administer that membership."
@@ -641,9 +640,44 @@ class MembershipDetailView(LoginRequiredMixin, MessageMixin, DetailView):
     def get_queryset(self):
         qs = super(MembershipDetailView, self).get_queryset()
         if not is_admin(self.request.user):
-            return qs.filter(member__owner=self.request.user)
+            return qs.filter(Q(member__owner=self.request.user) | Q(club__owner__owner=self.request.user))
         return qs
 
+class MembershipUpdateView(LoginRequiredMixin, MessageMixin, FormView):
+    form_class=MembershipPaidForm
+    template_name = 'sportsrec/membership_update.html'
+    success_message='Successfully set the last paid date'
+    error_message="You can't update a membership you didn't create."
+    error_url=reverse_lazy('sportsrec:index')
+    
+    def get_form_kwargs(self):
+        kwargs = super(self.__class__, self).get_form_kwargs()
+        if not is_admin(self.request.user):
+            membership = Membership.objects.filter(pk=self.kwargs['pk'], \
+                            club__owner__owner=self.request.user)
+        else:
+            membership = Membership.objects.filter(pk=self.kwargs['pk'])
+        if not membership.exists():
+            raise Http404
+            
+        self.instance = membership[0]
+        kwargs['instance'] = membership[0]
+        return kwargs
+    
+    def form_valid(self, form):
+        
+        self.success_url=reverse_lazy('sportsrec:membership_detail',\
+                                      kwargs = {'pk' : self.kwargs['pk'], })
+        form.save()
+        return super(self.__class__, self).form_valid(form)
+
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        context['membership'] = self.instance
+        return context
+        
 class MembershipDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
     model = Membership
     success_url = reverse_lazy('sportsrec:membership_list')
@@ -651,7 +685,7 @@ class MembershipDeleteView(LoginRequiredMixin, MessageMixin, DeleteView):
     success_message='Your membership was removed successfully.'
     error_message="You can't remove a membership you didn't make."
     error_url=success_url
-
+    
     def get_queryset(self):
         qs = super(MembershipDeleteView, self).get_queryset()
         if not is_admin(self.request.user):

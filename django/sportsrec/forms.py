@@ -1,5 +1,6 @@
 from django.forms import Form, ModelForm, Textarea
 from django import forms
+from django.forms import extras
 from django.contrib.auth.models import User
 from sportsrec.models import *
 from django.contrib.auth import authenticate
@@ -170,6 +171,14 @@ class MembershipApplicationForm(ModelForm):
     class Meta:
         model=MembershipApplication
         fields=['member']
+        
+class MembershipPaidForm(ModelForm):    
+    class Meta:
+        model=Membership
+        fields=['last_paid']
+        widgets = {
+            'last_paid' : extras.SelectDateWidget()
+        }
         
 class ApplicationForm(Form):
     application_id = forms.IntegerField(widget=forms.HiddenInput())
