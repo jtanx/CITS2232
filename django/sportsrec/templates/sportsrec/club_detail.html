@@ -11,7 +11,7 @@
       <th>Location</th>
       <td class="clickable menu-hilight">
         {% if club.latitude and club.longitude %}
-            <a href="{% url 'sportsrec:search_location' %}?query={{club.latitude}}, {{club.longitude}}">
+            <a href="{% url 'sportsrec:search_location' %}?query={{club.latitude}},{{club.longitude}}">
             {{club.latitude}}, {{club.longitude}}
             </a>
         {% endif %}

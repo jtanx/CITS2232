@@ -835,10 +835,25 @@ class SearchLocationView(MessageMixin, ListView):
             result = (loc['lat'], loc['lng'])
         return result
 
+    def parse_latlng(self, query):
+        parts = query.split(',')
+        if len(parts) != 2:
+            return None
+        try:
+            lat = float(parts[0])
+            long = float(parts[1])
+        except:
+            return None
+        return (lat, long)
+        
     def get_queryset(self):
         if 'query' in self.request.GET:
             location = self.request.GET['query']
-            latlng = self.geocode(location)
+            #Don't geocode if it's already in the right format.
+            latlng = self.parse_latlng(location)
+            if latlng is None:
+                latlng = self.geocode(location)
+
             if latlng:
                 self.centre = latlng
                 self.radius = radius = 5

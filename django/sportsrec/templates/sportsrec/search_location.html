@@ -9,7 +9,7 @@
       <form action="{% url 'sportsrec:search_location' %}">
       <p>
       	<label for="name">Address:</label><br>
-        <input id="name" type="textbox" name="query" value="Nedlands, Perth" style="width:200px;" class="normal">
+        <input id="name" type="textbox" name="query" value="{{query}}" style="width:200px;" class="normal">
         <input type="submit" value="Search" class="normal"><br>
         <label for="radius">Within Radius:</label><br>
         <input id="radius" type="textbox" name="radius" value="5" style="width:4%;" class="normal"> km<br>

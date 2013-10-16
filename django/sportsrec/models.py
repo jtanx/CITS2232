@@ -88,7 +88,7 @@ class LocationManager(models.Manager):
                 acos(sin(%f) * sin(rad(latitude)) + cos(%f) * cos(rad(latitude)) * cos (rad(longitude) - %f)) <= %f
           LIMIT 0, %d
         ''' % (latmin, latmax, lonmin, lonmax, latitude, latitude, longitude, r, max_results)
-        print(sql2)
+
         cursor.execute(sql2)
         ids = [row[0] for row in cursor.fetchall()]
 
