@@ -7,19 +7,18 @@ from django.contrib.auth import authenticate
 import re, decimal
 
 class SocialCleanerMixin(object):
-    grep = re.compile(r"([^/]+)$")
     def clean(self):
         cleaned_data = super(SocialCleanerMixin, self).clean()
         facebook = cleaned_data.get("facebook")
         twitter = cleaned_data.get("twitter")
         if facebook:
-            m = re.match(self.grep, facebook)
+            m = re.match('(?:.*/)?([^/]+)$', facebook)
             facebook = None
             if m:
                 facebook = m.group(1)
             cleaned_data['facebook'] = facebook
         if twitter:
-            m = re.match(self.grep, twitter)
+            m = re.match('(?:.*/)?([^/]+)$', twitter)
             twitter = None
             if m:
                 twitter = m.group(1)
