@@ -96,7 +96,7 @@
   
   <div class="widget">
     <div class="title">Club map</div>
-    <div id="map-canvas" style="width:100%;height:500px;"></div>
+    <div id="map-canvas" style="width:100%;height:300px;"></div>
     <script src="https://maps.googleapis.com/maps/api/js?v=3key={AIzaSyAH5OCkIGApptBzMQGjs_Wlz8kc6xqTg8o}&sensor=true"></script>
     <script>
       var map;
@@ -142,7 +142,7 @@
             infoWindow.open(map, marker);
           });
           
-          setTimeout(function() { marker.setAnimation(null); }, 3500);
+          setTimeout(function() { marker.setAnimation(null); }, 2500);
         {% endif %}
     }
     

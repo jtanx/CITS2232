@@ -28,8 +28,8 @@
       {# Include the visible fields #}
       {% for field in form.visible_fields %}
           <div class="fieldWrapper">
-            <div class="{% if field.field.required %} bold {%endif%}">
-              {{ field.label_tag }}
+            <div>
+              {{ field.label_tag }}{% if field.field.required %} * {%endif%}
             </div>
             {{ field }}
             {% for error in field.errors %}
@@ -77,20 +77,35 @@
   {% if club_edit or club_add %}
   <div class="widget">
     <div class="title">Data Dictionary</div>
-	<div>Name:  Name of your Club</div><br>
-	<div>Owner:  Administering Member of your Club</div><br>
-	<div>Address:  The address of your Club.</div><br>
-	<div>Location:  The lat/long coordinates of the club. The coordinates of Perth are -31.95, 115.85.</div><br>
-	<div>Tags:  List of keywords that describe the club.</div><br>
-	<div>Type:  What type of club are you? If your type doesn't appear, choose 'Other' and let us know about it, at help@ucdb.com.</div><br>
-	<div>Recruiting:  Is your club open for recruiting new members?</div><br>
-	<div>Contact:  A trusted Member of your club the public can contact.</div><br>
-	<div>Facebook:  Your Facebook page, if you have one.</div><br>
-	<div>Twitter:  Your Twitter handle, if you have one.</div><br>
-	<div>Description:  Let us know a bit more about your club.</div><br>
-	
+	<div><b>Name:</b>  Name of your Club</div><br>
+	<div><b>Owner:</b>  Administering Member of your Club</div><br>
+	<div><b>Address:</b>  The address of your Club.</div><br>
+	<div><b>Location:</b>  The lat/long coordinates of the club. The coordinates of Perth are -31.95, 115.85.</div><br>
+	<div><b>Tags:</b>  List of keywords that describe the club.</div><br>
+	<div><b>Type:</b>  What type of club are you? If your type doesn't appear, choose 'Other' and let us know about it, at help@ucdb.com.</div><br>
+	<div><b>Recruiting:</b>  Is your club open for recruiting new members?</div><br>
+	<div><b>Contact:</b>  A trusted Member of your club the public can contact.</div><br>
+	<div><b>Facebook:</b>  The club's Facebook page, if it has one.</div><br>
+	<div><b>Twitter:</b>  The club's Twitter handle, if it has one.</div><br>
+	<div><b>Description:</b>  Let us know a bit more about your club.</div><br>
+  </div>
+  {% elif club_add %}
+  <div class="widget">
+    <div class="title">Data Dictionary</div>
+	<div><b>Name:</b>  Name of your Club</div><br>
+	<div><b>Owner:</b>  Administering Member of your Club</div><br>
+	<div><b>Address:</b>  The address of your Club.</div><br>
+	<div><b>Location:</b>  The lat/long coordinates of the club. The coordinates of Perth are -31.95, 115.85.</div><br>
+	<div><b>Tags:</b>  List of keywords that describe the club.</div><br>
+	<div><b>Type:</b>  What type of club are you? If your type doesn't appear, choose 'Other' and let us know about it, at help@ucdb.com.</div><br>
+	<div><b>Recruiting:</b>  Is your club open for recruiting new members?</div><br>
+	<div><b>Contact:</b>  A trusted Member of your club the public can contact.</div><br>
+	<div><b>Facebook:</b>  The club's Facebook page, if it has one.</div><br>
+	<div><b>Twitter:</b>  The club's Twitter handle, if it has one.</div><br>
+	<div><b>Description:</b>  Let us know a bit more about your club.</div><br>
   </div>
   {# afaik values are club_edit, club_add, member_add, member_edit, and user_profile #}
+  {# imo, only the club ones are necessary, member and user forms are all super logical and self-explanatory #}
   {% endif %}
 </div>
 {% endblock %}
