@@ -617,6 +617,15 @@
     "model": "sportsrec.clubtype", 
     "fields": {
         "club_count": 0, 
+        "name": "Dance", 
+        "description": "A dance club, or a club about dancing."
+    }
+},
+{
+    "pk": 18, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
         "name": "Other", 
         "description": "None of the above."
     }
