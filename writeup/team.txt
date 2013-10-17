@@ -1,0 +1,6 @@
+Django Unchained Team Members:
+==============================
+
+Jeremy Tan - 20933708
+Duncan Lissiman - 20938989
+Szymon Zieba - 20931554
