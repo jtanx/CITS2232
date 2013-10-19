@@ -1,5 +1,3 @@
---triggers, just for you, just *because*
-
 DROP TRIGGER IF EXISTS MembershipCreated;
 DROP TRIGGER IF EXISTS MembershipDeleted;
 

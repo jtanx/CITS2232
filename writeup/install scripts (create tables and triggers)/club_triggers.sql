@@ -1,5 +1,3 @@
---triggers, just for you, just *because*
-
 DROP TRIGGER IF EXISTS ClubCreated;
 DROP TRIGGER IF EXISTS ClubUpdated;
 DROP TRIGGER IF EXISTS ClubDeleted;

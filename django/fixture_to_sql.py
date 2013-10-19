@@ -88,13 +88,35 @@ def to_sql(fixture, fpo):
     club_tags(fixture, fpo)
     membership_application(fixture, fpo)
     membership(fixture, fpo)
-        
+
+def strip_fixture(fixture, fpo):
+    fixtures = {}
+    for fix in fixture:
+        l = fixtures.get(fix['model'], [])
+        l.append(fix)
+        fixtures[fix['model']] = l
+
+    #order is important, because of sql triggers.
+    out = fixtures['auth.group'] + fixtures['auth.user'] + \
+          fixtures['sportsrec.member'] + \
+          fixtures['sportsrec.membershipapplication'] + \
+          fixtures['sportsrec.membership'] + \
+          fixtures['sportsrec.clubtag'] + \
+          fixtures['sportsrec.club'] + \
+          fixtures['sportsrec.clubtype']
+          
+          
+    fpo.write(json.dumps(out, indent=4))
+    
 
 for i in range(1, len(sys.argv)):
     with open(sys.argv[i]) as fp:
         fixture = json.load(fp)
         with open(sys.argv[i] + '.sql', 'w') as fpo:
             to_sql(fixture, fpo)
+
+        with open(sys.argv[i] + '.stripped.json', 'w') as fpo:
+            strip_fixture(fixture, fpo)
             
         with open(sys.argv[i] + '.users.json', 'w') as fpo:
             users = [user for user in fixture if user['model'] == "auth.user"]
