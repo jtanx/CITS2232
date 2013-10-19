@@ -95,5 +95,9 @@ for i in range(1, len(sys.argv)):
         fixture = json.load(fp)
         with open(sys.argv[i] + '.sql', 'w') as fpo:
             to_sql(fixture, fpo)
+            
+        with open(sys.argv[i] + '.users.json', 'w') as fpo:
+            users = [user for user in fixture if user['model'] == "auth.user"]
+            fpo.write(json.dumps(users, indent=4))
         
         
