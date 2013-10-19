@@ -8,10 +8,14 @@ Installation:
 To run the application:
 python manage.py runserver
 
+For a list of usernames and passwords:
+See README-Users.txt
+
+------------------------------------------------------------------
 
 Folders:
 unchained : django project settings
-sportsrec : our app! (this django project only has one app so far)
+sportsrec : our app! (this django project only has one app)
 static : All static stuff (styles, js etc) - stick in this folder.
 
 Files:
