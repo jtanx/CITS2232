@@ -27,19 +27,19 @@ Is Active : Boolean</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>702.7391942202621</double>
+      <double>827.7391942202621</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>32.26092311872901</double>
+      <double>29.26092311872901</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>702.7391942202621</double>
-     <double>32.26092311872901</double>
+     <double>827.7391942202621</double>
+     <double>29.26092311872901</double>
     </void>
    </object>
   </void>
@@ -117,19 +117,19 @@ Owner : ForeignKey to User ID</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double2"/>
-      <double>667.3979058328256</double>
+      <double>797.3979058328256</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double2"/>
-      <double>289.8492383281209</double>
+      <double>286.8492383281209</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>667.3979058328256</double>
-     <double>289.8492383281209</double>
+     <double>797.3979058328256</double>
+     <double>286.8492383281209</double>
     </void>
    </object>
   </void>
@@ -155,19 +155,19 @@ Last Paid : Date</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>466.4428539126179</double>
+      <double>532.4428539126179</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>689.005690672151</double>
+      <double>168.005690672151</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>466.4428539126179</double>
-     <double>689.005690672151</double>
+     <double>532.4428539126179</double>
+     <double>168.005690672151</double>
     </void>
    </object>
   </void>
@@ -265,19 +265,19 @@ Rejected : Boolean</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double6"/>
-      <double>449.0</double>
+      <double>510.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double6"/>
-      <double>529.0</double>
+      <double>512.0</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>449.0</double>
-     <double>529.0</double>
+     <double>510.0</double>
+     <double>512.0</double>
     </void>
    </object>
   </void>
@@ -390,18 +390,6 @@ Club ID : ForeignKey to Club</string>
   </void>
   <void method="connect">
    <object class="com.horstmann.violet.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="com.horstmann.violet.ArrowHead" field="V"/>
-    </void>
-    <void property="lineStyle">
-     <object class="com.horstmann.violet.LineStyle" field="DOTTED"/>
-    </void>
-   </object>
-   <object idref="ClassNode3"/>
-   <object idref="ClassNode6"/>
-  </void>
-  <void method="connect">
-   <object class="com.horstmann.violet.ClassRelationshipEdge">
     <void property="bentStyle">
      <object class="com.horstmann.violet.BentStyle" field="VH"/>
     </void>
@@ -428,6 +416,21 @@ Club ID : ForeignKey to Club</string>
     </void>
    </object>
    <object idref="ClassNode1"/>
+   <object idref="ClassNode2"/>
+  </void>
+  <void method="connect">
+   <object class="com.horstmann.violet.ClassRelationshipEdge">
+    <void property="bentStyle">
+     <object class="com.horstmann.violet.BentStyle" field="VH"/>
+    </void>
+    <void property="endArrowHead">
+     <object class="com.horstmann.violet.ArrowHead" field="V"/>
+    </void>
+    <void property="lineStyle">
+     <object class="com.horstmann.violet.LineStyle" field="DOTTED"/>
+    </void>
+   </object>
+   <object idref="ClassNode3"/>
    <object idref="ClassNode2"/>
   </void>
  </object>
