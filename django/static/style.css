@@ -81,6 +81,10 @@ div.centre.sub-title {
   font-size: 130% !important;
 }
 
+.medium {
+  font-size: 115% !important;
+}
+
 .normal {
   font-size: inherit !important;
 }
