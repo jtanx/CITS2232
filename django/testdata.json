@@ -1,0 +1,1366 @@
+[
+{
+    "pk": 1, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "permission", 
+        "name": "permission", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 2, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "group", 
+        "name": "group", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 3, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "user", 
+        "name": "user", 
+        "app_label": "auth"
+    }
+},
+{
+    "pk": 4, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "contenttype", 
+        "name": "content type", 
+        "app_label": "contenttypes"
+    }
+},
+{
+    "pk": 5, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "session", 
+        "name": "session", 
+        "app_label": "sessions"
+    }
+},
+{
+    "pk": 6, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "site", 
+        "name": "site", 
+        "app_label": "sites"
+    }
+},
+{
+    "pk": 7, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "logentry", 
+        "name": "log entry", 
+        "app_label": "admin"
+    }
+},
+{
+    "pk": 8, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "member", 
+        "name": "member", 
+        "app_label": "sportsrec"
+    }
+},
+{
+    "pk": 9, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "clubtag", 
+        "name": "club tag", 
+        "app_label": "sportsrec"
+    }
+},
+{
+    "pk": 10, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "clubtype", 
+        "name": "club type", 
+        "app_label": "sportsrec"
+    }
+},
+{
+    "pk": 11, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "club", 
+        "name": "club", 
+        "app_label": "sportsrec"
+    }
+},
+{
+    "pk": 12, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "membership", 
+        "name": "membership", 
+        "app_label": "sportsrec"
+    }
+},
+{
+    "pk": 13, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+        "model": "membershipapplication", 
+        "name": "membership application", 
+        "app_label": "sportsrec"
+    }
+},
+{
+    "pk": "0r55m2jar3la8t5but3p8v6tr5cfdi7q", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2013-10-26T11:19:45.070Z", 
+        "session_data": "ZWYyMmUyNzQyMjAwZmVhNzE1OGM4NTM0YTM4M2Q5ZjI1ZjRhNzgxODqAAn1xAS4="
+    }
+},
+{
+    "pk": "g5dcsy0rdxsgtujyhupfilecp96mhpn1", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2013-11-01T05:48:34.668Z", 
+        "session_data": "ZWYyMmUyNzQyMjAwZmVhNzE1OGM4NTM0YTM4M2Q5ZjI1ZjRhNzgxODqAAn1xAS4="
+    }
+},
+{
+    "pk": 1, 
+    "model": "sites.site", 
+    "fields": {
+        "domain": "example.com", 
+        "name": "example.com"
+    }
+},
+{
+    "pk": 1, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "Hi"
+    }
+},
+{
+    "pk": 2, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "Rap"
+    }
+},
+{
+    "pk": 3, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "zap"
+    }
+},
+{
+    "pk": 4, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "Breaking"
+    }
+},
+{
+    "pk": 5, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "the"
+    }
+},
+{
+    "pk": 6, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "Laws"
+    }
+},
+{
+    "pk": 7, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "of"
+    }
+},
+{
+    "pk": 8, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "Physics"
+    }
+},
+{
+    "pk": 9, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "Canning"
+    }
+},
+{
+    "pk": 10, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "bad"
+    }
+},
+{
+    "pk": 11, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "luck"
+    }
+},
+{
+    "pk": 12, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "One"
+    }
+},
+{
+    "pk": 13, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "Two"
+    }
+},
+{
+    "pk": 14, 
+    "model": "sportsrec.clubtag", 
+    "fields": {
+        "name": "Three"
+    }
+},
+{
+    "pk": 1, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Soccer", 
+        "description": "A soccer club, or a club about soccer"
+    }
+},
+{
+    "pk": 2, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Hockey", 
+        "description": "A hockey club, or a club about hockey"
+    }
+},
+{
+    "pk": 3, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 1, 
+        "name": "AFL", 
+        "description": "An AFL club, or a club about AFL"
+    }
+},
+{
+    "pk": 4, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 1, 
+        "name": "Swimming", 
+        "description": "A swimming club, or a club about swimming"
+    }
+},
+{
+    "pk": 5, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Basketball", 
+        "description": "A basketball club, or a club about basketball"
+    }
+},
+{
+    "pk": 6, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Tennis", 
+        "description": "A tennis club, or a club about tennis"
+    }
+},
+{
+    "pk": 7, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Rugby", 
+        "description": "A rugby club, or a club about rugby"
+    }
+},
+{
+    "pk": 8, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Formula One", 
+        "description": "A formula one racing club, or a club about formula one racing"
+    }
+},
+{
+    "pk": 9, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 1, 
+        "name": "Gaming", 
+        "description": "A gaming club, or a club about games"
+    }
+},
+{
+    "pk": 10, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 1, 
+        "name": "Hunting", 
+        "description": "A club about game hunting"
+    }
+},
+{
+    "pk": 11, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Cricket", 
+        "description": "A cricket club, or a club about cricket"
+    }
+},
+{
+    "pk": 12, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Sailing", 
+        "description": "A sailing club, or a club about sailing"
+    }
+},
+{
+    "pk": 13, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 1, 
+        "name": "Recreation", 
+        "description": "A recreation club, or a club about recreating"
+    }
+},
+{
+    "pk": 14, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Hobby", 
+        "description": "A hobby club, or a club about hobbies"
+    }
+},
+{
+    "pk": 15, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Social", 
+        "description": "A social club, or a club about socials"
+    }
+},
+{
+    "pk": 16, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Country", 
+        "description": "A Country club, or a club about the country"
+    }
+},
+{
+    "pk": 17, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Dance", 
+        "description": "A dance club, or a club about dancing."
+    }
+},
+{
+    "pk": 18, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 1, 
+        "name": "Other", 
+        "description": "None of the above."
+    }
+},
+{
+    "pk": 1, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "Hi, My name is...", 
+        "member_count": 3, 
+        "created": "2013-10-18", 
+        "twitter": "Temper", 
+        "tags": [
+            1, 
+            2
+        ], 
+        "recruiting": true, 
+        "longitude": "-93.28348", 
+        "owner": 2, 
+        "contact": 1, 
+        "facebook": "Morn", 
+        "address": "10 Lewisville Road", 
+        "latitude": "32.61872", 
+        "type": 10, 
+        "description": "Hi, my name is...\r\nWho, my name is...\r\nWhat, my name is..."
+    }
+},
+{
+    "pk": 2, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "Electrical", 
+        "member_count": 2, 
+        "created": "2013-10-18", 
+        "twitter": "", 
+        "tags": [
+            3
+        ], 
+        "recruiting": true, 
+        "longitude": "115.81717", 
+        "owner": 1, 
+        "contact": 1, 
+        "facebook": "Thunder", 
+        "address": "17 Mannikin Heights", 
+        "latitude": "-32.1374", 
+        "type": 18, 
+        "description": "The quick brown fox jumped over the lazy dog."
+    }
+},
+{
+    "pk": 3, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "Thundermite", 
+        "member_count": 2, 
+        "created": "2013-10-18", 
+        "twitter": "Gorn", 
+        "tags": [
+            4, 
+            5, 
+            6, 
+            7, 
+            8
+        ], 
+        "recruiting": true, 
+        "longitude": "115.8809", 
+        "owner": 1, 
+        "contact": 1, 
+        "facebook": "", 
+        "address": "40 Canning Hwy", 
+        "latitude": "-31.9769", 
+        "type": 9, 
+        "description": "The quick brown fox jumped over the lazy dog."
+    }
+},
+{
+    "pk": 4, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "AnnoytheNeighbourhood", 
+        "member_count": 3, 
+        "created": "2013-10-18", 
+        "twitter": "", 
+        "tags": [
+            9
+        ], 
+        "recruiting": true, 
+        "longitude": "115.88116", 
+        "owner": 7, 
+        "contact": 8, 
+        "facebook": "LiveToAnnoy", 
+        "address": "34 Canning Highway", 
+        "latitude": "-31.97662", 
+        "type": 13, 
+        "description": "The quick brown fox jumped over the lazy dog."
+    }
+},
+{
+    "pk": 5, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "Club 5", 
+        "member_count": 2, 
+        "created": "2013-10-18", 
+        "twitter": "", 
+        "tags": [
+            10, 
+            11
+        ], 
+        "recruiting": true, 
+        "longitude": "-95.25064", 
+        "owner": 4, 
+        "contact": null, 
+        "facebook": "Elonerth", 
+        "address": "12 Wilson Road", 
+        "latitude": "30.0022", 
+        "type": 4, 
+        "description": "The quick brown fox jumped over the lazy dog."
+    }
+},
+{
+    "pk": 6, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "Tiny Tina", 
+        "member_count": 1, 
+        "created": "2013-10-18", 
+        "twitter": "", 
+        "tags": [
+            12, 
+            13, 
+            14
+        ], 
+        "recruiting": true, 
+        "longitude": "-113.52103", 
+        "owner": 10, 
+        "contact": 10, 
+        "facebook": "", 
+        "address": "In the Borderlands", 
+        "latitude": "47.1687", 
+        "type": 3, 
+        "description": "The quick brown fox jumped over the lazy dog."
+    }
+},
+{
+    "pk": 1, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 2, 
+        "club": 1, 
+        "last_paid": "2019-04-01", 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 2, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 1, 
+        "club": 1, 
+        "last_paid": "2013-01-01", 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 3, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 1, 
+        "club": 2, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 4, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 1, 
+        "club": 3, 
+        "last_paid": "2018-01-05", 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 5, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 7, 
+        "club": 4, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 6, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 8, 
+        "club": 4, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 7, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 8, 
+        "club": 1, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 8, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 9, 
+        "club": 4, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 9, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 7, 
+        "club": 2, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 11, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 4, 
+        "club": 5, 
+        "last_paid": "2013-04-03", 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 13, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 2, 
+        "club": 5, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 14, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 10, 
+        "club": 3, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 15, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 10, 
+        "club": 6, 
+        "last_paid": null, 
+        "joined": "2013-10-18"
+    }
+},
+{
+    "pk": 1, 
+    "model": "sportsrec.membershipapplication", 
+    "fields": {
+        "applied": "2013-10-18", 
+        "member": 9, 
+        "club": 3, 
+        "rejected": true
+    }
+},
+{
+    "pk": 3, 
+    "model": "sportsrec.membershipapplication", 
+    "fields": {
+        "applied": "2013-10-18", 
+        "member": 9, 
+        "club": 1, 
+        "rejected": true
+    }
+},
+{
+    "pk": 4, 
+    "model": "sportsrec.membershipapplication", 
+    "fields": {
+        "applied": "2013-10-18", 
+        "member": 10, 
+        "club": 1, 
+        "rejected": true
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_permission", 
+        "name": "Can add permission", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_permission", 
+        "name": "Can change permission", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_permission", 
+        "name": "Can delete permission", 
+        "content_type": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_group", 
+        "name": "Can add group", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_group", 
+        "name": "Can change group", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 6, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_group", 
+        "name": "Can delete group", 
+        "content_type": 2
+    }
+},
+{
+    "pk": 7, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_user", 
+        "name": "Can add user", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 8, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_user", 
+        "name": "Can change user", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 9, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_user", 
+        "name": "Can delete user", 
+        "content_type": 3
+    }
+},
+{
+    "pk": 10, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_contenttype", 
+        "name": "Can add content type", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 11, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_contenttype", 
+        "name": "Can change content type", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 12, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_contenttype", 
+        "name": "Can delete content type", 
+        "content_type": 4
+    }
+},
+{
+    "pk": 13, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_session", 
+        "name": "Can add session", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 14, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_session", 
+        "name": "Can change session", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 15, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_session", 
+        "name": "Can delete session", 
+        "content_type": 5
+    }
+},
+{
+    "pk": 16, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_site", 
+        "name": "Can add site", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 17, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_site", 
+        "name": "Can change site", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 18, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_site", 
+        "name": "Can delete site", 
+        "content_type": 6
+    }
+},
+{
+    "pk": 19, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_logentry", 
+        "name": "Can add log entry", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 20, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_logentry", 
+        "name": "Can change log entry", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 21, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_logentry", 
+        "name": "Can delete log entry", 
+        "content_type": 7
+    }
+},
+{
+    "pk": 22, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_member", 
+        "name": "Can add member", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 23, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_member", 
+        "name": "Can change member", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 24, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_member", 
+        "name": "Can delete member", 
+        "content_type": 8
+    }
+},
+{
+    "pk": 25, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_clubtag", 
+        "name": "Can add club tag", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 26, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_clubtag", 
+        "name": "Can change club tag", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 27, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_clubtag", 
+        "name": "Can delete club tag", 
+        "content_type": 9
+    }
+},
+{
+    "pk": 28, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_clubtype", 
+        "name": "Can add club type", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 29, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_clubtype", 
+        "name": "Can change club type", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 30, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_clubtype", 
+        "name": "Can delete club type", 
+        "content_type": 10
+    }
+},
+{
+    "pk": 31, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_club", 
+        "name": "Can add club", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 32, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_club", 
+        "name": "Can change club", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 33, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_club", 
+        "name": "Can delete club", 
+        "content_type": 11
+    }
+},
+{
+    "pk": 34, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_membership", 
+        "name": "Can add membership", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 35, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_membership", 
+        "name": "Can change membership", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 36, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_membership", 
+        "name": "Can delete membership", 
+        "content_type": 12
+    }
+},
+{
+    "pk": 37, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_membershipapplication", 
+        "name": "Can add membership application", 
+        "content_type": 13
+    }
+},
+{
+    "pk": 38, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_membershipapplication", 
+        "name": "Can change membership application", 
+        "content_type": 13
+    }
+},
+{
+    "pk": 39, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_membershipapplication", 
+        "name": "Can delete membership application", 
+        "content_type": 13
+    }
+},
+{
+    "pk": 40, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "add_usermeta", 
+        "name": "Can add user meta", 
+        "content_type": 14
+    }
+},
+{
+    "pk": 41, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "change_usermeta", 
+        "name": "Can change user meta", 
+        "content_type": 14
+    }
+},
+{
+    "pk": 42, 
+    "model": "auth.permission", 
+    "fields": {
+        "codename": "delete_usermeta", 
+        "name": "Can delete user meta", 
+        "content_type": 14
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "End User", 
+        "permissions": []
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "End Admin", 
+        "permissions": []
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "ucadmin", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2013-10-10T23:42:24.817Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$qUhmHidnE8lV$isYslDNZARfLppvtdptSEMDK2Wa9dRHDPzJXvgI/Z9w=", 
+        "email": "do-not-reply@uwa.edu.au", 
+        "date_joined": "2013-10-10T11:06:13.362Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "testuser", 
+        "first_name": "test", 
+        "last_name": "user", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-10T13:07:44.857Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$be41VjcFqXXT$hh9IUY7puGECVyGaSzmm76NPMuovD80OJoATveKFLI0=", 
+        "email": "test@user.com", 
+        "date_joined": "2013-10-10T11:07:45.545Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "testadmin", 
+        "first_name": "test", 
+        "last_name": "admin", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-18T05:43:35.036Z", 
+        "groups": [
+            1, 
+            2
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$Fc8w7mjBMHy6$QxnI78hrp+h4/bPpCSJTUY6Ky5iVVMEBeCjKXrR0TeY=", 
+        "email": "test@admin.com", 
+        "date_joined": "2013-10-10T23:42:12Z"
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "Mill", 
+        "first_name": "Miles", 
+        "last_name": "Edgeworth", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-18T05:42:41.758Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$o5QqAYwtnwgp$R17ER0SR2ttEDX7KMAyS+3F9UvlM1kM8PcGPV1MW5rM=", 
+        "email": "something@website.com", 
+        "date_joined": "2013-10-18T04:57:00.067Z"
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "HiAll123", 
+        "first_name": "Something o.", 
+        "last_name": "Other", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-18T05:48:27.666Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$vK1mEKpjLdr1$MaAWxZ/O6t1CG7kGQwSt8XU/WPtvejapPj1DuetYFBE=", 
+        "email": "something@website3.com", 
+        "date_joined": "2013-10-18T05:12:07.712Z"
+    }
+},
+{
+    "pk": 6, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "Extra", 
+        "first_name": "Ecks P.", 
+        "last_name": "Slosive", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-18T05:45:21.124Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$xhlGInh76WL7$/L8l32l/LHw6Hgj25WxW3GKhsOaQZAYo3Rpuc+GP5yw=", 
+        "email": "something@website4.com", 
+        "date_joined": "2013-10-18T05:41:45.217Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "Hi, my name is...\r\nWho, my name is...\r\nWhat, my name is...", 
+        "first_name": "Miles", 
+        "last_name": "Edgworth", 
+        "twitter": "Milesy", 
+        "phone": "091280941", 
+        "facebook": "Milesy", 
+        "address": "15 Mannikin Heights", 
+        "owner": 4, 
+        "email": "something@website.com"
+    }
+},
+{
+    "pk": 2, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "Hi, my name is...\r\nWho, my name is...\r\nWhat, my name is...", 
+        "first_name": "Morn", 
+        "last_name": "Ingstar", 
+        "twitter": "Morn", 
+        "phone": "87589281", 
+        "facebook": "Morn", 
+        "address": "10 Washington way", 
+        "owner": 4, 
+        "email": "something@website2.com"
+    }
+},
+{
+    "pk": 3, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "Mr", 
+        "last_name": "Wright", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 4, 
+        "email": "something@website3.com"
+    }
+},
+{
+    "pk": 4, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "Repo", 
+        "last_name": "Man", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "Something Somewhere", 
+        "owner": 4, 
+        "email": "something@website4.com"
+    }
+},
+{
+    "pk": 5, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "Last M.", 
+        "last_name": "Standing", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "Alhambra", 
+        "address": "", 
+        "owner": 4, 
+        "email": "something@website.com"
+    }
+},
+{
+    "pk": 6, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "George", 
+        "last_name": "Washington", 
+        "twitter": "WashingtonPress", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 4, 
+        "email": "something@website2.com"
+    }
+},
+{
+    "pk": 7, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "The quick brown fox jumped over the lazy dog.", 
+        "first_name": "Something o.", 
+        "last_name": "Other", 
+        "twitter": "", 
+        "phone": "835789571", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 5, 
+        "email": "something@website3.com"
+    }
+},
+{
+    "pk": 8, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "The quick brown fox jumped over the lazy dog.", 
+        "first_name": "Annoying", 
+        "last_name": "Git", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 5, 
+        "email": "annoying@club.com"
+    }
+},
+{
+    "pk": 9, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "D.D.", 
+        "last_name": "Fred", 
+        "twitter": "", 
+        "phone": "89256892", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 5, 
+        "email": "horrible.movies@hollywood.com"
+    }
+},
+{
+    "pk": 10, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "Ecks P.", 
+        "last_name": "Slosive", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 6, 
+        "email": "something@website4.com"
+    }
+}
+]
