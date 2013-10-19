@@ -125,10 +125,10 @@
     }
 },
 {
-    "pk": "g5dcsy0rdxsgtujyhupfilecp96mhpn1", 
+    "pk": "jf9pqyzanp1s1ku25cxqn13k3gr2qlnw", 
     "model": "sessions.session", 
     "fields": {
-        "expire_date": "2013-11-01T05:48:34.668Z", 
+        "expire_date": "2013-11-02T04:13:29.361Z", 
         "session_data": "ZWYyMmUyNzQyMjAwZmVhNzE1OGM4NTM0YTM4M2Q5ZjI1ZjRhNzgxODqAAn1xAS4="
     }
 },
@@ -242,7 +242,7 @@
     "pk": 1, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "club_count": 0, 
+        "club_count": 1, 
         "name": "Soccer", 
         "description": "A soccer club, or a club about soccer"
     }
@@ -332,7 +332,7 @@
     "pk": 11, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "club_count": 0, 
+        "club_count": 1, 
         "name": "Cricket", 
         "description": "A cricket club, or a club about cricket"
     }
@@ -395,7 +395,7 @@
     "pk": 18, 
     "model": "sportsrec.clubtype", 
     "fields": {
-        "club_count": 1, 
+        "club_count": 2, 
         "name": "Other", 
         "description": "None of the above."
     }
@@ -428,7 +428,7 @@
     "model": "sportsrec.club", 
     "fields": {
         "name": "Electrical", 
-        "member_count": 2, 
+        "member_count": 4, 
         "created": "2013-10-18", 
         "twitter": "", 
         "tags": [
@@ -450,7 +450,7 @@
     "model": "sportsrec.club", 
     "fields": {
         "name": "Thundermite", 
-        "member_count": 2, 
+        "member_count": 3, 
         "created": "2013-10-18", 
         "twitter": "Gorn", 
         "tags": [
@@ -476,7 +476,7 @@
     "model": "sportsrec.club", 
     "fields": {
         "name": "AnnoytheNeighbourhood", 
-        "member_count": 3, 
+        "member_count": 4, 
         "created": "2013-10-18", 
         "twitter": "", 
         "tags": [
@@ -521,7 +521,7 @@
     "model": "sportsrec.club", 
     "fields": {
         "name": "Tiny Tina", 
-        "member_count": 1, 
+        "member_count": 2, 
         "created": "2013-10-18", 
         "twitter": "", 
         "tags": [
@@ -538,6 +538,66 @@
         "latitude": "47.1687", 
         "type": 3, 
         "description": "The quick brown fox jumped over the lazy dog."
+    }
+},
+{
+    "pk": 7, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "Testadmin", 
+        "member_count": 3, 
+        "created": "2013-10-19", 
+        "twitter": "", 
+        "tags": [], 
+        "recruiting": true, 
+        "longitude": "-105.75614", 
+        "owner": 5, 
+        "contact": null, 
+        "facebook": "", 
+        "address": "123 Australian Road", 
+        "latitude": "39.26742", 
+        "type": 18, 
+        "description": "The quick brown fox jumps over the lazy dog."
+    }
+},
+{
+    "pk": 8, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "Another Club", 
+        "member_count": 3, 
+        "created": "2013-10-19", 
+        "twitter": "", 
+        "tags": [], 
+        "recruiting": true, 
+        "longitude": "-91.36169", 
+        "owner": 9, 
+        "contact": null, 
+        "facebook": "", 
+        "address": "58 Something Street", 
+        "latitude": "37.14497", 
+        "type": 1, 
+        "description": "The quick brown fox jumps over the lazy dog."
+    }
+},
+{
+    "pk": 9, 
+    "model": "sportsrec.club", 
+    "fields": {
+        "name": "Demo", 
+        "member_count": 7, 
+        "created": "2013-10-19", 
+        "twitter": "", 
+        "tags": [], 
+        "recruiting": true, 
+        "longitude": "115.84125", 
+        "owner": 11, 
+        "contact": null, 
+        "facebook": "", 
+        "address": "1 Kwinana Freeway", 
+        "latitude": "-32.27589", 
+        "type": 11, 
+        "description": "The quick brown fox jumps over the lazy dog."
     }
 },
 {
@@ -671,23 +731,183 @@
     }
 },
 {
-    "pk": 1, 
-    "model": "sportsrec.membershipapplication", 
+    "pk": 16, 
+    "model": "sportsrec.membership", 
     "fields": {
-        "applied": "2013-10-18", 
-        "member": 9, 
-        "club": 3, 
-        "rejected": true
+        "member": 12, 
+        "club": 6, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
     }
 },
 {
-    "pk": 3, 
-    "model": "sportsrec.membershipapplication", 
+    "pk": 17, 
+    "model": "sportsrec.membership", 
     "fields": {
-        "applied": "2013-10-18", 
+        "member": 13, 
+        "club": 2, 
+        "last_paid": "2013-03-01", 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 18, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 5, 
+        "club": 7, 
+        "last_paid": "2013-01-01", 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 19, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 6, 
+        "club": 2, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 20, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 4, 
+        "club": 7, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 21, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 6, 
+        "club": 7, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 22, 
+    "model": "sportsrec.membership", 
+    "fields": {
         "member": 9, 
-        "club": 1, 
-        "rejected": true
+        "club": 8, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 23, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 7, 
+        "club": 8, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 24, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 6, 
+        "club": 8, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 25, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 11, 
+        "club": 9, 
+        "last_paid": "2016-02-09", 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 26, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 12, 
+        "club": 9, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 27, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 13, 
+        "club": 9, 
+        "last_paid": "2018-04-07", 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 28, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 7, 
+        "club": 9, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 29, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 9, 
+        "club": 9, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 30, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 1, 
+        "club": 9, 
+        "last_paid": "2019-01-02", 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 31, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 5, 
+        "club": 9, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 32, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 15, 
+        "club": 4, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
+    }
+},
+{
+    "pk": 33, 
+    "model": "sportsrec.membership", 
+    "fields": {
+        "member": 14, 
+        "club": 3, 
+        "last_paid": null, 
+        "joined": "2013-10-19"
     }
 },
 {
@@ -697,6 +917,16 @@
         "applied": "2013-10-18", 
         "member": 10, 
         "club": 1, 
+        "rejected": true
+    }
+},
+{
+    "pk": 8, 
+    "model": "sportsrec.membershipapplication", 
+    "fields": {
+        "applied": "2013-10-19", 
+        "member": 8, 
+        "club": 9, 
         "rejected": true
     }
 },
@@ -1099,13 +1329,15 @@
     "model": "auth.user", 
     "fields": {
         "username": "ucadmin", 
-        "first_name": "", 
-        "last_name": "", 
+        "first_name": "unchained", 
+        "last_name": "admin", 
         "is_active": true, 
         "is_superuser": true, 
         "is_staff": true, 
-        "last_login": "2013-10-10T23:42:24.817Z", 
-        "groups": [], 
+        "last_login": "2013-10-19T03:34:31.116Z", 
+        "groups": [
+            1
+        ], 
         "user_permissions": [], 
         "password": "pbkdf2_sha256$10000$qUhmHidnE8lV$isYslDNZARfLppvtdptSEMDK2Wa9dRHDPzJXvgI/Z9w=", 
         "email": "do-not-reply@uwa.edu.au", 
@@ -1142,7 +1374,7 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2013-10-18T05:43:35.036Z", 
+        "last_login": "2013-10-19T04:12:08.210Z", 
         "groups": [
             1, 
             2
@@ -1163,7 +1395,7 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2013-10-18T05:42:41.758Z", 
+        "last_login": "2013-10-19T04:11:28.001Z", 
         "groups": [
             1
         ], 
@@ -1183,7 +1415,7 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2013-10-18T05:48:27.666Z", 
+        "last_login": "2013-10-19T04:11:10.384Z", 
         "groups": [
             1
         ], 
@@ -1211,6 +1443,86 @@
         "password": "pbkdf2_sha256$10000$xhlGInh76WL7$/L8l32l/LHw6Hgj25WxW3GKhsOaQZAYo3Rpuc+GP5yw=", 
         "email": "something@website4.com", 
         "date_joined": "2013-10-18T05:41:45.217Z"
+    }
+},
+{
+    "pk": 7, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "Demo1", 
+        "first_name": "de", 
+        "last_name": "mo", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-19T03:56:09.692Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$7GwOCF5xMerO$2UalaHlXfHQIqOtqz7V/eQYY7anfmZD8JHpAOKxSnGk=", 
+        "email": "demo1@demo.com", 
+        "date_joined": "2013-10-19T03:36:09.378Z"
+    }
+},
+{
+    "pk": 8, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "Demo2", 
+        "first_name": "de", 
+        "last_name": "mos", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-19T03:54:02.721Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$hvD80WuCd5Xm$0UwRYGk9YyNVb6DWlfPVmY2xvjBNh8iNfaz/5plgZ9A=", 
+        "email": "demo2@demo.com", 
+        "date_joined": "2013-10-19T03:37:30.518Z"
+    }
+},
+{
+    "pk": 9, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "Demo3", 
+        "first_name": "Alhambra", 
+        "last_name": "Dedara", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-19T03:54:26.621Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$ERKqLHYA8azc$EbFJS+vrYwe48IU1KUJsx+vgcJgwP0cRqUU7/KYGGGw=", 
+        "email": "demo3@demo.com", 
+        "date_joined": "2013-10-19T03:39:01.642Z"
+    }
+},
+{
+    "pk": 10, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "Demo4", 
+        "first_name": "Ade", 
+        "last_name": "Mod", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-10-19T04:09:22.696Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$BBZlg0tKO0QH$4TYFJ/IScc60zxpP8cRD5LzJ0L0MrvYbV10WXh7pWW0=", 
+        "email": "demo4@demo.com", 
+        "date_joined": "2013-10-19T04:09:22.361Z"
     }
 },
 {
@@ -1361,6 +1673,81 @@
         "address": "", 
         "owner": 6, 
         "email": "something@website4.com"
+    }
+},
+{
+    "pk": 11, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "De", 
+        "last_name": "Mo", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 7, 
+        "email": "demo1@demo.com"
+    }
+},
+{
+    "pk": 12, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "De", 
+        "last_name": "mos", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 8, 
+        "email": "demo2@demo.com"
+    }
+},
+{
+    "pk": 13, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "Alhambra", 
+        "last_name": "Dedara", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 9, 
+        "email": "demo3@demo.com"
+    }
+},
+{
+    "pk": 14, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "The quick brown fox jumps over the lazy dog.", 
+        "first_name": "Ade", 
+        "last_name": "Mod", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 10, 
+        "email": "demo4@demo.com"
+    }
+},
+{
+    "pk": 15, 
+    "model": "sportsrec.member", 
+    "fields": {
+        "interests": "", 
+        "first_name": "Elan", 
+        "last_name": "Greenheart", 
+        "twitter": "", 
+        "phone": "", 
+        "facebook": "", 
+        "address": "", 
+        "owner": 10, 
+        "email": "demo4@demo.com"
     }
 }
 ]
