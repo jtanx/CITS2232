@@ -218,800 +218,6 @@
     }, 
     {
         "pk": 1, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "Hi, my name is...\r\n\r\nWho, my name is...\r\n\r\nWhat, my name is...", 
-            "first_name": "Miles", 
-            "last_name": "Edgworth", 
-            "twitter": "Milesy", 
-            "phone": "091280941", 
-            "facebook": "Milesy", 
-            "address": "15 Mannikin Heights", 
-            "owner": 4, 
-            "email": "something@website.com"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "Hi, my name is...\r\n\r\nWho, my name is...\r\n\r\nWhat, my name is...", 
-            "first_name": "Morn", 
-            "last_name": "Ingstar", 
-            "twitter": "Morn", 
-            "phone": "87589281", 
-            "facebook": "Morn", 
-            "address": "10 Washington way", 
-            "owner": 4, 
-            "email": "something@website2.com"
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "Mr", 
-            "last_name": "Wright", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 4, 
-            "email": "something@website3.com"
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "Repo", 
-            "last_name": "Man", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "Something Somewhere", 
-            "owner": 4, 
-            "email": "something@website4.com"
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "Last M.", 
-            "last_name": "Standing", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "Alhambra", 
-            "address": "", 
-            "owner": 4, 
-            "email": "something@website.com"
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "George", 
-            "last_name": "Washington", 
-            "twitter": "WashingtonPress", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 4, 
-            "email": "something@website2.com"
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "The quick brown fox jumped over the lazy dog.", 
-            "first_name": "Something o.", 
-            "last_name": "Other", 
-            "twitter": "", 
-            "phone": "835789571", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 5, 
-            "email": "something@website3.com"
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "The quick brown fox jumped over the lazy dog.", 
-            "first_name": "Annoying", 
-            "last_name": "Git", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 5, 
-            "email": "annoying@club.com"
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "D.D.", 
-            "last_name": "Fred", 
-            "twitter": "", 
-            "phone": "89256892", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 5, 
-            "email": "horrible.movies@hollywood.com"
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "Ecks P.", 
-            "last_name": "Slosive", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 6, 
-            "email": "something@website4.com"
-        }
-    }, 
-    {
-        "pk": 11, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "De", 
-            "last_name": "Mo", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 7, 
-            "email": "demo1@demo.com"
-        }
-    }, 
-    {
-        "pk": 12, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "De", 
-            "last_name": "mos", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 8, 
-            "email": "demo2@demo.com"
-        }
-    }, 
-    {
-        "pk": 13, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "Alhambra", 
-            "last_name": "Dedara", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 9, 
-            "email": "demo3@demo.com"
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "The quick brown fox jumps over the lazy dog.", 
-            "first_name": "Ade", 
-            "last_name": "Mod", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 10, 
-            "email": "demo4@demo.com"
-        }
-    }, 
-    {
-        "pk": 15, 
-        "model": "sportsrec.member", 
-        "fields": {
-            "interests": "", 
-            "first_name": "Elan", 
-            "last_name": "Greenheart", 
-            "twitter": "", 
-            "phone": "", 
-            "facebook": "", 
-            "address": "", 
-            "owner": 10, 
-            "email": "demo4@demo.com"
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "sportsrec.membershipapplication", 
-        "fields": {
-            "applied": "2013-10-18", 
-            "member": 10, 
-            "club": 1, 
-            "rejected": true
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "sportsrec.membershipapplication", 
-        "fields": {
-            "applied": "2013-10-19", 
-            "member": 8, 
-            "club": 9, 
-            "rejected": true
-        }
-    }, 
-    {
-        "pk": 11, 
-        "model": "sportsrec.membershipapplication", 
-        "fields": {
-            "applied": "2013-10-20", 
-            "member": 9, 
-            "club": 10, 
-            "rejected": true
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Soccer", 
-            "description": "A soccer club, or a club about soccer"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Hockey", 
-            "description": "A hockey club, or a club about hockey"
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "AFL", 
-            "description": "An AFL club, or a club about AFL"
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Swimming", 
-            "description": "A swimming club, or a club about swimming"
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Basketball", 
-            "description": "A basketball club, or a club about basketball"
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Tennis", 
-            "description": "A tennis club, or a club about tennis"
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Rugby", 
-            "description": "A rugby club, or a club about rugby"
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Formula One", 
-            "description": "A formula one racing club, or a club about formula one racing"
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Gaming", 
-            "description": "A gaming club, or a club about games"
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Hunting", 
-            "description": "A club about game hunting"
-        }
-    }, 
-    {
-        "pk": 11, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Cricket", 
-            "description": "A cricket club, or a club about cricket"
-        }
-    }, 
-    {
-        "pk": 12, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Sailing", 
-            "description": "A sailing club, or a club about sailing"
-        }
-    }, 
-    {
-        "pk": 13, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Recreation", 
-            "description": "A recreation club, or a club about recreating"
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Hobby", 
-            "description": "A hobby club, or a club about hobbies"
-        }
-    }, 
-    {
-        "pk": 15, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Social", 
-            "description": "A social club, or a club about socials"
-        }
-    }, 
-    {
-        "pk": 16, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Country", 
-            "description": "A Country club, or a club about the country"
-        }
-    }, 
-    {
-        "pk": 17, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Dance", 
-            "description": "A dance club, or a club about dancing."
-        }
-    }, 
-    {
-        "pk": 18, 
-        "model": "sportsrec.clubtype", 
-        "fields": {
-            "club_count": 0, 
-            "name": "Other", 
-            "description": "None of the above."
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Hi"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Rap"
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "zap"
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Breaking"
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "the"
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Laws"
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "of"
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Physics"
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Canning"
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "bad"
-        }
-    }, 
-    {
-        "pk": 11, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "luck"
-        }
-    }, 
-    {
-        "pk": 12, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "One"
-        }
-    }, 
-    {
-        "pk": 13, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Two"
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Three"
-        }
-    }, 
-    {
-        "pk": 15, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Ice"
-        }
-    }, 
-    {
-        "pk": 16, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Skating"
-        }
-    }, 
-    {
-        "pk": 17, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "soccer"
-        }
-    }, 
-    {
-        "pk": 18, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Soccer"
-        }
-    }, 
-    {
-        "pk": 19, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Hunting"
-        }
-    }, 
-    {
-        "pk": 20, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "AFL"
-        }
-    }, 
-    {
-        "pk": 21, 
-        "model": "sportsrec.clubtag", 
-        "fields": {
-            "name": "Test"
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "Hi, My name is...", 
-            "member_count": 0, 
-            "tags": [
-                1, 
-                2, 
-                19
-            ], 
-            "twitter": "Temper", 
-            "created": "2013-10-18", 
-            "recruiting": true, 
-            "longitude": "115.81564", 
-            "latitude": "-31.98242", 
-            "contact": 1, 
-            "facebook": "Morn", 
-            "address": "Fairway, Perth", 
-            "owner": 2, 
-            "type": 10, 
-            "description": "Hi, my name is...\r\n\r\nWho, my name is...\r\n\r\nWhat, my name is..."
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "Electrical", 
-            "member_count": 0, 
-            "tags": [
-                3
-            ], 
-            "twitter": "", 
-            "created": "2013-10-18", 
-            "recruiting": true, 
-            "longitude": "115.81717", 
-            "latitude": "-32.1374", 
-            "contact": 1, 
-            "facebook": "Thunder", 
-            "address": "17 Mannikin Heights", 
-            "owner": 1, 
-            "type": 18, 
-            "description": "The quick brown fox jumped over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "Thundermite", 
-            "member_count": 0, 
-            "tags": [
-                4, 
-                5, 
-                6, 
-                7, 
-                8
-            ], 
-            "twitter": "Gorn", 
-            "created": "2013-10-18", 
-            "recruiting": true, 
-            "longitude": "115.8809", 
-            "latitude": "-31.9769", 
-            "contact": 1, 
-            "facebook": "", 
-            "address": "40 Canning Hwy", 
-            "owner": 1, 
-            "type": 9, 
-            "description": "The quick brown fox jumped over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "AnnoytheNeighbourhood", 
-            "member_count": 0, 
-            "tags": [
-                9
-            ], 
-            "twitter": "", 
-            "created": "2013-10-18", 
-            "recruiting": true, 
-            "longitude": "115.88116", 
-            "latitude": "-31.97662", 
-            "contact": 8, 
-            "facebook": "LiveToAnnoy", 
-            "address": "34 Canning Highway", 
-            "owner": 7, 
-            "type": 13, 
-            "description": "The quick brown fox jumped over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "UWA Sport Club", 
-            "member_count": 0, 
-            "tags": [
-                10, 
-                11, 
-                17
-            ], 
-            "twitter": "", 
-            "created": "2013-10-18", 
-            "recruiting": true, 
-            "longitude": "115.83857", 
-            "latitude": "-31.96757", 
-            "contact": null, 
-            "facebook": "Elonerth", 
-            "address": "Mounts Bay Road", 
-            "owner": 4, 
-            "type": 1, 
-            "description": "The quick brown fox jumped over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "Tiny Tina", 
-            "member_count": 0, 
-            "tags": [
-                12, 
-                13, 
-                14, 
-                20
-            ], 
-            "twitter": "", 
-            "created": "2013-10-18", 
-            "recruiting": true, 
-            "longitude": "115.81601", 
-            "latitude": "-32.033", 
-            "contact": 10, 
-            "facebook": "", 
-            "address": "14 North Lake Road, Perth", 
-            "owner": 10, 
-            "type": 3, 
-            "description": "The quick brown fox jumped over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "Testadmin", 
-            "member_count": 0, 
-            "tags": [
-                21
-            ], 
-            "twitter": "", 
-            "created": "2013-10-19", 
-            "recruiting": true, 
-            "longitude": "115.78807", 
-            "latitude": "-32.01632", 
-            "contact": null, 
-            "facebook": "", 
-            "address": "Honour Avenue, Perth", 
-            "owner": 5, 
-            "type": 18, 
-            "description": "The quick brown fox jumps over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "Another Club", 
-            "member_count": 0, 
-            "tags": [
-                18
-            ], 
-            "twitter": "", 
-            "created": "2013-10-19", 
-            "recruiting": true, 
-            "longitude": "115.82401", 
-            "latitude": "-31.95202", 
-            "contact": null, 
-            "facebook": "", 
-            "address": "Rokeby Road, Perth", 
-            "owner": 9, 
-            "type": 1, 
-            "description": "The quick brown fox jumps over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "Demo", 
-            "member_count": 0, 
-            "tags": [], 
-            "twitter": "", 
-            "created": "2013-10-19", 
-            "recruiting": true, 
-            "longitude": "115.84125", 
-            "latitude": "-32.27589", 
-            "contact": null, 
-            "facebook": "", 
-            "address": "1 Kwinana Freeway", 
-            "owner": 11, 
-            "type": 11, 
-            "description": "The quick brown fox jumps over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "sportsrec.club", 
-        "fields": {
-            "name": "Subiaco Sport Club", 
-            "member_count": 0, 
-            "tags": [
-                15, 
-                16
-            ], 
-            "twitter": "", 
-            "created": "2013-10-20", 
-            "recruiting": true, 
-            "longitude": "115.84532", 
-            "latitude": "-31.94977", 
-            "contact": null, 
-            "facebook": "", 
-            "address": "Hay Street", 
-            "owner": 12, 
-            "type": 2, 
-            "description": "The quick brown fox jumps over the lazy dog."
-        }
-    }, 
-    {
-        "pk": 1, 
         "model": "sportsrec.membership", 
         "fields": {
             "member": 2, 
@@ -1378,6 +584,800 @@
             "club": 8, 
             "last_paid": null, 
             "joined": "2013-10-20"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "Hi, My name is...", 
+            "member_count": 3, 
+            "tags": [
+                1, 
+                2, 
+                19
+            ], 
+            "twitter": "Temper", 
+            "created": "2013-10-18", 
+            "recruiting": true, 
+            "longitude": "115.81564", 
+            "latitude": "-31.98242", 
+            "contact": 1, 
+            "facebook": "Morn", 
+            "address": "Fairway, Perth", 
+            "owner": 2, 
+            "type": 10, 
+            "description": "Hi, my name is...\r\n\r\nWho, my name is...\r\n\r\nWhat, my name is..."
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "Electrical", 
+            "member_count": 4, 
+            "tags": [
+                3
+            ], 
+            "twitter": "", 
+            "created": "2013-10-18", 
+            "recruiting": true, 
+            "longitude": "115.81717", 
+            "latitude": "-32.1374", 
+            "contact": 1, 
+            "facebook": "Thunder", 
+            "address": "17 Mannikin Heights", 
+            "owner": 1, 
+            "type": 18, 
+            "description": "The quick brown fox jumped over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "Thundermite", 
+            "member_count": 3, 
+            "tags": [
+                4, 
+                5, 
+                6, 
+                7, 
+                8
+            ], 
+            "twitter": "Gorn", 
+            "created": "2013-10-18", 
+            "recruiting": true, 
+            "longitude": "115.8809", 
+            "latitude": "-31.9769", 
+            "contact": 1, 
+            "facebook": "", 
+            "address": "40 Canning Hwy", 
+            "owner": 1, 
+            "type": 9, 
+            "description": "The quick brown fox jumped over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "AnnoytheNeighbourhood", 
+            "member_count": 4, 
+            "tags": [
+                9
+            ], 
+            "twitter": "", 
+            "created": "2013-10-18", 
+            "recruiting": true, 
+            "longitude": "115.88116", 
+            "latitude": "-31.97662", 
+            "contact": 8, 
+            "facebook": "LiveToAnnoy", 
+            "address": "34 Canning Highway", 
+            "owner": 7, 
+            "type": 13, 
+            "description": "The quick brown fox jumped over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "UWA Sport Club", 
+            "member_count": 2, 
+            "tags": [
+                10, 
+                11, 
+                17
+            ], 
+            "twitter": "", 
+            "created": "2013-10-18", 
+            "recruiting": true, 
+            "longitude": "115.83857", 
+            "latitude": "-31.96757", 
+            "contact": null, 
+            "facebook": "Elonerth", 
+            "address": "Mounts Bay Road", 
+            "owner": 4, 
+            "type": 1, 
+            "description": "The quick brown fox jumped over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "Tiny Tina", 
+            "member_count": 2, 
+            "tags": [
+                12, 
+                13, 
+                14, 
+                20
+            ], 
+            "twitter": "", 
+            "created": "2013-10-18", 
+            "recruiting": true, 
+            "longitude": "115.81601", 
+            "latitude": "-32.033", 
+            "contact": 10, 
+            "facebook": "", 
+            "address": "14 North Lake Road, Perth", 
+            "owner": 10, 
+            "type": 3, 
+            "description": "The quick brown fox jumped over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "Testadmin", 
+            "member_count": 3, 
+            "tags": [
+                21
+            ], 
+            "twitter": "", 
+            "created": "2013-10-19", 
+            "recruiting": true, 
+            "longitude": "115.78807", 
+            "latitude": "-32.01632", 
+            "contact": null, 
+            "facebook": "", 
+            "address": "Honour Avenue, Perth", 
+            "owner": 5, 
+            "type": 18, 
+            "description": "The quick brown fox jumps over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "Another Club", 
+            "member_count": 4, 
+            "tags": [
+                18
+            ], 
+            "twitter": "", 
+            "created": "2013-10-19", 
+            "recruiting": true, 
+            "longitude": "115.82401", 
+            "latitude": "-31.95202", 
+            "contact": null, 
+            "facebook": "", 
+            "address": "Rokeby Road, Perth", 
+            "owner": 9, 
+            "type": 1, 
+            "description": "The quick brown fox jumps over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "Demo", 
+            "member_count": 7, 
+            "tags": [], 
+            "twitter": "", 
+            "created": "2013-10-19", 
+            "recruiting": true, 
+            "longitude": "115.84125", 
+            "latitude": "-32.27589", 
+            "contact": null, 
+            "facebook": "", 
+            "address": "1 Kwinana Freeway", 
+            "owner": 11, 
+            "type": 11, 
+            "description": "The quick brown fox jumps over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "sportsrec.club", 
+        "fields": {
+            "name": "Subiaco Sport Club", 
+            "member_count": 5, 
+            "tags": [
+                15, 
+                16
+            ], 
+            "twitter": "", 
+            "created": "2013-10-20", 
+            "recruiting": true, 
+            "longitude": "115.84532", 
+            "latitude": "-31.94977", 
+            "contact": null, 
+            "facebook": "", 
+            "address": "Hay Street", 
+            "owner": 12, 
+            "type": 2, 
+            "description": "The quick brown fox jumps over the lazy dog."
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "Hi, my name is...\r\n\r\nWho, my name is...\r\n\r\nWhat, my name is...", 
+            "first_name": "Miles", 
+            "last_name": "Edgworth", 
+            "twitter": "Milesy", 
+            "phone": "091280941", 
+            "facebook": "Milesy", 
+            "address": "15 Mannikin Heights", 
+            "owner": 4, 
+            "email": "something@website.com"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "Hi, my name is...\r\n\r\nWho, my name is...\r\n\r\nWhat, my name is...", 
+            "first_name": "Morn", 
+            "last_name": "Ingstar", 
+            "twitter": "Morn", 
+            "phone": "87589281", 
+            "facebook": "Morn", 
+            "address": "10 Washington way", 
+            "owner": 4, 
+            "email": "something@website2.com"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "Mr", 
+            "last_name": "Wright", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 4, 
+            "email": "something@website3.com"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "Repo", 
+            "last_name": "Man", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "Something Somewhere", 
+            "owner": 4, 
+            "email": "something@website4.com"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "Last M.", 
+            "last_name": "Standing", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "Alhambra", 
+            "address": "", 
+            "owner": 4, 
+            "email": "something@website.com"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "George", 
+            "last_name": "Washington", 
+            "twitter": "WashingtonPress", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 4, 
+            "email": "something@website2.com"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "The quick brown fox jumped over the lazy dog.", 
+            "first_name": "Something o.", 
+            "last_name": "Other", 
+            "twitter": "", 
+            "phone": "835789571", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 5, 
+            "email": "something@website3.com"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "The quick brown fox jumped over the lazy dog.", 
+            "first_name": "Annoying", 
+            "last_name": "Git", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 5, 
+            "email": "annoying@club.com"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "D.D.", 
+            "last_name": "Fred", 
+            "twitter": "", 
+            "phone": "89256892", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 5, 
+            "email": "horrible.movies@hollywood.com"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "Ecks P.", 
+            "last_name": "Slosive", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 6, 
+            "email": "something@website4.com"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "De", 
+            "last_name": "Mo", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 7, 
+            "email": "demo1@demo.com"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "De", 
+            "last_name": "mos", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 8, 
+            "email": "demo2@demo.com"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "Alhambra", 
+            "last_name": "Dedara", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 9, 
+            "email": "demo3@demo.com"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "The quick brown fox jumps over the lazy dog.", 
+            "first_name": "Ade", 
+            "last_name": "Mod", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 10, 
+            "email": "demo4@demo.com"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "sportsrec.member", 
+        "fields": {
+            "interests": "", 
+            "first_name": "Elan", 
+            "last_name": "Greenheart", 
+            "twitter": "", 
+            "phone": "", 
+            "facebook": "", 
+            "address": "", 
+            "owner": 10, 
+            "email": "demo4@demo.com"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "sportsrec.membershipapplication", 
+        "fields": {
+            "applied": "2013-10-18", 
+            "member": 10, 
+            "club": 1, 
+            "rejected": true
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "sportsrec.membershipapplication", 
+        "fields": {
+            "applied": "2013-10-19", 
+            "member": 8, 
+            "club": 9, 
+            "rejected": true
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "sportsrec.membershipapplication", 
+        "fields": {
+            "applied": "2013-10-20", 
+            "member": 9, 
+            "club": 10, 
+            "rejected": true
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 2, 
+            "name": "Soccer", 
+            "description": "A soccer club, or a club about soccer"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 1, 
+            "name": "Hockey", 
+            "description": "A hockey club, or a club about hockey"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 1, 
+            "name": "AFL", 
+            "description": "An AFL club, or a club about AFL"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Swimming", 
+            "description": "A swimming club, or a club about swimming"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Basketball", 
+            "description": "A basketball club, or a club about basketball"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Tennis", 
+            "description": "A tennis club, or a club about tennis"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Rugby", 
+            "description": "A rugby club, or a club about rugby"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Formula One", 
+            "description": "A formula one racing club, or a club about formula one racing"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 1, 
+            "name": "Gaming", 
+            "description": "A gaming club, or a club about games"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 1, 
+            "name": "Hunting", 
+            "description": "A club about game hunting"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 1, 
+            "name": "Cricket", 
+            "description": "A cricket club, or a club about cricket"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Sailing", 
+            "description": "A sailing club, or a club about sailing"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 1, 
+            "name": "Recreation", 
+            "description": "A recreation club, or a club about recreating"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Hobby", 
+            "description": "A hobby club, or a club about hobbies"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Social", 
+            "description": "A social club, or a club about socials"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Country", 
+            "description": "A Country club, or a club about the country"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 0, 
+            "name": "Dance", 
+            "description": "A dance club, or a club about dancing."
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "sportsrec.clubtype", 
+        "fields": {
+            "club_count": 2, 
+            "name": "Other", 
+            "description": "None of the above."
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Hi"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Rap"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "zap"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Breaking"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "the"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Laws"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "of"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Physics"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Canning"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "bad"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "luck"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "One"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Two"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Three"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Ice"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Skating"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "soccer"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Soccer"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Hunting"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "AFL"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "sportsrec.clubtag", 
+        "fields": {
+            "name": "Test"
         }
     }
 ]

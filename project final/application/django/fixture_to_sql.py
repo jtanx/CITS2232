@@ -95,21 +95,16 @@ def strip_fixture(fixture, fpo):
         l = fixtures.get(fix['model'], [])
         l.append(fix)
         fixtures[fix['model']] = l
-        
-    #Reset count so triggers can do their job
-    for fix in fixtures['sportsrec.clubtype']:
-        fix['club_count'] = 0
-    
-    for fix in fixtures['sportsrec.club']:
-        fix['member_count'] = 0
 
     out = fixtures['auth.group'] + fixtures['auth.user'] + \
+          fixtures['sportsrec.membership'] + \
+          fixtures['sportsrec.club'] + \
           fixtures['sportsrec.member'] + \
           fixtures['sportsrec.membershipapplication'] + \
           fixtures['sportsrec.clubtype'] + \
-          fixtures['sportsrec.clubtag']  + \
-          fixtures['sportsrec.club'] + \
-          fixtures['sportsrec.membership']
+          fixtures['sportsrec.clubtag']
+          
+          
           
     fpo.write(json.dumps(out, indent=4))
     
