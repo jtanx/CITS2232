@@ -98,10 +98,10 @@ def strip_fixture(fixture, fpo):
         
     #Reset count so triggers can do their job
     for fix in fixtures['sportsrec.clubtype']:
-        fix['club_count'] = 0
+        fix['fields']['club_count'] = 0
     
     for fix in fixtures['sportsrec.club']:
-        fix['member_count'] = 0
+        fix['fields']['member_count'] = 0
 
     out = fixtures['auth.group'] + fixtures['auth.user'] + \
           fixtures['sportsrec.member'] + \
