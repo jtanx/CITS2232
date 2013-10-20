@@ -25,3 +25,16 @@ Demo1:computer
 Demo2:computer
 Demo3:computer
 Demo4:computer
+
+===================================
+
+An online demo of this application may be running at:
+
+https://mctx.us.to:8080/databases
+
+This site may have slightly different test data, although overall it
+should be the same. No guarantees are made as to the availability
+of this application being running at any time. 
+
+Please note that this site uses a self-signed SSL certificate,
+so you have to accept the 'security' warning that shows up.
