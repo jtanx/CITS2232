@@ -1,0 +1,66 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:user_club_application_list' %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">Pending membership applications</div>
+  {% if user_club_application_list %}
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+        <th>Application ID</th>
+        <th>Member</th>
+        <th>Club</th>
+        <th>Application date</th>
+        <th>Accept</th>
+        <th>Reject</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for apply in user_club_application_list %}
+      <tr>
+        <td>
+          {{apply.id}}
+        </td>
+    	<td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_detail' pk=apply.member.id %}">
+            {{apply.member}}
+          </a>
+        </td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_detail' pk=apply.club.id %}">
+            {{apply.club}}
+          </a>
+        </td>
+        <td>{{apply.applied}}</td>
+        <td class="clickable menu-hilight">
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="application_id" value="{{apply.id}}">
+            <input type="hidden" name="accept" value="1">
+            <input type="submit" value="Accept">
+          </form>
+        </td>
+		<td class="clickable menu-hilight">
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="application_id" value="{{apply.id}}">
+            <input type="hidden" name="accept" value="0">
+            <input type="submit" value="Reject">
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  
+  {% else %}
+  <p>You have no pending club membership applications.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% endwith %}

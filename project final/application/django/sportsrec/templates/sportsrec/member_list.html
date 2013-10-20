@@ -1,0 +1,72 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:members' %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">Administered members</div>
+  {% if members %}
+  
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+        <th>ID</th>
+        {% if admin %}
+        <th>Owner</td>
+        {% endif %}
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Interests</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for member in members %}
+      <tr>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_detail' pk=member.id %}">
+          {{member.id}}
+          </a>
+        </td>
+        {% if admin %}
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:user_detail' pk=member.owner.id %}">
+          {{member.owner}}
+          </a>
+        </td>
+        {% endif %}
+        <td>{{member.first_name}}</td>
+        <td>{{member.last_name}}</td>
+        <td class="clickable menu-hilight">
+          <a href="mailto:{{member.email}}">{{member.email}}</a>
+        </td>
+        <td style="max-width:200px;">{{member.interests}}</td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_edit' pk=member.id %}">
+            Edit
+          </a>
+      </td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_delete' pk=member.id %}">
+            Delete
+          </a>
+      </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  {% else %}
+  <p>You don't own or administer any members.</p>
+  {% endif %}
+
+  <div class="sub-title centre">
+    Add a <a href="{% url 'sportsrec:member_add' %}">new member</a>.
+  </div>
+</div>
+{% endblock %}
+
+{% endwith %}

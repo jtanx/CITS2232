@@ -1,0 +1,56 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:membership_application_list' %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">Membership applications</div>
+  {% if membership_application_list %}
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+        <th>Application ID</th>
+        <th>Member</th>
+        <th>Club</th>
+        <th>Application date</th>
+        <th>Rejected</th>
+        <th>Delete?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for apply in membership_application_list %}
+      <tr>
+        <td>
+          {{apply.id}}
+        </td>
+    	<td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_detail' pk=apply.member.id %}">
+            {{apply.member}}
+          </a>
+        </td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_detail' pk=apply.club.id %}">
+            {{apply.club}}
+          </a>
+        </td>
+        <td>{{apply.applied}}</td>
+        <td>{% if apply.rejected %}Yes{% else %}No{% endif%}</td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:membership_application_delete' pk=apply.id %}">
+            Delete
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  
+  {% else %}
+  <p>You have no membership applications.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% endwith %}

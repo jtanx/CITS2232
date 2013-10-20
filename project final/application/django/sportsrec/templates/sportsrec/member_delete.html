@@ -1,0 +1,58 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+  <div class="title">
+	Delete member <a href="{% url 'sportsrec:member_detail' pk=object.id %}">{{object}}</a>?
+  </div>
+  {% if owned_clubs %}
+    <p>The following clubs are owned by this member:</p>
+    <table class="horizontal">
+    {% for club in owned_clubs %}
+      <tr>
+        <th class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_detail' pk=club.id %}">{{club}}</a>
+        </th>
+        <td>
+          {{club.description}}
+        </td>
+      </tr>
+    {% endfor %}
+    </table>
+    <p>Deleting this member will leave those clubs without an owner.</p>
+  {% else %}
+    <p>This member owns no clubs.</p>
+  {% endif %}
+  
+  {% if memberships %}
+    <p>This member has the following memberships:</p>
+    <table class="horizontal">
+      <tr>
+        <th class="horizontal-top">Membership ID</th>
+        <th class="horizontal-top">Club</th>
+      </tr>
+      {% for membership in memberships %}
+      <tr>
+        <th class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:membership_detail' pk=membership.id %}">{{membership.id}}</a>
+        </th>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_detail' pk=membership.club.id %}">{{membership.club}}</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <p>These memberships will be automatically revoked.</p>
+  {% else %}
+    <p>This member has no memberships.</p>
+  {% endif %}
+  
+  
+  <form method="post" action="">
+      {% csrf_token %}
+      <p style="float:right; margin:0;">
+         <input type="submit" value="Confirm">
+      </p>
+  </form>
+</div>
+{% endblock %}

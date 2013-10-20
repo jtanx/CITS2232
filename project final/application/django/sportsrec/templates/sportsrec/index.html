@@ -1,0 +1,75 @@
+{% extends "sportsrec/base.html" %}
+
+{% block sidebar-content %}
+{% if user.is_authenticated %}
+<!--Nothing here for now-->
+{% endif %}
+<!-- End sidebar -->
+{% endblock %}
+
+{% block main %}
+
+{# For ownerless clubs (admin only) #}
+{% if ownerless %}
+<div class="widget">
+  <div class="title">Ownerless clubs</div>
+  The following clubs are ownerless, and cannot function properly until this
+  is fixed.
+  <table class="horizontal">
+    {% for club in ownerless %}
+      <tr>
+        <th class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+            {{club}}
+          </a>
+        </th>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+            Edit club details
+          </a>
+        </td>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_delete' pk=club.id %}">
+            Delete
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+<div class="widget">
+  <div class="title centre">Welcome!</div>
+  <p>
+    Welcome to the unchained sports and recreation database!
+  </p>
+  <p>
+    Begin your search for a club today! Use the left navigation panel to list
+    all the clubs, or use the search feature to quickly find clubs near you!
+  </p>
+</div>
+
+{% if not user.is_authenticated %}
+<div class="widget">
+  <div class="title centre">Join today!</div>
+  <p>
+    Join this site today to explore the <i>advanced</i> features available.
+  </p>
+  <p>
+    While anyone can search for clubs, only once you have registered can you use 
+    the online registration function to apply to the club of your desire.
+  </p>
+  <p>
+    Becoming a registered user allows you not only to apply to clubs, but to
+    create a club of your own. Don't see a club of your liking? No problem - 
+    create - and manage a club of your own. Be your own boss.
+  </p>
+  <p>
+    <a href="{% url 'sportsrec:register' %}">Registration</a> is free and easy, 
+    so what are you waiting for? 
+  </p>
+</div>
+{% endif %}
+
+{% endblock %}

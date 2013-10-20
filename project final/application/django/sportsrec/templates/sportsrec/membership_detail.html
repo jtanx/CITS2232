@@ -1,0 +1,35 @@
+{% extends 'sportsrec/base.html' %}
+{% block main %}
+<div class="widget">
+  <div class="title centre">
+    Membership to 
+    <a href="{% url 'sportsrec:club_detail' pk=membership.club.id%}">
+      {{membership.club.name}}
+    </a>
+    for
+    <a href="{% url 'sportsrec:member_detail' pk=membership.member.id%}">
+    {{membership.member.first_name}} {{membership.member.last_name}}
+    </a>
+  </div>
+  <div class="large bold">Membership details</div>
+  <table class="horizontal">
+    <tr><th>Date joined</th><td>{{membership.joined}}</td></tr>
+    <tr>
+    <th>Last paid membership fees</th>
+    <td{% if membership.club.owner.owner == user or admin %} class="clickable menu-hilight"{%endif%}>
+          {% if membership.club.owner.owner == user or admin %}
+          <a href="{% url 'sportsrec:membership_update' pk=membership.id %}"> {% endif %}
+          {{membership.last_paid|default:'Never'}}
+          
+          {% if membership.club.owner.owner == user or admin %}</a>{% endif %}
+    </td>
+    </tr>
+  </table>
+  <div class="large bold">
+    <a href="{% url 'sportsrec:membership_delete' pk=membership.id %}">
+      Remove this membership
+    </a>
+  </div>
+</div>
+
+{% endblock %}

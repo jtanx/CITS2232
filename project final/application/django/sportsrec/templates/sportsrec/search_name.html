@@ -1,22 +1,22 @@
 {% extends "sportsrec/base.html" %}
-{% with paginate_view='sportsrec:search_tag' %}
+{% with paginate_view='sportsrec:search_name' %}
 
 {% block main %}
 <div class="widget">
 	
-	<div class="title centre">Search for a club by tag or club type:</div>
+	<div class="title centre">Search for a club by name:</div>
     <div class="large centre bold">
-      <form action="{% url 'sportsrec:search_tag' %}">
+      <form action="{% url 'sportsrec:search_name' %}">
       <p>
-      <input id="name" type="textbox" name="query" value="{{query}}" style="width:200px;">
-      <input type="submit" value="Search">
+      <input id="name" type="textbox" name="query" value="{{query}}" style="width:200px;" class="normal">
+      <input type="submit" value="Search" class="normal">
       </p>
     </div>
 </div>
 
 <div class="widget">
-  <div class="title centre">Search by tag results:</div>
-  {% if search_tag %}
+  <div class="title centre">Search by name results:</div>
+  {% if search_name %}
   {% include 'sportsrec/paginate.html' %}
   <table class="centre">
     <thead>
@@ -31,7 +31,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for club in search_tag %}
+      {% for club in search_name %}
       <tr>
         <td class="clickable menu-hilight">
           <a href="{% url 'sportsrec:club_detail' pk=club.id %}">

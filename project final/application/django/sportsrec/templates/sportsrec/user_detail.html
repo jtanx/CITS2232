@@ -1,0 +1,103 @@
+{% extends 'sportsrec/base.html' %}
+{% block main %}
+<div class="widget">
+  <div class="title centre">User {{object.first_name}} {{object.last_name}}</div>
+  <div class="large bold">User details</div>
+  <table class="horizontal">
+    <tr>
+      <th>Email</th>
+      <td class="clickable menu-hilight">
+        <a href="mailto:{{member.email}}">{{object.email}}</a>
+      </td>
+    </tr>
+    <tr><th>First name</th><td>{{object.first_name}}</td></tr>
+    <tr><th>Last name</th><td>{{object.last_name}}</td></tr>
+  </table>
+  <div class="large centre bold">
+    {% if user_not_admin%}
+      <a href="{% url 'sportsrec:user_promote' pk=object.id %}">Grant admin status</a>
+    {% endif %}
+    {% if user_not_admin and not object.is_superuser %}
+      |
+    {% endif %}
+    {% if not object.is_superuser and user_not_admin %}
+      <a href="{% url 'sportsrec:user_disable' pk=object.id %}">Disable this user</a>
+    {% elif not object.is_active %}
+      <a href="{% url 'sportsrec:user_enable' pk=object.id %}">Enable this user</a>
+    {% endif %}
+  </div>
+</div>
+
+{% if owned_members %}
+<div class="widget">
+  <div class="large bold">Members owned by this user</div>
+  <table class="centre">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+    {% for member in owned_members %}
+      <tr>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:member_detail' pk=member.id %}">
+            {{member.id}}
+          </a>
+        </td>
+        <td>
+            {{member}}
+        </td>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:member_edit' pk=member.id %}">
+            Edit
+          </a>
+        </td>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:member_delete' pk=member.id %}">
+            Delete
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+ </div>
+{% endif %}
+
+{% if owned_clubs %}
+<div class="widget">
+  <div class="large bold">Clubs owned by this user</div>
+  <table class="centre">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+    {% for club in owned_clubs %}
+      <tr>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+            {{club.id}}
+          </a>
+        </td>
+        <td>
+            {{club}}
+        </td>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+            Edit
+          </a>
+        </td>
+        <td class="menu-hilight clickable">
+          <a href="{% url 'sportsrec:club_delete' pk=club.id %}">
+            Delete
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+{% endblock %}

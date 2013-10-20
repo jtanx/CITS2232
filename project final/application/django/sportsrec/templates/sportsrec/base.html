@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>Sports and Recreation Clubs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}sportsrec.gui.js"></script>
+
+    <link rel="Shortcut Icon" type="image/x-icon" href="{{ STATIC_URL }}favicon.ico" >
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}nav-menu.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css">
+  </head>
+  
+  <body>
+    <div id="header">
+      <div id="leftnav">
+        <a href="{% url 'sportsrec:index' %}">
+          <img alt = "S&amp;R" src="{{ STATIC_URL }}logo.png">
+        </a>
+        <span id="title">Sports & Recreation</span>
+      </div>
+      <div id="rightnav">
+        {% if user.is_authenticated %}
+        <span id="welcome-container">
+          Welcome,
+          {% if not user.first_name and not user.last_name %}
+            {{user.username}}
+          {% else %}
+            {{user.first_name}} {{user.last_name}}
+          {% endif %}
+        </span>
+        {% endif %}
+        <span id="date">
+          <script type="text/javascript">getDate();</script>
+        </span>
+        <div id="inout-container">
+          {% if user.is_authenticated %}
+          <a href="{% url 'sportsrec:logout' %}">Logout</a>
+          {% else %}
+          <a href="{% url 'sportsrec:register' %}">Register</a>
+          <a href="{% url 'sportsrec:login' %}">Login</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <!-- End header -->
+    
+    <div id="content">
+      {% block sidebar %}
+      <div id="sidebar">
+        <div class="nav-menu widget">
+          <ul>
+            <li><a href="{% url 'sportsrec:index' %}">Home</a></li>
+            <li><a href="{% url 'sportsrec:club_list' %}">Club list</a></li>
+            <li><a href="{% url 'sportsrec:search' %}">Club search</a></li>
+            {% block sidebar-user-menu %}
+            {% endblock %}
+            <li><a href="{% url 'sportsrec:stats' %}">Statistics</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'sportsrec:user_profile' %}">User profile</a></li>
+            {% endif %}
+            {% if admin %}
+            <li><a href="{% url 'sportsrec:user_list' %}">User list</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        
+        {% if user.is_authenticated %}
+        <div class="nav-menu widget">
+          <ul>
+            <li><a href="{% url 'sportsrec:member_add' %}">Add a member</a></li>
+            <li><a href="{% url 'sportsrec:member_list' %}">Manage members</a></li>
+            <li><a href="{% url 'sportsrec:membership_application_list' %}">
+                Manage membership applications</a>
+            </li>
+            <li><a href="{% url 'sportsrec:membership_list' %}">Manage memberships</a></li>
+          </ul>
+        </div>
+        
+        <div class="nav-menu widget">
+          <ul>
+            
+            <li><a href="{% url 'sportsrec:club_add' %}">Add a club</a></li>
+            <li><a href="{% url 'sportsrec:user_club_list' %}">Manage clubs</a></li>
+            <li><a href="{% url 'sportsrec:user_club_application_list' %}">
+                Manage pending applications</a>
+            </li>
+          </ul>
+        </div>
+        
+        {% endif %}
+        
+        {% block sidebar-content %}
+      {% endblock %}
+      </div>
+      {% endblock %}
+      
+      {% block pre-content %}
+      {% endblock %}
+      
+      {% block content %}
+      <div id="main">
+        {% if messages %}
+          <div class="widget dismiss-container">
+            <div class="dismiss topright">
+              <a href="#">Dismiss</a>
+            </div>
+            
+            <div class="title large">Notifications</div>
+            {% for message in messages %}
+              <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+          </div>
+        
+          <script type="text/javascript">
+            $(".dismiss").click(function() {
+              $(".dismiss-container").css("display", "none");
+            })
+          </script>
+        {% endif %}
+        
+        {% block main %}
+        {% endblock %}
+      </div>
+      {% endblock%}
+      
+      {% block post-content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:club_list' %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">Administered clubs</div>
+  {% if club_list %}
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+      	<th>ID</th>
+        <th>Name</th>
+        <th>Edit</th>
+        <th>Member List</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for club in club_list %}
+      <tr>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+          {{club.id}}
+          </a>
+        </td>
+    	<td>{{club.name}}</td>
+      <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+          {{club}}
+          </a>
+      </td>
+      <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_member_list' pk=club.id %}">
+            List
+          </a>
+      </td>
+      <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+            Edit
+          </a>
+      </td>
+      <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:club_delete' pk=club.id %}">
+            Delete
+          </a>
+      </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  
+  {% else %}
+  <p>There are no clubs.</p>
+  {% endif %}
+
+  <div class="sub-title centre">
+    Add a <a href="{% url 'sportsrec:club_add' %}">new club</a>.
+  </div>
+</div>
+{% endblock %}
+
+{% endwith %}

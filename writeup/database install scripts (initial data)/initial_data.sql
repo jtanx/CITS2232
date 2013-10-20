@@ -1,8 +1,12 @@
 INSERT INTO sportsrec_member VALUES(1, "Miles", "Edgworth", "something@website.com", "15 Mannikin Heights", "Milesy", "Milesy", "091280941", "Hi, my name is...
+
 Who, my name is...
+
 What, my name is...", 4);
 INSERT INTO sportsrec_member VALUES(2, "Morn", "Ingstar", "something@website2.com", "10 Washington way", "Morn", "Morn", "87589281", "Hi, my name is...
+
 Who, my name is...
+
 What, my name is...", 4);
 INSERT INTO sportsrec_member VALUES(3, "Mr", "Wright", "something@website3.com", "", "", "", "", "", 4);
 INSERT INTO sportsrec_member VALUES(4, "Repo", "Man", "something@website4.com", "Something Somewhere", "", "", "", "", 4);
@@ -57,7 +61,9 @@ INSERT INTO sportsrec_clubtag VALUES(19, "Hunting");
 INSERT INTO sportsrec_clubtag VALUES(20, "AFL");
 INSERT INTO sportsrec_clubtag VALUES(21, "Test");
 INSERT INTO sportsrec_club VALUES(1, "Hi, My name is...", "Fairway, Perth", "-31.98242", "115.81564", 10, 0, "2013-10-18", 1, 1, "Hi, my name is...
+
 Who, my name is...
+
 What, my name is...", "Morn", "Temper", 2);
 INSERT INTO sportsrec_club VALUES(2, "Electrical", "17 Mannikin Heights", "-32.1374", "115.81717", 18, 0, "2013-10-18", 1, 1, "The quick brown fox jumped over the lazy dog.", "Thunder", "", 1);
 INSERT INTO sportsrec_club VALUES(3, "Thundermite", "40 Canning Hwy", "-31.9769", "115.8809", 9, 0, "2013-10-18", 1, 1, "The quick brown fox jumped over the lazy dog.", "", "Gorn", 1);

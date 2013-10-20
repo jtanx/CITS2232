@@ -1,0 +1,40 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+  <div class="title">
+	  Delete 
+	  <a href="{% url 'sportsrec:membership_detail' pk=object.id %}">
+		membership
+	  </a>
+	  for 
+	  <a href="{% url 'sportsrec:member_detail' pk=object.member.id %}">
+		{{object.member.first_name}} {{object.member.last_name}}
+	  </a>&nbsp;
+	  to 
+	  <a href="{% url 'sportsrec:club_detail' pk=object.club.id %}">
+		{{object.club}}
+	  </a>?
+  </div>
+  
+  {% if object.club.owner == object.member %}
+	<p class="large bold">
+    {{object.member}} owns this club. It will become 
+    ownerless if you delete this membership.
+  </p>
+  {% endif %}
+  
+  {% if object.club.contact == object.member %}
+	<p class="large bold">
+    {{object.member}} is the contact for this club. The
+    club will have no contact if this membership is deleted.
+  </p>
+  {% endif %}
+  
+  <form method="post" action="">
+      {% csrf_token %}
+      <p>Are you sure you want to delete "{{ object }}"?</p>
+      <input type="submit" value="Confirm" />
+  </form>
+</div>
+{% endblock %}

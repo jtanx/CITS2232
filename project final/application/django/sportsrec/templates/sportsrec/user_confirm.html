@@ -1,0 +1,45 @@
+{% extends "sportsrec/base.html" %}
+
+{% block main %}
+<div class="widget">
+{% if enable or disable %}
+  <div class="title">
+  {% if disable %}Disable{% else %}Enable{% endif %}
+	Disable user <a href="{% url 'sportsrec:user_detail' pk=object.id %}">{{object}}</a>?
+  </div>
+  <p class="large bold">
+    Think with care.
+  </p>
+{% elif promote %}
+  <div class="title">
+	Grant admin status to <a href="{% url 'sportsrec:user_detail' pk=object.id %}">{{object}}</a>?
+  </div>
+  <p class="large bold">
+    This is irrevocable, unless the user demotes themselves.
+  </p>
+{% elif demote %}
+  {% if demote_user == user %}
+    <div class="title">
+    Revoke your admin status?
+    </div>
+    <p class="large bold">
+      This is irrevocable, unless another admin re-instates your admin status.
+    </p>
+  {% else %}
+   <div class="title">
+    Revoke the admin status of <a href="{% url 'sportsrec:user_detail' pk=demote_user.id %} ">{{demote_user}}?</a>
+    </div>
+    <p class="large bold">
+      Think carefully. But then you're root.
+    </p> 
+  {% endif %}
+{% endif %}
+  
+  <form method="post" action="">
+      {% csrf_token %}
+      <p style="float:right; margin:0;">
+         <input type="submit" value="Confirm">
+      </p>
+  </form>
+</div>
+{% endblock %}

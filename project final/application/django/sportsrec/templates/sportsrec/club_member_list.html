@@ -1,0 +1,68 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:club_member_list' %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">
+    Member list for
+    <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+      {{club}}
+    </a>
+  </div>
+  
+  {% if club_member_list %}
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+      	<th>Membership ID</th>
+        <th>Member</th>
+        <th>Since</th>
+        {% if club.owner.owner == user or admin %}
+        <th>Last paid</th>
+        <th>Remove</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for membership in club_member_list %}
+      <tr>
+        <td{% if club.owner.owner == user or admin %} class="clickable menu-hilight"{%endif%}>
+          {% if club.owner.owner == user or admin %}
+          <a href="{% url 'sportsrec:membership_detail' pk=membership.id %}"> {% endif %}
+          {{membership.id}}
+          
+          {% if club.owner.owner == user or admin %}</a>{% endif %}
+        </td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:member_detail' pk=membership.member.id %}">
+          {{membership.member}}
+          </a>
+        </td>
+        <td>{{membership.joined}}</td>
+        {% if club.owner.owner == user or admin %}
+        <td class="clickable menu-hilight">
+           <a href="{% url 'sportsrec:membership_update' pk=membership.id %}">
+          {{membership.last_paid|default:"Never"}}
+          </a>
+        </td>
+        <td class="clickable menu-hilight">
+          <a href="{% url 'sportsrec:membership_delete' pk=membership.id %}">
+            Remove
+          </a>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  
+  {% else %}
+  <p>There are no members for this club.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% endwith %}

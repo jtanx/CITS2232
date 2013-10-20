@@ -1,0 +1,101 @@
+[
+{
+    "pk": 1, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Soccer", 
+        "description": "A soccer club, or a club about soccer"
+    }
+},
+{
+    "pk": 2, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Hockey", 
+        "description": "A hockey club, or a club about hockey"
+    }
+},
+{
+    "pk": 3, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "AFL", 
+        "description": "An AFL club, or a club about AFL"
+    }
+},
+{
+    "pk": 4, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Swimming", 
+        "description": "A swimming club, or a club about swimming"
+    }
+},
+{
+    "pk": 5, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0,  
+        "name": "Basketball", 
+        "description": "A basketball club, or a club about basketball"
+    }
+},
+{
+    "pk": 6, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Tennis", 
+        "description": "A tennis club, or a club about tennis"
+    }
+},
+{
+    "pk": 7, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Rugby", 
+        "description": "A rugby club, or a club about rugby"
+    }
+},
+{
+    "pk": 8, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Formula One", 
+        "description": "A formula one racing club, or a club about formula one racing"
+    }
+},
+{
+    "pk": 9, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Gaming", 
+        "description": "A gaming club, or a club about games"
+    }
+},
+{
+    "pk": 10, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Hunting", 
+        "description": "A club about game hunting"
+    }
+},
+{
+    "pk": 11, 
+    "model": "sportsrec.clubtype", 
+    "fields": {
+        "club_count": 0, 
+        "name": "Cricket", 
+        "description": "A cricket club, or a club about cricket"
+    }
+}
+]

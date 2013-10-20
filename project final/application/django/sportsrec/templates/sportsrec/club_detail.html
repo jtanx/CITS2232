@@ -1,0 +1,157 @@
+{% extends 'sportsrec/base.html' %}
+{% block main %}
+  <div class="widget">
+    <div class="title centre">{{club.name}}</div>
+    <div class="large bold">Club details</div>
+    
+    <table class="horizontal">
+    <tr><th>Club ID</th><td>{{club.id}}</td></tr>
+    <tr><th>Address</th><td>{{club.address}}</td></tr>
+    <tr>
+      <th>Location</th>
+      <td class="clickable menu-hilight">
+        {% if club.latitude and club.longitude %}
+            <a href="{% url 'sportsrec:search_location' %}?query={{club.latitude}},{{club.longitude}}">
+            {{club.latitude}}, {{club.longitude}}
+            </a>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <th>Tags</th>
+      <td>{%for tag in club.tags.all%}{{tag}} {% endfor %}</td>
+    </tr>
+    <tr><th>Type</th><td>{{club.type}}</td></tr>
+    <tr><th>Member count</th><td>{{club.member_count}}</td></tr>
+    <tr><th>Date created</th><td>{{club.created}}</td></tr>
+    <tr><th>Recruiting</th><td>{%if club.recruiting%}Yes{%else%}No{%endif%}</td></tr>
+    <tr>
+      <th>Contact</th>
+      {% if club.contact %}
+      <td class="menu-hilight clickable">
+        <a href="{% url 'sportsrec:member_detail' pk=club.contact.id%}">
+          {{club.contact|default:''}}
+        </a>
+      </td>
+      {% endif %}
+    </tr>
+    <tr>
+      <th>Owner</th>
+      <td class="menu-hilight clickable">
+        {% if club.owner %}
+        <a href="{% url 'sportsrec:member_detail' pk=club.owner.id%}">
+           {{club.owner.first_name}} {{club.owner.last_name}}
+        </a>
+        {% endif %}
+      </td>
+      
+    </tr>
+    <tr>
+      <th>Facebook</th>
+      <td class="clickable menu-hilight">
+        {% if club.facebook %}
+        <a href="https://facebook.com/{{club.facebook}}">{{club.facebook}}</a>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <th>Twitter</th>
+      <td class="clickable menu-hilight">
+        {% if club.twitter %}
+        <a href="https://twitter.com/{{club.twitter}}">{{club.twitter}}</a>
+        {% endif %}
+      </td>
+    </tr>
+    <tr><th>Description</th><td class="break">{{club.description}}</td></tr>
+  </table>
+  <br>
+  <div class="large centre bold">
+    <a href="{% url 'sportsrec:club_member_list' pk=club.id %}">
+      List of Members
+    </a>
+  	  
+  {% if club.owner.owner == user or admin %}
+    |
+    <a href="{% url 'sportsrec:club_edit' pk=club.id %}">
+      Edit this club
+    </a>
+    |
+    <a href="{% url 'sportsrec:club_delete' pk=club.id %}">
+      Delete this club
+    </a>
+  {% endif %}
+  </div>
+  </div>
+  
+  {% if club.recruiting %}
+    <div class="widget">
+    <div class="large centre bold">
+      <a href="{% url 'sportsrec:membership_apply' pk=club.id %}">
+        Apply
+      </a>
+      to this club!
+    </div>
+  </div>
+  {% endif %}
+  
+  <div class="widget">
+    <div class="title">Club map</div>
+    <div id="map-canvas" style="width:100%;height:300px;"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3key={AIzaSyAH5OCkIGApptBzMQGjs_Wlz8kc6xqTg8o}&sensor=true"></script>
+    <script>
+      var map;
+      var geocoder;
+      
+      function initialize() {
+      	geocoder = new google.maps.Geocoder();
+        var mapOptions = {
+          zoom: 12,
+          center: new google.maps.LatLng(-31.9522, 115.8589),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+        
+        {% if club.latitude and club.longitude %}
+          var latlng = new google.maps.LatLng({{club.latitude}}, {{club.longitude}});
+          map.setCenter(latlng);
+          
+          var infoHtml = 
+            '<div id="content">'+
+              '<h2 id="firstHeading" class="firstHeading">{{club.name|escapejs}}</h2>'+
+              '<div id="bodyContent">'+
+                '<p>Address: {{club.address|escapejs}}</p>' +
+                '<p>{{club.description|escapejs}}</p>' +
+              '</div>'+
+            '</div>';
+            
+          var marker = new google.maps.Marker({
+                map: map,
+                title : "Club: {{club.name|escapejs}}",
+                position: latlng
+          });
+          
+          //Makes the marker on this club bounce. Not sure if you like this idea.
+        	//Get rid of it if you don't like it :)
+          //Nah, it's too cool to get rid of :P
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          var infoWindow = new google.maps.InfoWindow({
+            'content': infoHtml
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.open(map, marker);
+          });
+          
+          setTimeout(function() { marker.setAnimation(null); }, 2500);
+        {% endif %}
+    }
+    
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </div>
+
+
+
+
+    
+{% endblock %}

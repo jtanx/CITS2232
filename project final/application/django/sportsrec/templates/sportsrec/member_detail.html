@@ -1,0 +1,71 @@
+{% extends 'sportsrec/base.html' %}
+{% block main %}
+<div class="widget">
+  <div class="title centre">Member {{member.first_name}} {{member.last_name}}</div>
+  <div class="large bold">Contact details</div>
+  <table class="horizontal">
+    <tr>
+      <th>Email</th>
+      <td class="clickable menu-hilight">
+        <a href="mailto:{{member.email}}">{{member.email}}</a>
+      </td>
+    </tr>
+    <tr><th>Address</th><td>{{member.address}}</td></tr>
+    <tr>
+      <th>Facebook</th>
+      
+      <td class="clickable menu-hilight">
+        {% if member.facebook %}
+        <a href="https://facebook.com/{{member.facebook}}">{{member.facebook}}</a>
+        {% endif %}
+      </td>
+      
+    </tr>
+    <tr>
+      <th>Twitter</th>
+      <td class="clickable menu-hilight">
+        {% if member.twitter %}
+        <a href="https://twitter.com/{{member.twitter}}">{{member.twitter}}</a>
+        {% endif %}
+      </td>
+      
+    </tr>
+    <tr><th>Phone</th><td>{{member.phone}}</td></tr>
+    <tr><th>Interests</th><td class="break">{{member.interests}}</td></tr>
+  </table>
+
+  {% if member.owner == user or admin %}
+  <div class="large centre bold">
+    <a href="{% url 'sportsrec:member_edit' pk=member.id %}">
+      Edit this profile
+    </a> |
+    <a href="{% url 'sportsrec:member_delete' pk=member.id %}">
+      Delete this member
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+{% if owned_clubs %}
+<div class="widget">
+  <div class="large bold">Clubs owned by this member</div>
+  <table class="horizontal">
+    <tr>
+      <th class="horizontal-top">Name</th>
+      <th class="horizontal-top">Description</th>
+    </tr>
+    {% for club in owned_clubs %}
+    <tr>
+      <th class="clickable menu-hilight">
+        <a href="{% url 'sportsrec:club_detail' pk=club.id %}">
+        {{club.name}}
+        </a>
+      </th>
+      <td class="break">{{club.description}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+{% endblock %}

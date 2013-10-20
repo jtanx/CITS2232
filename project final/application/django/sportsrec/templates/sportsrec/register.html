@@ -1,0 +1,51 @@
+{% extends "sportsrec/base.html" %}
+
+{% block sidebar %}
+{# Hide the sidebar #}
+{% endblock %}
+
+{% block content %}
+{# Override the main content #}
+
+{% if thanks %}
+
+<div class="form-container">
+  <div class="widget centre">
+    <div class="title centre">Thanks</div>
+    Thanks for registering, {{name}}!<br>
+    Click <a href="{% url 'sportsrec:index' %}">here</a> to continue!
+  </div>
+</div>
+
+{% else %}
+
+<div class="form-container widget">
+  <div class="title centre">Registration form</div>
+  <form method="post" action="{% url 'sportsrec:register' %}">
+      {% csrf_token %}
+      {# Include the hidden fields #}
+      {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+      {% endfor %}
+      {# Include the visible fields #}
+      {% for field in form.visible_fields %}
+          <div class="fieldWrapper">
+              {{ field.label_tag }} {{ field }}
+              {% for error in field.errors %}
+              <div class="fail">{{ error|escape }}</div>
+              {% endfor %}
+          </div>
+      {% endfor %}
+      <p style="float:right; margin:0;">
+         <input type="submit" value="Register">
+      </p>
+      
+      <div id="result">
+        {{ form.non_field_errors }}
+      </div>
+  </form>
+</div>
+
+{% endif %}
+
+{% endblock %}

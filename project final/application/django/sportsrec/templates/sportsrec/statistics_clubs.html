@@ -1,0 +1,36 @@
+{% extends "sportsrec/base.html" %}
+{% with paginate_view='sportsrec:stats_club' %}
+
+{% block main %}
+<div class="widget">
+  <div class="title centre">Clubs by type</div>
+  {% if clubtypes %}
+  
+  {% include 'sportsrec/paginate.html' %}
+  <table class="centre">
+    <thead>
+      <tr class="header">
+        <th>Club type</th>
+        <th>Description</th>
+        <th>Number of clubs of this type</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for type in clubtypes %}
+      <tr>
+        <td>{{type.name}}</td>
+        <td>{{type.description| default:""}}</td>
+        <td>{{type.club_count}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  {% include 'sportsrec/paginate.html' %}
+  {% else %}
+  <p>There are no club types</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% endwith %}
