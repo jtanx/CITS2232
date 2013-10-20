@@ -121,38 +121,6 @@ class ClubType(models.Model):
     name = models.CharField(max_length=40, unique=True)
     description = models.CharField(max_length=255)
     club_count = models.IntegerField(default=0)
-    
-    ''' #No signal for you!
-    @staticmethod
-    def club_created(sender, instance, created, **kwargs):
-        #Auto increments the club count for a club type
-        #   when a club is created
-        if created and instance.type:
-            instance.type.club_count += 1
-            instance.type.save()
-
-    @staticmethod
-    def club_updated(sender, instance,  **kwargs):
-        #Auto updates club counts if a club type is changed
-        if instance.pk:
-            old_info = Club.objects.get(pk=instance.pk)
-            if old_info.type != instance.type:
-                if old_info.type:
-                    old_info.type.club_count -= 1
-                    old_info.type.save()
-                if instance.type:
-                    instance.type.club_count += 1
-                    instance.type.save()
-
-    @staticmethod
-    def club_deleted(sender, instance, **kwargs):
-        #Auto updates club count when clubs are deleted
-        try:
-            instance.type.club_count -= 1
-            instance.type.save()
-        except ObjectDoesNotExist:
-            #Club type was deleted...
-            return'''
 
     def __unicode__(self):
         return '%s' % (self.name)
@@ -189,23 +157,6 @@ class Membership(models.Model):
     member = models.ForeignKey('Member')
     club = models.ForeignKey('Club')
     
-    '''#No trigger for you!
-    @staticmethod
-    def membership_created(sender, instance, created, **kwargs):
-        if created:
-            instance.club.member_count += 1
-            instance.club.save()
-
-    @staticmethod
-    def membership_deleted(sender, instance, **kwargs):
-        try:
-            instance.club.member_count -= 1
-            instance.club.save()
-        except ObjectDoesNotExist:
-            #Club or member no longer exists.
-            #As owner/contact is fk, they're nulled on member delete
-            return
-    '''
     class Meta:
         unique_together = (("member", "club"),)
     
@@ -304,11 +255,10 @@ def a_hack_to_load_sqlite_triggers_just_because(created_models, **kwargs):
     cursor.executescript(membership_triggers)
     cursor.executescript(club_triggers)
 
-#herp derp
 post_syncdb.connect(a_hack_to_load_sqlite_triggers_just_because)
 
 '''
-#No signals!!! stupidity ensues
+#No signals!!!
 #For club counting by type
 post_save.connect(ClubType.club_created, sender=Club)
 pre_save.connect(ClubType.club_updated, sender=Club)
